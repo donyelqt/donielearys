@@ -37,10 +37,7 @@ export default function About() {
           viewport={{ once: true }}
           className="relative aspect-square rounded-none overflow-hidden glass p-1"
         >
-          <div className="w-full h-full bg-linear-to-br from-white/10 to-transparent rounded-none flex items-center justify-center">
-            <span className="text-8xl grayscale">👨‍💻</span>
-          </div>
-          {/* Decorative elements */}
+          <img src="/donielecolored.jpg" alt="Doniele Arys Antonio" className="w-full h-full object-cover rounded-none grayscale hover:grayscale-0 transition-all duration-500 cursor-pointer" />
           <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-white/5 rounded-full blur-2xl" />
           <div className="absolute -top-6 -left-6 w-32 h-32 bg-white/5 rounded-full blur-2xl" />
         </motion.div>

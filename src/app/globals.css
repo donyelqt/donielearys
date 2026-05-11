@@ -92,7 +92,7 @@
   .glass {
     @apply bg-background/60 backdrop-blur-md border border-white/10;
   }
-  
+
   .grid-pattern {
     background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
     background-size: 40px 40px;
@@ -100,5 +100,28 @@
 
   .text-gradient {
     @apply bg-clip-text text-transparent bg-linear-to-br from-white via-white/80 to-white/40;
+  }
+
+  @keyframes marquee-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @keyframes marquee-right {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+
+  .animate-marquee-left {
+    animation: marquee-left 35s linear infinite;
+  }
+
+  .animate-marquee-right {
+    animation: marquee-right 40s linear infinite;
+  }
+
+  .animate-marquee-left:hover,
+  .animate-marquee-right:hover {
+    animation-play-state: paused;
   }
 }
