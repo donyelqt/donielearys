@@ -113,11 +113,15 @@
   }
 
   .animate-marquee-left {
-    animation: marquee-left 35s linear infinite;
+    animation: marquee-left 40s linear infinite;
+    will-change: transform;
+    backface-visibility: hidden;
   }
 
   .animate-marquee-right {
     animation: marquee-right 40s linear infinite;
+    will-change: transform;
+    backface-visibility: hidden;
   }
 
   .animate-marquee-left:hover,

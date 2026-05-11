@@ -61,7 +61,7 @@ function MarqueeRow({ items, direction = 'left' }: { items: typeof techRow1, dir
 
   return (
     <div className="relative overflow-hidden py-4 group">
-      <div className={`flex whitespace-nowrap ${animationClass}`}>
+      <div className={`flex whitespace-nowrap ${animationClass}`} style={{ willChange: 'transform', transform: 'translateZ(0)' }}>
         {duplicatedItems.map((tech, i) => (
           <TechItem key={`${tech.name}-${i}`} {...tech} />
         ))}
