@@ -13,7 +13,7 @@ export default function About() {
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl md:text-5xl font-bold mb-8">Passionate about craft, driven by technology.</h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-8">About</h2>
           <div className="space-y-6 text-white/60 text-base leading-relaxed">
             <p>
               I’m Doniele Arys Antonio, a 3rd-year Computer Science student at the Center of Excellence in ITE at the University of the Cordilleras, driven by continuous learning in software engineering and AI systems. My journey in tech began early with a deep curiosity about how software works, leading me to become a self-taught full-stack engineer with a strong focus on agentic AI systems, infrastructure design, and applied machine learning.
@@ -37,7 +37,7 @@ export default function About() {
           viewport={{ once: true }}
           className="relative aspect-square rounded-none overflow-hidden glass p-1"
         >
-          <div className="w-full h-full bg-gradient-to-br from-white/10 to-transparent rounded-none flex items-center justify-center">
+          <div className="w-full h-full bg-linear-to-br from-white/10 to-transparent rounded-none flex items-center justify-center">
             <span className="text-8xl grayscale">👨‍💻</span>
           </div>
           {/* Decorative elements */}

@@ -22,7 +22,7 @@ export default function Hero() {
     <section className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
       <NetworkBackground />
       {/* Decorative Blur - Scaled and blurred to prevent box edges */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-white/[0.07] rounded-full blur-[120px] -z-10" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-white/[0.07] rounded-full blur-[120px] -z-10" />
       
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -41,7 +41,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="text-5xl md:text-8xl font-bold tracking-tighter text-gradient mb-6 max-w-4xl uppercase"
+        className="text-5xl md:text-8xl font-bold tracking-tighter bg-clip-text text-transparent bg-linear-to-br from-white via-white/80 to-white/40 mb-6 max-w-4xl uppercase"
       >
         Doniele Arys Antonio
       </motion.h1>
@@ -50,7 +50,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="text-lg md:text-xl text-white/50 max-w-2xl mb-10 leading-relaxed font-mono text-sm uppercase"
+        className="text-lg md:text-xl text-white/50 max-w-2xl mb-10 leading-relaxed font-mono uppercase"
       >
       </motion.p>
 
