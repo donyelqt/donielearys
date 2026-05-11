@@ -31,8 +31,8 @@ export default function Hero() {
         className="flex items-center gap-2 px-3 py-1 rounded-none border border-white/10 bg-white/5 text-xs font-mono text-white/60 mb-8 uppercase tracking-widest"
       >
         <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-none bg-green-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-none h-2 w-2 bg-red-500"></span>
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-none bg-red-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-none h-2 w-2 bg-red-600"></span>
         </span>
         AI & Software Engineer
       </motion.div>
