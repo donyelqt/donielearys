@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8">
         <div className="flex flex-col gap-2">
           <div className="text-xl font-bold tracking-tighter">DONIELE</div>
-          <p className="text-white/30 text-sm">© 2026 Crafted with precision and AI.</p>
+          <p className="text-white/30 text-sm">© 2026</p>
         </div>
         
         <div className="flex gap-8 text-sm text-white/40 font-medium">
