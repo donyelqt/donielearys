@@ -11,7 +11,7 @@ const experiences = [
     company: "Avaron",
     location: "Atlanta, GA (Remote)",
     date: "2026 - Present",
-    description: "Architecting the world's first autonomous self-healing data center platform with advanced agentic AI infrastructure and security.",
+    description: "Building the world's first autonomous self-healing data center. First and youngest Filipino software engineer architecting agentic AI infrastructure at Avaron.",
     icon: <Rocket className="h-4 w-4 text-neutral-500" />,
     className: "md:col-span-2",
   },
