@@ -44,7 +44,7 @@ const techRow2 = [
 
 function TechItem({ name, icon: Icon, color }: { name: string, icon: React.ElementType, color: string }) {
   return (
-    <div className="flex items-center gap-3 px-6 py-3 glass rounded-none mx-2 group cursor-pointer hover:bg-white/10 transition-all duration-300">
+    <div className="flex items-center gap-3 px-6 py-3 border border-white/10 rounded-none mx-2 group cursor-pointer bg-white/5 hover:bg-white/10 transition-all duration-300">
       <div className={`${color} group-hover:scale-110 transition-transform duration-300`}>
         <Icon className="w-5 h-5" />
       </div>
@@ -66,14 +66,14 @@ function MarqueeRow({ items, direction = 'left' }: { items: typeof techRow1, dir
           <TechItem key={`${tech.name}-${i}`} {...tech} />
         ))}
       </div>
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-background via-transparent to-background z-10" />
+      <div className="absolute inset-0 pointer-events-none bg-linear-to-r from-background via-transparent to-background z-10" />
     </div>
   )
 }
 
 export default function TechStack() {
   return (
-    <section className="py-24 px-4 bg-white/[0.02] overflow-hidden">
+    <section className="py-24 px-4 bg-white/2 overflow-hidden">
       <div className="max-w-7xl mx-auto mb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
