@@ -50,8 +50,9 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="text-lg md:text-xl text-white/50 max-w-2xl mb-10 leading-relaxed font-mono uppercase"
+        className="text-lg md:text-xl text-white/60 max-w-2xl mb-10 leading-relaxed font-mono uppercase"
       >
+        Architecting autonomous agents and high-performance intelligence systems for the next era of computing.
       </motion.p>
 
       <motion.div
