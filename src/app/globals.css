@@ -51,6 +51,8 @@
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
     --radius: 0rem;
+    --grid-major: rgba(0, 0, 0, 0.04);
+    --grid-minor: rgba(0, 0, 0, 0.08);
   }
 
   .dark {
@@ -73,6 +75,8 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
+    --grid-major: rgba(255, 255, 255, 0.03);
+    --grid-minor: rgba(255, 255, 255, 0.08);
   }
 }
 
@@ -109,10 +113,13 @@
     position: absolute;
     inset: 0;
     background-image:
-      radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.08) 1px, transparent 0),
-      radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.04) 1px, transparent 0);
-    background-size: 32px 32px, 16px 16px;
-    background-position: 0 0, 8px 8px;
+      /* Major Grid Lines */
+      linear-gradient(to right, var(--grid-major) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-major) 1px, transparent 1px),
+      /* Minor Dots */
+      radial-gradient(circle at 1px 1px, var(--grid-minor) 1px, transparent 0);
+    background-size: 128px 128px, 128px 128px, 32px 32px;
+    background-position: center center;
     pointer-events: none;
     z-index: 0;
   }
@@ -126,6 +133,11 @@
     pointer-events: none;
     z-index: 1;
     mix-blend-mode: overlay;
+  }
+
+  .grid-pattern {
+    mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+    -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
   }
 
   /* Breathing animation for subtle depth */
