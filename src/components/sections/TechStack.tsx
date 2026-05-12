@@ -56,15 +56,23 @@ function TechItem({ name, icon: Icon, color }: { name: string, icon: React.Eleme
 }
 
 function MarqueeRow({ items, direction = 'left' }: { items: typeof techRow1, direction?: 'left' | 'right' }) {
-  const duplicatedItems = [...items, ...items]
   const animationClass = direction === 'left' ? 'animate-marquee-left' : 'animate-marquee-right'
 
   return (
     <div className="relative overflow-hidden py-4 group">
-      <div className={`flex whitespace-nowrap ${animationClass}`} style={{ willChange: 'transform', transform: 'translateZ(0)' }}>
-        {duplicatedItems.map((tech, i) => (
-          <TechItem key={`${tech.name}-${i}`} {...tech} />
-        ))}
+      <div
+        className={`flex ${animationClass}`}
+        style={{ width: 'max-content', willChange: 'transform', backfaceVisibility: 'hidden' }}
+      >
+        {/* 4 identical copies — guarantees the viewport is ALWAYS filled.
+            Animation scrolls exactly 1 copy (-25%), then loops seamlessly. */}
+        {[0, 1, 2, 3].map((copy) =>
+          items.map((tech, i) => (
+            <div key={`${copy}-${tech.name}-${i}`} className="flex-shrink-0">
+              <TechItem {...tech} />
+            </div>
+          ))
+        )}
       </div>
       <div className="absolute inset-0 pointer-events-none bg-linear-to-r from-background via-transparent to-background z-10" />
     </div>
