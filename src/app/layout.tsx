@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/Navbar";
+import MouseSpotlight from "@/components/MouseSpotlight";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <MouseSpotlight />
           <div className="fixed inset-0 grid-pattern pointer-events-none -z-10" />
           <Navbar />
           <main className="flex-1 pt-24">
