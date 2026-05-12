@@ -25,7 +25,7 @@ const experiences = [
     className: "md:col-span-1",
   },
   {
-    title: "AI/ML Engineer",
+    title: "AI/ML Engineer (National AI Student Challenge 2025)",
     company: "AI Singapore",
     location: "Singapore (Hybrid)",
     date: "2025",

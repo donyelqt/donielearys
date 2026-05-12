@@ -20,7 +20,7 @@ const projects = [
   {
     title: "Avaron",
     status: "Active Development",
-    description: "AI-powered self-healing data center that automatically detects, diagnoses, and remediates infrastructure issues through intelligent agents and automated workflows.",
+    description: "AI-powered autonomous infrastructure platform for edge datacenters and modern compute. Features real-time telemetry, self-healing remediation, and operator-grade reporting. Built for defense and telecom operations with production deployments across active facilities.",
     header: (
       <div className="relative flex flex-1 w-full h-full min-h-[6rem] rounded-none bg-gradient-to-br from-violet-900/50 via-neutral-900 to-indigo-900/50 border border-white/5 overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
@@ -34,7 +34,7 @@ const projects = [
   {
     title: "Tarana AI Waitlist",
     status: "Live",
-    description: "High-converting waitlist landing page for Tarana AI's early access program featuring email capture, referral tracking, and real-time waitlist position updates.",
+    description: "High-converting waitlist landing page for Tarana AI's early access program featuring email capture, referral tracking, and real-time waitlist position updates. 150+ registered users on waitlist.",
     header: (
       <div className="relative flex flex-1 w-full h-full min-h-[6rem] rounded-none bg-gradient-to-br from-amber-900/50 via-neutral-900 to-orange-900/50 border border-white/5 overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
@@ -48,7 +48,7 @@ const projects = [
   {
     title: "Tarana AI",
     status: "Beta Testing",
-    description: "Enterprise-grade Agentic AI RAG travel platform for Baguio City that generates real-time, personalized itineraries using multi-agent AI, vector embeddings, and live traffic/weather data.",
+    description: "Enterprise-grade Agentic AI RAG travel platform for Baguio City that generates real-time, personalized itineraries using multi-agent AI, vector embeddings, live traffic/weather data. Supported by LGU Baguio City and deployed with 100+ beta users.",
     header: (
       <div className="relative flex flex-1 w-full h-full min-h-[6rem] rounded-none bg-gradient-to-br from-pink-900/50 via-neutral-900 to-rose-900/50 border border-white/5 overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
