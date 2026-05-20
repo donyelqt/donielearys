@@ -1,1 +1,1 @@
-Minimalist portfolio v2
+minimalist portfolio v2
