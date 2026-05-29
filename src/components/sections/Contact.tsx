@@ -30,10 +30,15 @@ export default function Contact() {
               <Mail className="w-4 h-4" />
               Send Email
             </a>
-            <button className="w-full md:w-auto px-10 py-4 border border-white/20 text-white font-bold rounded-none hover:bg-white/5 transition-all flex items-center justify-center gap-2 uppercase tracking-tighter">
+            <a 
+              href="https://linkedin.com/in/donieleai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full md:w-auto px-10 py-4 border border-white/20 text-white font-bold rounded-none hover:bg-white/5 transition-all flex items-center justify-center gap-2 uppercase tracking-tighter"
+            >
               <Send className="w-4 h-4" />
               Ping System
-            </button>
+            </a>
           </div>
         </motion.div>
       </div>
