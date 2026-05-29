@@ -127,33 +127,36 @@ export default function Hero() {
         transition={{ duration: 1, delay: 0.5 }}
         className="mt-20 lg:mt-0 lg:absolute lg:bottom-10 flex gap-6 transition-opacity hover:opacity-100"
       >
-        <a 
-          href="https://github.com/donyelqt" 
-          target="_blank" 
-          rel="noopener noreferrer" 
+        <motion.a
+          whileHover={{ scale: 1.15 }}
+          href="https://github.com/donyelqt"
+          target="_blank"
+          rel="noopener noreferrer"
           className="w-6 h-6 text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm"
           aria-label="GitHub Profile"
         >
           <GithubIcon />
-        </a>
-        <a 
-          href="https://linkedin.com/in/donielearysantonio" 
-          target="_blank" 
-          rel="noopener noreferrer" 
+        </motion.a>
+        <motion.a
+          whileHover={{ scale: 1.15 }}
+          href="https://linkedin.com/in/donielearysantonio"
+          target="_blank"
+          rel="noopener noreferrer"
           className="w-6 h-6 text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm"
           aria-label="LinkedIn Profile"
         >
           <LinkedinIcon />
-        </a>
-        <a 
-          href="#" 
-          target="_blank" 
-          rel="noopener noreferrer" 
+        </motion.a>
+        <motion.a
+          whileHover={{ scale: 1.15 }}
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
           className="w-6 h-6 text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm"
           aria-label="Twitter Profile"
         >
           <TwitterIcon />
-        </a>
+        </motion.a>
       </motion.div>
     </section>
   )
