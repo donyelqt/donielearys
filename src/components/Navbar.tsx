@@ -63,8 +63,8 @@ export default function Navbar() {
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: '-50% 0px -50% 0px',
-      threshold: 0
+      rootMargin: '0px 0px -50% 0px',
+      threshold: 0.3
     }
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
@@ -91,7 +91,47 @@ export default function Navbar() {
       if (el) observer.observe(el)
     })
 
-    return () => observer.disconnect()
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+      const scrollPosition = scrollY + window.innerHeight * 0.4
+      const heroEl = document.querySelector('section')
+      let currentSection = 'Home'
+
+      if (heroEl) {
+        const heroBottom = heroEl.offsetTop + heroEl.offsetHeight
+        if (scrollY < heroBottom - 100) {
+          currentSection = 'Home'
+          setActiveSection(currentSection)
+          return
+        }
+      }
+
+      const sections = navItems
+        .filter(item => item.href !== '#')
+        .map(item => ({
+          name: item.name,
+          el: document.getElementById(item.href.replace('#', ''))
+        }))
+        .filter(item => item.el !== null)
+        .sort((a, b) => a.el!.offsetTop - b.el!.offsetTop)
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        if (scrollPosition >= sections[i].el!.offsetTop) {
+          currentSection = sections[i].name
+          break
+        }
+      }
+
+      setActiveSection(currentSection)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('scroll', handleScroll)
+    }
   }, [])
 
   const handleLinkClick = () => {
