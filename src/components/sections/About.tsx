@@ -145,7 +145,7 @@ export default function About() {
               <div key={index} className="mb-1">
                 {line.type === 'command' ? (
                   <div className="flex items-center gap-2">
-                    <span className="text-[#27c93f]">❯</span>
+                    <span className="text-red-500">❯</span>
                     <span className="text-white/90">{line.text}</span>
                   </div>
                 ) : line.isAscii ? (
@@ -156,7 +156,7 @@ export default function About() {
               </div>
             ))}
             <div className="flex items-center">
-              <span className="text-[#27c93f] mr-2">❯</span>
+              <span className="text-red-500 mr-2">❯</span>
               <span className={`text-white/90 ${showCursor ? 'opacity-100' : 'opacity-0'} transition-opacity duration-100`}>_</span>
             </div>
           </div>
