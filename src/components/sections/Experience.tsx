@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { BentoGrid, BentoGridItem } from '../BentoGrid'
 import { Briefcase, ChevronDown, ChevronUp, Code2, Globe, Rocket, Terminal } from 'lucide-react'
 
@@ -91,15 +91,22 @@ const experiences = [
 
 export default function Experience() {
   const [showAll, setShowAll] = React.useState(false)
+  const prefersReducedMotion = useReducedMotion()
 
   return (
     <section id="experience" className="py-20 px-4">
-      <div className="max-w-7xl mx-auto mb-12 text-right">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5 }}
+        viewport={{ once: true }}
+        className="max-w-7xl mx-auto mb-12"
+      >
         <h2 className="text-3xl md:text-5xl font-bold mb-4">Experience</h2>
-        <p className="text-white/50 max-w-xl ml-auto">
-          A career built on pushing the boundaries of what's possible on the tech.
+        <p className="text-white/50 max-w-xl">
+          A career built on pushing the boundaries of what's possible in tech.
         </p>
-      </div>
+      </motion.div>
 
       <div className="max-w-7xl mx-auto">
         <BentoGrid>
@@ -157,9 +164,10 @@ export default function Experience() {
         </AnimatePresence>
 
         <div className="mt-12 flex justify-center">
-          <button
+          <motion.button
+            whileTap={{ scale: 0.97 }}
             onClick={() => setShowAll(!showAll)}
-            className="group px-8 py-3 border border-white/10 bg-white/5 hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest"
+            className="group px-8 py-3 border border-white/10 bg-white/5 hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
           >
             {showAll ? (
               <>
@@ -170,7 +178,7 @@ export default function Experience() {
                 See More Experience <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
               </>
             )}
-          </button>
+          </motion.button>
         </div>
       </div>
     </section>
