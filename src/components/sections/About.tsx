@@ -19,14 +19,15 @@ const itemVariants = {
 
 const terminalLines = [
   { type: 'command', text: 'whoami', delay: 400 },
-  { type: 'output', text: 'doniele - AI Infrastructure Engineer', delay: 800 },
+  { type: 'output', text: 'doniele - AI Software Engineer', delay: 800 },
   { type: 'command', text: 'cat skills.txt', delay: 1400 },
   { type: 'output', text: '◉ Agentic AI Systems', delay: 1900 },
   { type: 'output', text: '◉ Full-Stack Development', delay: 2100 },
   { type: 'output', text: '◉ Infrastructure Security', delay: 2300 },
   { type: 'output', text: '◉ Applied Machine Learning', delay: 2500 },
   { type: 'command', text: 'cat current_status.txt', delay: 3100 },
-  { type: 'output', text: '🏢 Avaron - AI Infrastructure & Security Engineer', delay: 3600 },
+  { type: 'output', text: '💼 Accenture - Cloud Engineer Intern (Cloud Elite)', delay: 3600 },
+  { type: 'output', text: '🚀 Avaron - AI Infrastructure & Security Engineer', delay: 3700 },
   { type: 'output', text: '📍 Baguio City, Philippines', delay: 3800 },
   { type: 'command', text: 'neofetch', delay: 4400 },
   { type: 'output', text: '', delay: 4900, isAscii: true },
