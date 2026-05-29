@@ -97,7 +97,7 @@ export default function Hero() {
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.2 }}
         className="text-lg md:text-xl text-white/60 max-w-2xl mb-10 leading-relaxed font-mono uppercase"
       >
-        Building Intelligent Systems for Society
+        From Local to Global Real-World Impact
       </motion.p>
 
       <motion.div
