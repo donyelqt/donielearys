@@ -19,6 +19,7 @@ const navItems = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('Home')
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,14 +29,51 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  useEffect(() => {
+    const sectionIds = navItems.map(item => item.href.replace('#', ''))
+    const homeSection = document.getElementById('')
+    const hero = document.getElementById('hero')
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-50% 0px -50% 0px',
+      threshold: 0
+    }
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id
+          if (id === '' && hero?.getBoundingClientRect().top === 0) {
+            setActiveSection('Home')
+          } else {
+            setActiveSection(id.charAt(0).toUpperCase() + id.slice(1))
+          }
+        }
+      })
+    }
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions)
+
+    const heroEl = document.querySelector('section')
+    if (heroEl) observer.observe(heroEl)
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
   const handleLinkClick = () => {
     setMobileMenuOpen(false)
   }
 
   return (
     <>
-      <a 
-        href="#main-content" 
+      <a
+        href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-white focus:text-black focus:font-bold"
       >
         Skip to content
@@ -55,19 +93,28 @@ export default function Navbar() {
             <div className="text-xl font-bold tracking-tighter">DonieleAI</div>
 
             <div className="hidden lg:flex gap-1">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="px-5 py-2.5 text-[10px] font-mono uppercase tracking-widest text-foreground/80 hover:text-foreground transition-colors relative group"
-                >
-                  {item.name}
-                  <motion.div
-                    className="absolute bottom-1 left-5 right-5 h-[1px] bg-white opacity-0 group-hover:opacity-100 transition-opacity"
-                    layoutId="nav-hover"
-                  />
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                const isActive = activeSection === item.name
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={cn(
+                      "px-5 py-2.5 text-[10px] font-mono uppercase tracking-widest transition-colors relative",
+                      isActive ? "text-white" : "text-foreground/60 hover:text-foreground"
+                    )}
+                  >
+                    {item.name}
+                    <motion.div
+                      className="absolute bottom-1 left-5 right-5 h-[1px] bg-white"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: isActive ? 1 : 0 }}
+                      layoutId="nav-active-indicator"
+                      transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                    />
+                  </Link>
+                )
+              })}
             </div>
           </div>
 
@@ -102,16 +149,28 @@ export default function Navbar() {
                 className="absolute top-full left-0 right-0 bg-black/95 backdrop-blur-2xl border-b border-white/10 lg:hidden overflow-hidden"
               >
                 <div className="flex flex-col p-6 gap-1">
-                  {navItems.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      onClick={handleLinkClick}
-                      className="px-5 py-3.5 text-base font-mono uppercase tracking-widest text-foreground/80 hover:text-white transition-colors"
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
+                  {navItems.map((item) => {
+                    const isActive = activeSection === item.name
+                    return (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        onClick={handleLinkClick}
+                        className={cn(
+                          "px-5 py-3.5 text-base font-mono uppercase tracking-widest transition-colors",
+                          isActive ? "text-white" : "text-foreground/60 hover:text-white"
+                        )}
+                      >
+                        {item.name}
+                        {isActive && (
+                          <motion.div
+                            className="absolute left-0 top-0 bottom-0 w-1 bg-white"
+                            layoutId="mobile-active-indicator"
+                          />
+                        )}
+                      </Link>
+                    )
+                  })}
                   <Link
                     href="/resume.pdf"
                     onClick={handleLinkClick}

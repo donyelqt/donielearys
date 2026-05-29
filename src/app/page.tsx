@@ -3,8 +3,8 @@ import About from "@/components/sections/About";
 import TechStack from "@/components/sections/TechStack";
 import Experience from "@/components/sections/Experience";
 import Projects from "@/components/sections/Projects";
-import Certifications from "@/components/sections/ActualCertifications";
-import Competitions from "@/components/sections/Certifications";
+import Certifications from "@/components/sections/Certifications";
+import Competitions from "@/components/sections/Competitions";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/Footer";
 
