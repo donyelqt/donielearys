@@ -134,6 +134,7 @@ export default function Projects() {
         <BentoGrid>
           {projects.map((project, i) => (
             <BentoGridItem
+              type="project"
               key={i}
               title={project.title}
               description={project.description}
