@@ -32,7 +32,7 @@ const competitions = [
     title: "DICT STEP UP Pre-Acceleration Program",
     issuer: "Department of Information and Communications Technology",
     date: "2025",
-    description: "Selected for national pre-acceleration program for Tarana-ai, an agentic travel app recognized as a promising tech venture by DICT Philippines.",
+    description: "Selected for regional pre-acceleration program for Tarana-ai, an agentic travel app recognized as a promising tech venture by DICT CAR Philippines.",
     icon: <Star className="h-5 w-5 text-cyan-400" />,
     badge: "Selected",
     badgeColor: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
@@ -60,7 +60,7 @@ const competitions = [
   },
   {
     title: "AI.DEAS FOR IMPACT 2025",
-    issuer: "University of the Cordilleras",
+    issuer: "DICT CAR",
     date: "2025",
     description: "Finalist in the AI.DEAS FOR IMPACT 2025 competition for solo develop traffic-aware navigation app",
     icon: <Shield className="h-5 w-5 text-blue-400" />,
