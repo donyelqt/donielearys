@@ -79,7 +79,7 @@ export default function Hero() {
           <span className="animate-ping absolute inline-flex h-full w-full rounded-none bg-red-400 opacity-75"></span>
           <span className="relative inline-flex rounded-none h-2 w-2 bg-red-600"></span>
         </span>
-        AI & Software Developer | BS Computer Science Student
+        AI & Software Engineer
       </motion.div>
 
       <motion.h1
