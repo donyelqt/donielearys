@@ -7,7 +7,7 @@ import { Briefcase, ChevronDown, ChevronUp, Code2, Globe, Rocket, Terminal } fro
 
 const experiences = [
   {
-    title: "AI Engineer, Agents & Ops (Part-time, Equity)",
+    title: "AI Engineer, Agents & Ops (Part-time)",
     company: "Avaron",
     location: "Atlanta, GA (Remote)",
     date: "2026 - Present",
@@ -16,7 +16,7 @@ const experiences = [
     className: "md:col-span-2",
   },
   {
-    title: "Full-Stack AI Engineer & Co-Founder",
+    title: "Full-Stack AI Engineer ",
     company: "Tarana-ai",
     location: "Baguio City, PH",
     date: "2025 - Present",
@@ -25,7 +25,7 @@ const experiences = [
     className: "md:col-span-1",
   },
   {
-    title: "Full-stack Developer (CTO)",
+    title: "Full-stack Developer",
     company: "PeraPinoy!",
     location: "Baguio City, PH",
     date: "2024 - 2025",
