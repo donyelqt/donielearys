@@ -6,14 +6,13 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8">
         <div className="flex flex-col gap-2">
           <div className="text-xl font-bold tracking-tighter">DONIELE</div>
-          <p className="text-white/30 text-sm">© 2026</p>
+          <p className="text-white/30 text-sm">© 2026 Doniele Arys Antonio</p>
         </div>
         
         <div className="flex gap-8 text-sm text-white/40 font-medium">
-          <a href="#" className="hover:text-white transition-colors">Twitter</a>
-          <a href="#" className="hover:text-white transition-colors">GitHub</a>
-          <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
-          <a href="#" className="hover:text-white transition-colors">Dribbble</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Twitter</a>
+          <a href="https://github.com/donyelqt" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
+          <a href="https://linkedin.com/in/donielearysantonio" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
         </div>
       </div>
     </footer>
