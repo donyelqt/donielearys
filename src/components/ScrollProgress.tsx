@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, useScroll, useSpring } from "framer-motion"
+import { motion, useScroll, useSpring, useTransform } from "framer-motion"
 import { ArrowUp } from "lucide-react"
 
 export default function ScrollProgress() {
@@ -20,6 +20,9 @@ export default function ScrollProgress() {
 }
 
 export function BackToTop() {
+  const { scrollY } = useScroll()
+  const opacity = useTransform(scrollY, [0, 100], [0, 1])
+
   const handleClick = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -33,6 +36,7 @@ export function BackToTop() {
       onClick={handleClick}
       className="fixed bottom-8 right-8 z-40 p-3 bg-white/10 backdrop-blur-sm border border-white/10 hover:bg-white/20 transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
       aria-label="Back to top"
+      style={{ opacity }}
     >
       <ArrowUp className="w-5 h-5" />
     </motion.button>
