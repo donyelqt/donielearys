@@ -34,7 +34,7 @@ export default function Hero() {
           <span className="animate-ping absolute inline-flex h-full w-full rounded-none bg-red-400 opacity-75"></span>
           <span className="relative inline-flex rounded-none h-2 w-2 bg-red-600"></span>
         </span>
-        AI & Software Engineer
+        AI & Software Developer | BS Computer Science Student
       </motion.div>
 
       <motion.h1
@@ -52,7 +52,7 @@ export default function Hero() {
         transition={{ duration: 0.5, delay: 0.2 }}
         className="text-lg md:text-xl text-white/60 max-w-2xl mb-10 leading-relaxed font-mono uppercase"
       >
-        Architecting autonomous agents and high-performance intelligence systems for the next era of computing.
+        Building Intelligent Systems for Society
       </motion.p>
 
       <motion.div
