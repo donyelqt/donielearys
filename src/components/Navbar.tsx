@@ -61,77 +61,45 @@ export default function Navbar() {
   }, [activeSection])
 
   useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px 0px -50% 0px',
-      threshold: 0.3
-    }
-
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id
-          if (id === '') {
-            setActiveSection('Home')
-          } else {
-            setActiveSection(id.charAt(0).toUpperCase() + id.slice(1))
-          }
-        }
-      })
-    }
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions)
-
-    const heroEl = document.querySelector('section')
-    if (heroEl) observer.observe(heroEl)
-
-    navItems.forEach((item) => {
-      const id = item.href.replace('#', '')
-      const el = document.getElementById(id)
-      if (el) observer.observe(el)
-    })
-
-    const handleScroll = () => {
+    const getSectionActiveFromScroll = () => {
       const scrollY = window.scrollY
-      const scrollPosition = scrollY + window.innerHeight * 0.4
+      const innerHeight = window.innerHeight
       const heroEl = document.querySelector('section')
-      let currentSection = 'Home'
 
       if (heroEl) {
         const heroBottom = heroEl.offsetTop + heroEl.offsetHeight
         if (scrollY < heroBottom - 100) {
-          currentSection = 'Home'
-          setActiveSection(currentSection)
+          setActiveSection('Home')
           return
         }
       }
 
-      const sections = navItems
+      const sectionElements = navItems
         .filter(item => item.href !== '#')
         .map(item => ({
           name: item.name,
           el: document.getElementById(item.href.replace('#', ''))
         }))
-        .filter(item => item.el !== null)
-        .sort((a, b) => a.el!.offsetTop - b.el!.offsetTop)
+        .filter((item): item is { name: string; el: HTMLElement } => item.el !== null)
 
-      for (let i = sections.length - 1; i >= 0; i--) {
-        if (scrollPosition >= sections[i].el!.offsetTop) {
-          currentSection = sections[i].name
-          break
+      if (sectionElements.length === 0) return
+
+      const threshold = scrollY + innerHeight * 0.5
+      let found = 'Home'
+
+      for (let i = 0; i < sectionElements.length; i++) {
+        const sectionTop = sectionElements[i].el.offsetTop
+        if (threshold >= sectionTop) {
+          found = sectionElements[i].name
         }
       }
 
-      setActiveSection(currentSection)
+      setActiveSection(found)
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
-
-    return () => {
-      observer.disconnect()
-      window.removeEventListener('scroll', handleScroll)
-    }
+    getSectionActiveFromScroll()
+    window.addEventListener('scroll', getSectionActiveFromScroll, { passive: true })
+    return () => window.removeEventListener('scroll', getSectionActiveFromScroll)
   }, [])
 
   const handleLinkClick = () => {
