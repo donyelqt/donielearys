@@ -1,9 +1,9 @@
 "use client"
 
 import React from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { BentoGrid, BentoGridItem } from '../BentoGrid'
-import { Briefcase, Code2, Globe, Rocket, Terminal } from 'lucide-react'
+import { Briefcase, ChevronDown, ChevronUp, Code2, Globe, Rocket, Terminal } from 'lucide-react'
 
 const experiences = [
   {
@@ -129,6 +129,7 @@ const ExperienceCard = ({ exp, index }: { exp: (typeof experiences)[0]; index: n
       viewport={{ once: true }}
     >
       <BentoGridItem
+        type="experience"
         title={
           <div className="flex items-center gap-2">
             <span className="text-base md:text-lg font-bold">{exp.title}</span>
@@ -164,6 +165,7 @@ const ExperienceCard = ({ exp, index }: { exp: (typeof experiences)[0]; index: n
 }
 
 export default function Experience() {
+  const [showAll, setShowAll] = React.useState(false)
   const prefersReducedMotion = useReducedMotion()
 
   return (
@@ -183,10 +185,46 @@ export default function Experience() {
 
       <div className="max-w-7xl mx-auto">
         <BentoGrid>
-          {experiences.map((exp, i) => (
+          {experiences.slice(0, 6).map((exp, i) => (
             <ExperienceCard key={exp.id} exp={exp} index={i} />
           ))}
         </BentoGrid>
+
+        <AnimatePresence>
+          {showAll && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="overflow-hidden mt-4"
+            >
+              <BentoGrid>
+                {experiences.slice(5).map((exp, i) => (
+                  <ExperienceCard key={exp.id} exp={exp} index={i + 5} />
+                ))}
+              </BentoGrid>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className="mt-12 flex justify-center">
+          <motion.button
+            whileTap={{ scale: 0.97 }}
+            onClick={() => setShowAll(!showAll)}
+            className="group px-8 py-3 border border-white/10 bg-white/5 hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          >
+            {showAll ? (
+              <>
+                Show Less <ChevronUp className="w-4 h-4 group-hover:-translate-y-1 transition-transform" />
+              </>
+            ) : (
+              <>
+                See More Experience <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
+              </>
+            )}
+          </motion.button>
+        </div>
       </div>
     </section>
   )
