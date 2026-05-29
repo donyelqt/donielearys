@@ -4,7 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/Navbar";
 import MouseSpotlight from "@/components/MouseSpotlight";
-import ScrollProgress from "@/components/ScrollProgress";
+import ScrollProgress, { BackToTop } from "@/components/ScrollProgress";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +32,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col selection:bg-white selection:text-black">
+      <body className="min-h-full flex flex-col selection:bg-white selection:text-black scroll-smooth">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -40,10 +40,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ScrollProgress />
+          <BackToTop />
           <MouseSpotlight />
           <div className="fixed inset-0 grid-pattern pointer-events-none -z-10" />
           <Navbar />
-          <main className="flex-1 pt-24">
+          <main id="main-content" className="flex-1 pt-24">
             {children}
           </main>
         </ThemeProvider>
