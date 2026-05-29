@@ -3,18 +3,18 @@
 import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { BentoGrid, BentoGridItem } from '../BentoGrid'
-import { 
-  AppWindow, 
+import {
+  AppWindow,
   Brain,
   Compass,
   Cpu,
-  Database, 
-  Globe, 
-  Layout, 
+  Database,
+  Globe,
+  Layout,
   Server,
   ShieldCheck,
   Users,
-  Zap 
+  Zap
 } from 'lucide-react'
 
 const containerVariants = {
@@ -30,6 +30,13 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
 }
 
+const statusColors: Record<string, string> = {
+  'Active Development': 'bg-violet-500/20 text-violet-400 border-violet-500/30',
+  'Live': 'bg-green-500/20 text-green-400 border-green-500/30',
+  'Beta Testing': 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+  'Research Production': 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
+}
+
 const projects = [
   {
     title: "Avaron",
@@ -40,6 +47,9 @@ const projects = [
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-4xl font-bold text-white/20">AV</span>
         </div>
+        <span className={`absolute top-3 right-3 px-2 py-1 text-[8px] font-mono uppercase border rounded-sm ${statusColors['Active Development']}`}>
+          Active Development
+        </span>
       </div>
     ),
     icon: <Server className="h-4 w-4 text-violet-400" />,
@@ -54,6 +64,9 @@ const projects = [
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-4xl font-bold text-white/20">TW</span>
         </div>
+        <span className={`absolute top-3 right-3 px-2 py-1 text-[8px] font-mono uppercase border rounded-sm ${statusColors['Live']}`}>
+          Live
+        </span>
       </div>
     ),
     icon: <Users className="h-4 w-4 text-amber-400" />,
@@ -68,6 +81,9 @@ const projects = [
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-4xl font-bold text-white/20">TN</span>
         </div>
+        <span className={`absolute top-3 right-3 px-2 py-1 text-[8px] font-mono uppercase border rounded-sm ${statusColors['Beta Testing']}`}>
+          Beta Testing
+        </span>
       </div>
     ),
     icon: <Compass className="h-4 w-4 text-pink-400" />,
@@ -82,6 +98,9 @@ const projects = [
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-4xl font-bold text-white/20">AG</span>
         </div>
+        <span className={`absolute top-3 right-3 px-2 py-1 text-[8px] font-mono uppercase border rounded-sm ${statusColors['Research Production']}`}>
+          Research Production
+        </span>
       </div>
     ),
     icon: <Brain className="h-4 w-4 text-cyan-400" />,
