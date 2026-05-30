@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { Award, BookOpen, FileBadge, GraduationCap, Shield, Trophy, Medal, Star, Zap } from 'lucide-react'
+import { Award, BookOpen, FileBadge, GraduationCap, Rocket, Shield, Trophy, Medal, Star, Zap } from 'lucide-react'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -22,11 +22,21 @@ const competitions = [
     title: "AI Singapore - National AI Student Challenge",
     issuer: "AI Singapore",
     date: "2025",
-    description: "National AI Student Challenge Champion (Baguio), ranked Top 1 nationwide (Philippines), Top 3 in the PH League, and Top 15 in the ASEAN League for LLM optimization.",
+    description: "National AI Student Challenge Champion (Top 1 Baguio), ranked Top 1 nationwide (Philippines), Top 3 in the PH League, and Top 9-11 peak rank and final rank of Top 15 in the ASEAN League for LLM optimization.",
     icon: <Trophy className="h-5 w-5 text-amber-400" />,
     badge: "Rankings",
     badgeColor: "bg-amber-500/20 text-amber-400 border-amber-500/30",
     achievement: "1st Place PH (Peak Rank)",
+  },
+{
+    title: "Avaron - Atlanta Tech Village",
+    issuer: "Atlanta Tech Village (4th Largest US Startup Hub)",
+    date: "2026",
+    description: "AI Engineer at Avaron, deployed at Atlanta Tech Village in Buckhead - the 4th largest startup hub in the United States. Building world's first autonomous self-healing data center.",
+    icon: <Rocket className="h-5 w-5 text-red-400" />,
+    badge: "Venture Engineer",
+    badgeColor: "bg-red-500/20 text-red-400 border-red-500/30",
+    achievement: "4th Largest US Tech Hub",
   },
   {
     title: "DICT STEP UP Pre-Acceleration Program",
@@ -92,7 +102,7 @@ export default function Competitions() {
         viewport={{ once: true }}
         className="max-w-7xl mx-auto mb-12"
       >
-        <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4">Competitions & Achievements</motion.h2>
+        <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4">Featured Competitions & Achievements</motion.h2>
         <motion.p variants={itemVariants} className="text-white/50 max-w-xl">
           Featured recognition, rankings, and achievements in AI, cloud, and software development.
         </motion.p>
