@@ -21,6 +21,7 @@ const terminalLines = [
   { type: 'command', text: 'cat achievement.txt', delay: 5400 },
   { type: 'output', text: '🏆 First & Youngest Filipino Software Engineer to build Autonomous Infrastructure @ Avaron', delay: 5900 },
   { type: 'output', text: '🎯 Deployed Tarana-ai at Baguio City with 150+ beta users & secured startup funding as solo full-stack AI engineer', delay: 6400 },
+  { type: 'output', text: '🚀 AI Engineer @ Avaron (Feb 2026) - Deployed at Atlanta Tech Village, 4th largest US startup hub', delay: 6900 },
 ]
 
 const asciiArt = `
@@ -89,7 +90,7 @@ export default function About() {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto relative"
         >
-          <div className="macos-terminal rounded-2xl overflow-hidden shadow-2xl border border-white/10 mr-12">
+          <div className="macos-terminal rounded-2xl overflow-hidden shadow-2xl border border-white/10 mr-0 lg:mr-12">
             <div className="terminal-header flex items-center gap-3 px-4 py-3 bg-[#1a1a1a] border-b border-white/5">
               <div className="flex gap-2">
                 <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
@@ -122,7 +123,7 @@ export default function About() {
               </div>
             </div>
           </div>
-          <div className="absolute -top-3 -right-3 w-46 h-46 rounded-full overflow-hidden border-2 border-white/20 shadow-lg z-50">
+          <div className="absolute -top-3 -right-3 w-32 sm:w-40 md:w-48 lg:w-[184px] h-32 sm:h-40 md:h-48 lg:h-[184px] rounded-full overflow-hidden border-2 border-white/20 shadow-lg z-50">
             <Image
               src="/donielecolored.jpg"
               alt="Doniele"
