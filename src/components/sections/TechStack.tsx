@@ -3,49 +3,48 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import {
-  Code,
-  Cpu,
-  Layers,
-  Layout,
-  Palette,
-  Server,
-  Terminal,
-  Database,
-  GitBranch,
-  Container,
-  Cloud,
-  TerminalSquare,
-  FlaskConical,
-  Brain,
-  Shield
-} from 'lucide-react'
+  SiNextdotjs,
+  SiReact,
+  SiTypescript,
+  SiTailwindcss,
+  SiPostgresql,
+  SiDocker,
+  SiPython,
+  SiServerless,
+  SiTensorflow,
+  SiPytorch,
+  SiKubernetes,
+  SiGithub,
+  SiNodedotjs,
+  SiGraphql,
+} from 'react-icons/si'
 
 const techRow1 = [
-  { name: "Next.js", icon: Code, color: "text-white" },
-  { name: "React", icon: Layout, color: "text-cyan-400" },
-  { name: "TypeScript", icon: TerminalSquare, color: "text-blue-400" },
-  { name: "Tailwind CSS", icon: Palette, color: "text-sky-400" },
-  { name: "PostgreSQL", icon: Database, color: "text-blue-500" },
-  { name: "Docker", icon: Container, color: "text-blue-400" },
-  { name: "Python", icon: Terminal, color: "text-yellow-400" },
-  { name: "AWS", icon: Cloud, color: "text-orange-400" },
+  { name: "Next.js", Icon: SiNextdotjs },
+  { name: "React", Icon: SiReact },
+  { name: "TypeScript", Icon: SiTypescript },
+  { name: "Tailwind CSS", Icon: SiTailwindcss },
+  { name: "PostgreSQL", Icon: SiPostgresql },
+  { name: "Docker", Icon: SiDocker },
+  { name: "Python", Icon: SiPython },
+  { name: "AWS", Icon: SiServerless },
 ]
 
 const techRow2 = [
-  { name: "TensorFlow", icon: Brain, color: "text-orange-400" },
-  { name: "PyTorch", icon: Cpu, color: "text-red-400" },
-  { name: "LangChain", icon: Layers, color: "text-teal-400" },
-  { name: "Kubernetes", icon: Server, color: "text-blue-500" },
-  { name: "Git", icon: GitBranch, color: "text-orange-500" },
-  { name: "FastAPI", icon: FlaskConical, color: "text-green-400" },
-  { name: "Node.js", icon: Server, color: "text-green-500" },
-  { name: "Anthropic", icon: Shield, color: "text-purple-400" },
+  { name: "TensorFlow", Icon: SiTensorflow },
+  { name: "PyTorch", Icon: SiPytorch },
+  { name: "LangChain", Icon: SiGraphql },
+  { name: "Kubernetes", Icon: SiKubernetes },
+  { name: "Git", Icon: SiGithub },
+  { name: "FastAPI", Icon: SiPython },
+  { name: "Node.js", Icon: SiNodedotjs },
+  { name: "Anthropic", Icon: SiReact },
 ]
 
-function TechItem({ name, icon: Icon, color }: { name: string, icon: React.ElementType, color: string }) {
+function TechItem({ name, Icon }: { name: string, Icon: React.ElementType }) {
   return (
     <div className="flex items-center gap-3 px-6 py-3 border border-white/10 rounded-none mx-2 group cursor-pointer bg-white/5 hover:bg-white/10 transition-all duration-300">
-      <div className={`${color} group-hover:scale-110 transition-transform duration-300`}>
+      <div className="text-white group-hover:scale-110 transition-transform duration-300">
         <Icon className="w-5 h-5" />
       </div>
       <span className="font-mono text-xs uppercase tracking-widest text-white/70 group-hover:text-white transition-colors whitespace-nowrap">
@@ -64,8 +63,6 @@ function MarqueeRow({ items, direction = 'left' }: { items: typeof techRow1, dir
         className={`flex ${animationClass}`}
         style={{ width: 'max-content', willChange: 'transform', backfaceVisibility: 'hidden' }}
       >
-        {/* 4 identical copies — guarantees the viewport is ALWAYS filled.
-            Animation scrolls exactly 1 copy (-25%), then loops seamlessly. */}
         {[0, 1, 2, 3].map((copy) =>
           items.map((tech, i) => (
             <div key={`${copy}-${tech.name}-${i}`} className="flex-shrink-0">
