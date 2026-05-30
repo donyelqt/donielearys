@@ -15,7 +15,7 @@ const experiences = [
     isCurrent: true,
     description: "Cloud Elite engineering intern at Accenture, specializing in cloud architecture, DevOps pipelines, and enterprise-scale infrastructure solutions.",
     icon: <Rocket className="h-4 w-4 text-white/60" />,
-    className: "md:col-span-1",
+    className: "sm:col-span-1",
   },
   {
     id: 'avaron-2026',
@@ -26,7 +26,7 @@ const experiences = [
     isCurrent: true,
     description: "Building the world's first autonomous self-healing data center. First and youngest Filipino software engineer architecting agentic AI infrastructure at Avaron. Collaborating with ex-IBM, Georgia Tech, and top US university developers.",
     icon: <Rocket className="h-4 w-4 text-white/60" />,
-    className: "md:col-span-1",
+    className: "sm:col-span-1",
   },
   {
     id: 'tarana-ai-2025',
@@ -37,7 +37,7 @@ const experiences = [
     isCurrent: true,
     description: "LGU-supported agentic AI travel platform for Baguio City. Built multi-agent RAG pipeline with 100+ beta users, achieving 99%+ uptime. Selected for DICT STEP UP national startup pre-acceleration program.",
     icon: <Terminal className="h-4 w-4 text-white/60" />,
-    className: "md:col-span-1",
+    className: "sm:col-span-1",
   },
   {
     id: 'perapinoy-2024',
@@ -48,7 +48,7 @@ const experiences = [
     isCurrent: false,
     description: "Founded and led the development of an AI-driven fintech MVP as CTO, leveraging Google Gemini APIs to revolutionize financial accessibility in the Philippines.",
     icon: <Code2 className="h-4 w-4 text-white/60" />,
-    className: "md:col-span-1",
+    className: "sm:col-span-1",
   },
   {
     id: 'trifecta-2024',
@@ -59,7 +59,7 @@ const experiences = [
     isCurrent: false,
     description: "Led technical execution for a Web3 board strategy game, architecting matchmaking and core gameplay mechanics.",
     icon: <Code2 className="h-4 w-4 text-white/60" />,
-    className: "md:col-span-1",
+    className: "sm:col-span-1",
   },
   {
     id: 'ai-singapore-2025',
@@ -70,7 +70,7 @@ const experiences = [
     isCurrent: false,
     description: "National AI Student Challenge Champion (Baguio), ranked Top 1 nationwide (Philippines), Top 3 in the PH League, and Top 15 in the ASEAN League for LLM optimization.",
     icon: <Briefcase className="h-4 w-4 text-white/60" />,
-    className: "md:col-span-1",
+    className: "sm:col-span-1",
   },
   {
     id: 'uc-research-2025',
@@ -81,7 +81,7 @@ const experiences = [
     isCurrent: true,
     description: "Researching and building autonomous civic governance systems as an Applied AI Research Scientist for AgenticHinaing - a neuro-symbolic multi-agent civic social listening framework.",
     icon: <Globe className="h-4 w-4 text-white/60" />,
-    className: "md:col-span-1",
+    className: "sm:col-span-1",
   },
   {
     id: 'dict-stepup-2025',
@@ -92,7 +92,7 @@ const experiences = [
     isCurrent: false,
     description: "Selected for a national pre-acceleration program for Tarana-ai, an agentic travel app recognized as a promising tech venture by the Department of Information and Communications Technology.",
     icon: <Rocket className="h-4 w-4 text-white/60" />,
-    className: "md:col-span-1",
+    className: "sm:col-span-1",
   },
   {
     id: 'aws-cloud-club-2025',
@@ -103,7 +103,7 @@ const experiences = [
     isCurrent: false,
     description: "Pioneered the AWS Learning Cloud Club as Chief Skill-Builder Chairperson to promote cloud and ML upskilling among CS students.",
     icon: <Briefcase className="h-4 w-4 text-white/60" />,
-    className: "md:col-span-1",
+    className: "sm:col-span-1",
   },
   {
     id: 'datacamp-2025',
@@ -114,7 +114,7 @@ const experiences = [
     isCurrent: false,
     description: "Selected as a scholar to master industry-aligned projects in data science, AI, and machine learning through DataCamp's structured learning path.",
     icon: <Terminal className="h-4 w-4 text-white/60" />,
-    className: "md:col-span-1",
+    className: "sm:col-span-1",
   },
 ]
 
@@ -132,14 +132,14 @@ const ExperienceCard = ({ exp, index }: { exp: (typeof experiences)[0]; index: n
         type="experience"
         title={
           <div className="flex items-center gap-2">
-            <span className="text-base md:text-lg font-bold">{exp.title}</span>
+            <span className="text-sm sm:text-base md:text-lg font-bold leading-tight">{exp.title}</span>
           </div>
         }
         description={exp.description}
         header={
-          <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-none bg-white/5 flex-col p-4 justify-center border border-white/5">
-            <div className="flex justify-between items-center text-[10px] font-mono text-white/40 mb-2 uppercase tracking-widest flex-wrap gap-1">
-              <div className="flex items-center gap-2">
+          <div className="flex flex-1 w-full h-full min-h-[5rem] sm:min-h-[6rem] rounded-none bg-white/5 flex-col p-3 sm:p-4 justify-center border border-white/5">
+            <div className="flex flex-col sm:flex-row justify-between gap-1 text-[10px] sm:text-[10px] font-mono text-white/40 mb-2 uppercase tracking-widest">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span>{exp.date}</span>
                 {exp.isCurrent && (
                   <span className="px-1.5 py-0.5 bg-green-500/20 text-green-400 text-[8px] font-mono uppercase tracking-wider rounded-sm border border-green-500/30">
@@ -147,13 +147,15 @@ const ExperienceCard = ({ exp, index }: { exp: (typeof experiences)[0]; index: n
                   </span>
                 )}
               </div>
-              <span>{exp.location}</span>
+              <span className="truncate">{exp.location}</span>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-white/10 rounded-lg backdrop-blur-sm">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="p-1.5 sm:p-2 bg-white/10 rounded-lg backdrop-blur-sm">
                 {exp.icon}
               </div>
-              <div className="text-2xl font-bold tracking-tighter uppercase">{exp.company}</div>
+              <div className="text-lg sm:text-xl md:text-2xl font-bold tracking-tighter uppercase truncate">
+                {exp.company}
+              </div>
             </div>
           </div>
         }
@@ -169,15 +171,15 @@ export default function Experience() {
   const prefersReducedMotion = useReducedMotion()
 
   return (
-    <section id="experience" className="py-20 px-4">
+    <section id="experience" className="py-16 sm:py-20 px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5 }}
         viewport={{ once: true }}
-        className="max-w-7xl mx-auto mb-12"
+        className="max-w-7xl mx-auto mb-8 sm:mb-12"
       >
-        <h2 className="text-3xl md:text-5xl font-bold mb-4">Experience</h2>
+        <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4">Experience</h2>
         <p className="text-white/50 max-w-xl">
           A career built on pushing the boundaries of what's possible in tech.
         </p>
@@ -208,11 +210,11 @@ export default function Experience() {
           )}
         </AnimatePresence>
 
-        <div className="mt-12 flex justify-center">
+        <div className="mt-10 sm:mt-12 mx-4 sm:mx-0 flex justify-center">
           <motion.button
             whileTap={{ scale: 0.97 }}
             onClick={() => setShowAll(!showAll)}
-            className="group px-8 py-3 border border-white/10 bg-white/5 hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+            className="group px-6 sm:px-8 py-3 border border-white/10 bg-white/5 hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
           >
             {showAll ? (
               <>
