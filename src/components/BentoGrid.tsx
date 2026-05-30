@@ -44,22 +44,31 @@ export const BentoGridItem = memo(({
       whileHover={{ scale: 1.02, y: -4 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
       className={cn(
-        "flex flex-col h-full overflow-hidden rounded-none group/bento hover:shadow-2xl shadow-black/40 transition duration-200 shadow-input dark:shadow-none p-3 sm:p-4 dark:bg-black dark:border-white/[0.1] bg-white/5 border border-white/10 hover:border-white/20",
+        "flex flex-col h-full overflow-hidden rounded-none group/bento hover:shadow-2xl shadow-black/40 transition duration-200 shadow-input dark:shadow-none",
+        "p-4 sm:p-5 lg:p-6",
+        "dark:bg-black dark:border-white/[0.1] bg-white/5 border border-white/10 hover:border-white/20",
         className
       )}
     >
-      {header && <div className="flex-shrink-0">{header}</div>}
+      {header && <div className="flex-shrink-0 pb-3 sm:pb-4">{header}</div>}
 
       <div className={cn(
         "flex flex-col flex-1 min-h-0 overflow-hidden",
         isProject && "justify-start"
       )}>
-        {icon && <div className={cn("mb-1.5 sm:mb-2", isProject && "mt-auto")}>{icon}</div>}
-        <div className={cn("font-sans font-bold text-neutral-200 truncate", isProject && "mt-3 sm:mt-4")}>
+        {icon && (
+          <div className={cn("mb-3 sm:mb-4", isProject && "mt-4 sm:mt-6")}>{icon}</div>
+        )}
+        <div className={cn(
+          "font-sans font-bold text-neutral-200",
+          isProject ? "text-base sm:text-lg md:text-xl" : "text-sm sm:text-base md:text-lg",
+          !isProject && "mt-3 sm:mt-4"
+        )}>
           {title}
         </div>
         <div className={cn(
-          "font-sans font-normal text-neutral-400 text-xs sm:text-sm mt-1.5 overflow-hidden",
+          "font-sans font-normal text-neutral-400 text-[11px] sm:text-[13px] leading-relaxed",
+          "mt-3 sm:mt-4",
           isExperience && "line-clamp-none",
           !isExperience && "line-clamp-3"
         )}>
