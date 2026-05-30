@@ -61,7 +61,7 @@ export const BentoGridItem = memo(({
         )}
         <div className={cn(
           "font-sans font-bold text-neutral-200",
-          isProject ? "text-base sm:text-lg md:text-xl" : "text-sm sm:text-base md:text-lg",
+          isProject ? "text-sm sm:text-base md:text-lg" : "text-sm sm:text-base md:text-lg",
           !isProject && "mt-3 sm:mt-4"
         )}>
           {title}
@@ -70,7 +70,7 @@ export const BentoGridItem = memo(({
           "font-sans font-normal text-neutral-400 text-[11px] sm:text-[13px] leading-relaxed",
           "mt-3 sm:mt-4",
           isExperience && "line-clamp-none",
-          !isExperience && "line-clamp-3"
+          !isExperience && "line-clamp-4 sm:line-clamp-3"
         )}>
           {description}
         </div>
