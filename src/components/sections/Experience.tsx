@@ -137,8 +137,8 @@ const ExperienceCard = ({ exp, index }: { exp: (typeof experiences)[0]; index: n
         }
         description={exp.description}
         header={
-          <div className="flex flex-1 w-full h-full min-h-[5rem] sm:min-h-[6rem] rounded-none bg-white/5 flex-col p-3 sm:p-4 justify-center border border-white/5">
-            <div className="flex flex-col sm:flex-row justify-between gap-1 text-[10px] sm:text-[10px] font-mono text-white/40 mb-2 uppercase tracking-widest">
+          <div className="flex flex-1 w-full h-full min-h-[5rem] sm:min-h-[6rem] lg:min-h-[7rem] rounded-none bg-white/5 flex-col p-4 sm:p-5 justify-center border border-white/5">
+            <div className="flex flex-col sm:flex-row justify-between gap-2 sm:gap-3 text-[10px] sm:text-[11px] font-mono text-white/40 mb-3 sm:mb-4 uppercase tracking-widest">
               <div className="flex items-center gap-2 flex-wrap">
                 <span>{exp.date}</span>
                 {exp.isCurrent && (
@@ -153,7 +153,7 @@ const ExperienceCard = ({ exp, index }: { exp: (typeof experiences)[0]; index: n
               <div className="p-1.5 sm:p-2 bg-white/10 rounded-lg backdrop-blur-sm">
                 {exp.icon}
               </div>
-              <div className="text-lg sm:text-xl md:text-2xl font-bold tracking-tighter uppercase truncate">
+              <div className="text-base sm:text-lg md:text-xl font-bold tracking-tighter uppercase truncate">
                 {exp.company}
               </div>
             </div>
