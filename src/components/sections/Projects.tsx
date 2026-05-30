@@ -115,7 +115,7 @@ export default function Projects() {
       >
         <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4">Featured Projects</motion.h2>
         <motion.p variants={itemVariants} className="text-white/50 max-w-xl">
-          A selection of my best work, ranging from AI systems to secure financial dashboards.
+          A selection of my best work, ranging from local to global innovation of AI systems & applications. Focused on real-world impact, production-readiness, and cutting-edge research.
         </motion.p>
       </motion.div>
       <motion.div
