@@ -46,7 +46,7 @@ const competitions = [
     icon: <Medal className="h-5 w-5 text-green-400" />,
     badge: "Leadership",
     badgeColor: "bg-green-500/20 text-green-400 border-green-500/30",
-    achievement: "Founded",
+    achievement: "Founding Team",
   },
   {
     title: "Philippine Startup Challenge",
