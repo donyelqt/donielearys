@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import Image from 'next/image'
 import { motion, useReducedMotion } from 'framer-motion'
 
@@ -25,12 +25,12 @@ const terminalLines = [
 ]
 
 const asciiArt = `
-       ██████╗ ███████╗██╗   ██╗
-       ██╔══██╗██╔════╝██║   ██║
-       ██║  ██║█████╗  ██║   ██║
-       ██║  ██║██╔══╝  ╚██╗ ██╔╝
-       ██████╔╝███████╗ ╚████╔╝
-       ╚═════╝ ╚══════╝  ╚═══╝
+██████╗ ███████╗██╗ ██╗
+██╔══██╗██╔════╝██║ ██║
+██║ ██║█████╗ ██║ ██║
+██║ ██║██╔══╝ ╚██╗ ██╔╝
+██████╔╝███████╗ ╚████╔╝
+╚═════╝ ╚══════╝ ╚═══╝
 `
 
 export default function About() {
@@ -38,12 +38,17 @@ export default function About() {
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
   const [showCursor, setShowCursor] = useState(true)
   const prefersReducedMotion = useReducedMotion()
+  const cursorIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
-    const cursorTimer = setInterval(() => {
+    cursorIntervalRef.current = setInterval(() => {
       setShowCursor(prev => !prev)
     }, 500)
-    return () => clearInterval(cursorTimer)
+    return () => {
+      if (cursorIntervalRef.current !== null) {
+        clearInterval(cursorIntervalRef.current)
+      }
+    }
   }, [])
 
   const addLine = useCallback((index: number) => {
@@ -65,6 +70,8 @@ export default function About() {
 
     return () => clearTimeout(timer)
   }, [currentLineIndex, addLine, prefersReducedMotion])
+
+  const renderedLines = useMemo(() => displayedLines, [displayedLines])
 
   return (
     <section id="about" className="py-20 px-4">
@@ -102,8 +109,11 @@ export default function About() {
               </div>
               <div className="w-8" />
             </div>
-            <div className="terminal-body bg-[#0c0c0c] p-4 h-[520px] overflow-y-auto font-mono text-sm [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              {displayedLines.map((line, index) => (
+            <div
+              className="terminal-body bg-[#0c0c0c] p-4 h-[520px] overflow-y-auto font-mono text-sm [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+              style={{ contentVisibility: 'auto', contain: 'layout paint style' }}
+            >
+              {renderedLines.map((line, index) => (
                 <div key={index} className="mb-1">
                   {line.type === 'command' ? (
                     <div className="flex items-center gap-2">
