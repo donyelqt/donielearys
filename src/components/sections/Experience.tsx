@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { memo } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { BentoGrid, BentoGridItem } from '../BentoGrid'
 import { Briefcase, ChevronDown, ChevronUp, Code2, Globe, Rocket, Terminal } from 'lucide-react'
@@ -116,16 +116,14 @@ const experiences = [
     icon: <Terminal className="h-4 w-4 text-white/60" />,
     className: "sm:col-span-1",
   },
-]
+  ]
 
-const ExperienceCard = ({ exp, index }: { exp: (typeof experiences)[0]; index: number }) => {
-  const prefersReducedMotion = useReducedMotion()
-
+const ExperienceCard = memo(({ exp, index, reduced }: { exp: (typeof experiences)[0]; index: number; reduced: boolean }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: index * 0.05 }}
+      transition={{ duration: reduced ? 0 : 0.5, delay: index * 0.05 }}
       viewport={{ once: true }}
     >
       <BentoGridItem
@@ -137,7 +135,7 @@ const ExperienceCard = ({ exp, index }: { exp: (typeof experiences)[0]; index: n
         }
         description={exp.description}
         header={
-          <div className="flex flex-1 w-full h-full min-h-[5rem] sm:min-h-[6rem] lg:min-h-[7rem] rounded-none bg-white/5 flex-col p-4 sm:p-5 justify-center border border-white/5">
+          <div className="flex flex-1 w-full h-full min-h-20 sm:min-h-24 lg:min-h-28 rounded-none bg-white/5 flex-col p-4 sm:p-5 justify-center border border-white/5">
             <div className="flex flex-col sm:flex-row justify-between gap-2 sm:gap-3 text-[10px] sm:text-[11px] font-mono text-white/40 mb-3 sm:mb-4 uppercase tracking-widest">
               <div className="flex items-center gap-2 flex-wrap">
                 <span>{exp.date}</span>
@@ -164,7 +162,9 @@ const ExperienceCard = ({ exp, index }: { exp: (typeof experiences)[0]; index: n
       />
     </motion.div>
   )
-}
+})
+
+ExperienceCard.displayName = 'ExperienceCard'
 
 export default function Experience() {
   const [showAll, setShowAll] = React.useState(false)
@@ -187,23 +187,23 @@ export default function Experience() {
 
       <div className="max-w-7xl mx-auto">
         <BentoGrid>
-          {experiences.slice(0, 6).map((exp, i) => (
-            <ExperienceCard key={exp.id} exp={exp} index={i} />
+          {experiences.slice(0, 5).map((exp, i) => (
+            <ExperienceCard key={exp.id} exp={exp} index={i} reduced={!!prefersReducedMotion} />
           ))}
         </BentoGrid>
 
         <AnimatePresence>
           {showAll && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
+              initial={{ opacity: 0, maxHeight: 0 }}
+              animate={{ opacity: 1, maxHeight: '120vh' }}
+              exit={{ opacity: 0, maxHeight: 0 }}
+              transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
               className="overflow-hidden mt-4"
             >
               <BentoGrid>
                 {experiences.slice(5).map((exp, i) => (
-                  <ExperienceCard key={exp.id} exp={exp} index={i + 5} />
+                  <ExperienceCard key={exp.id} exp={exp} index={i + 5} reduced={!!prefersReducedMotion} />
                 ))}
               </BentoGrid>
             </motion.div>
