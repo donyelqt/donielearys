@@ -120,7 +120,7 @@ const experiences: ExperienceEntry[] = [
     date: "Dec 2025 - Present",
     periodLabel: "2025",
     isCurrent: true,
-    description: "Lead researcher on AgenticHinaing — a neuro-symbolic multi-agent civic social listening framework. Work advanced from 80% completion to full autonomous deployment at Atlanta Tech Village, built by contributors from IBM, Yahoo, Apple, Georgia Tech, NVIDIA, UCLA, UC Berkeley, and Red Hat Asia. Technically validated by a former IBM senior software engineer using ICLR, NAACL, and EMNLP evaluation frameworks — achieved TRL 7 Technology Readiness Level.",
+    description: "Lead researcher on AgenticHinaing—a neuro-symbolic multi-agent civic social listening framework. Used it for a technical interview at Silicon Peach by a former senior dev of IBM and was accepted to advance from 80% completion to full autonomous data center deployment at Atlanta Tech Village, built by contributors from IBM, Yahoo, Apple, Georgia Tech, NVIDIA, UCLA, UC Berkeley, and Red Hat Asia. Technically validated by a former IBM senior software engineer using ICLR, NAACL, and EMNLP evaluation frameworks — achieved TRL 7 Technology Readiness Level.",
     icon: <GlobeIcon />,
     color: "#4DAED4",
   },
