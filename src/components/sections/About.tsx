@@ -25,13 +25,12 @@ const terminalLines = [
 ]
 
 const asciiArt = `
- ██████╗ ███████╗██╗ ██╗
- ██╔══██╗██╔════╝██║ ██║
- ██║  ██║█████╗  ██║ ██║
- ██║  ██║██╔══╝  ╚██╗██╔╝
- ██████╔╝███████╗ ╚████╔╝
- ╚═════╝ ╚══════╝  ╚═══╝
-
+██████╗ ███████╗██╗   ██╗
+██╔══██╗██╔════╝██║   ██║
+██║  ██║█████╗  ██║   ██║
+██║  ██║██╔══╝  ╚██╗ ██╔╝
+██████╔╝███████╗  ╚██╔╝
+╚═════╝ ╚══════╝   ╚╝
 `
 
 export default function About() {
@@ -122,7 +121,7 @@ export default function About() {
                       <span className="text-white/90">{line.text}</span>
                     </div>
                   ) : line.isAscii ? (
-                    <pre className="text-red-800 text-[10px] leading-none">{asciiArt}</pre>
+                    <pre className="ascii-art text-red-800 text-[10px] leading-none">{asciiArt}</pre>
                   ) : (
                     <div className="text-white/60 pl-4">{line.text}</div>
                   )}

@@ -225,4 +225,12 @@
     content-visibility: auto;
     contain: layout paint style;
   }
+
+  .ascii-art {
+    font-family: 'Cascadia Mono', 'Cascadia Code', 'JetBrains Mono', 'Fira Mono', 'Consolas', 'Menlo', ui-monospace, monospace;
+    font-feature-settings: "calt" 1;
+    font-variant-east-asian: full-width;
+    letter-spacing: 0;
+    tab-size: 4;
+  }
 }
