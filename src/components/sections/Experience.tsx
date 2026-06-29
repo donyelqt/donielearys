@@ -126,7 +126,7 @@ const experiences: ExperienceEntry[] = [
   },
   {
     id: 'avaron-2026',
-    title: "AI Engineer, Agents & Ops",
+    title: "AI Agent Infrastructure Engineer",
     company: "Avaron",
     location: "Atlanta, Georgia, United States · Remote",
     date: "Feb 2026 - Jun 2026",
