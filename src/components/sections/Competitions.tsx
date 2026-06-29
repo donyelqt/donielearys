@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { Award, BookOpen, FileBadge, GraduationCap, Rocket, Shield, Trophy, Medal, Star, Zap } from 'lucide-react'
+import { Award, BadgeCheck, BookOpen, FileBadge, GraduationCap, Rocket, Shield, Trophy, Medal, Star, Zap } from 'lucide-react'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -27,6 +27,16 @@ const competitions = [
     badge: "Rankings",
     badgeColor: "bg-amber-500/20 text-amber-400 border-amber-500/30",
     achievement: "1st Place PH (Peak Rank)",
+  },
+  {
+    title: "CS Thesis Project Validated by Former US-Based IBM Senior SWE",
+    issuer: "Richard Jakelski",
+    date: "Apr 2026",
+    description: "Externally validated and evaluated through the AgenticHinaing Eval Framework — grounded in agentic system evaluation methodologies drawn from research-level implementation standards. CS Thesis Project associated with University of the Cordilleras.",
+    icon: <BadgeCheck className="h-5 w-5 text-indigo-400" />,
+    badge: "Validated",
+    badgeColor: "bg-indigo-500/20 text-indigo-300 border-indigo-500/40",
+    achievement: "External Validation",
   },
 {
     title: "Avaron - Atlanta Tech Village",
