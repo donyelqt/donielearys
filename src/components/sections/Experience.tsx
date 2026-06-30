@@ -30,7 +30,7 @@ const experiences: ExperienceEntry[] = [
   },
   {
     id: 'perapinoy-2024',
-    title: "Full-Stack AI Engineer & CTO",
+    title: "Founding AI Engineer & Technical Lead",
     company: "PeraPinoy!",
     location: "Baguio City, CAR, Philippines · Hybrid",
     date: "Jul 2024 - Apr 2025",
@@ -43,7 +43,7 @@ const experiences: ExperienceEntry[] = [
   {
     id: 'trifecta-2024',
     title: "Software Engineer Intern",
-    company: "Trifecta Solutions",
+    company: "Illustrados | Trifecta Solutions",
     location: "Makati, NCR, Philippines · Remote",
     date: "Oct 2024 - Feb 2025",
     periodLabel: "2024",
@@ -102,7 +102,7 @@ const experiences: ExperienceEntry[] = [
   },
   {
     id: 'tarana-ai-2025',
-    title: "Full-Stack AI Engineer",
+    title: "Founding AI Engineer & Technical Lead",
     company: "Tarana-ai backed by UC inTTO & DOST-TARAKI",
     location: "Baguio City, CAR, Philippines · Part-time",
     date: "Apr 2025 - Feb 2026",
