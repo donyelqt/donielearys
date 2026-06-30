@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 
 const terminalLines = [
   { type: 'command', text: 'whoami', delay: 400 },
-  { type: 'output', text: 'doniele - AI Software Engineer', delay: 800 },
+  { type: 'output', text: 'doniele - AI & Software Engineer', delay: 800 },
   { type: 'command', text: 'cat skills.txt', delay: 1400 },
   { type: 'output', text: '◉ Agentic AI Systems', delay: 1900 },
   { type: 'output', text: '◉ Full-Stack Development', delay: 2100 },
