@@ -1,8 +1,8 @@
 "use client"
 
-import React, { useRef, useCallback, useEffect } from 'react'
-import { motion, useReducedMotion, useMotionValue } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
+import React, { useRef, useCallback, useEffect, useState } from 'react'
+import { motion, useReducedMotion, useMotionValue, AnimatePresence } from 'framer-motion'
+import { ArrowRight, ChevronDown, Trophy, Users, Globe, Cpu } from 'lucide-react'
 import NetworkBackground from '../NetworkBackground'
 
 const GithubIcon = () => (
@@ -82,6 +82,97 @@ const MagneticButton = ({
 }
 
 
+const achievements = [
+  {
+    title: "AMD Developer Hackathon: ACT II",
+    subtitle: "AMD | Google Deepmind | lablab.ai",
+    stat: "Top 20 Global",
+    detail: "94% accuracy · 4K tokens · Solo · 8 domains",
+    highlight: true,
+  },
+  {
+    title: "AI Singapore — National AI Student Challenge",
+    subtitle: "AWS | AI Singapore",
+    stat: "1st Place PH (Peak)",
+    detail: "Top 1-3 PH League · Top 9-15 ASEAN",
+  },
+  {
+    title: "Avaron — Atlanta Tech Village",
+    subtitle: "4th Largest US Startup Hub",
+    stat: "AI Engineer",
+    detail: "Autonomous self-healing data center",
+  },
+  {
+    title: "CS Thesis — External Validation",
+    subtitle: "Former US-Based IBM Senior SWE",
+    stat: "Validated",
+    detail: "AgenticHinaing Eval Framework",
+  },
+]
+
+const AchievementDropdown = () => {
+  const [open, setOpen] = useState(false)
+  const primary = achievements[0]
+
+  return (
+    <div className="relative w-full max-w-md mx-auto mt-2">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center gap-3 px-4 py-3 bg-red-900/20 border border-red-600/40 hover:border-red-500/60 text-left transition-all duration-300 shadow-[0_0_20px_-6px_rgba(220,38,38,0.12)] hover:shadow-[0_0_30px_-6px_rgba(220,38,38,0.2)] group"
+      >
+        <div className="p-1.5 bg-red-950/60 border border-red-600/40 shrink-0">
+          <Trophy className="h-4 w-4 text-amber-300" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-[11px] font-bold text-white tracking-tight truncate">{primary.title}</p>
+          <p className="text-[8px] font-mono text-white/40 uppercase tracking-wider truncate">{primary.subtitle}</p>
+        </div>
+        <div className="shrink-0 flex items-center gap-2">
+          <span className="px-1.5 py-0.5 text-[8px] font-mono font-bold bg-white text-black uppercase tracking-wider">{primary.stat}</span>
+          <ChevronDown className={`h-3.5 w-3.5 text-white/50 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
+        </div>
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            className="absolute inset-x-0 top-full mt-2 bg-black/90 border border-white/10 backdrop-blur-xl z-20"
+          >
+            {achievements.slice(1).map((a, i) => (
+              <div
+                key={i}
+                className={`flex items-center gap-3 px-4 py-2.5 border-b border-white/5 last:border-0 hover:bg-white/[0.03] transition-colors cursor-default ${a.highlight ? "bg-red-900/10" : ""}`}
+              >
+                <div className="p-1 bg-white/5 border border-white/10 shrink-0">
+                  <Trophy className="h-3.5 w-3.5 text-white/40" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] font-bold text-white/80 truncate">{a.title}</p>
+                  <p className="text-[8px] font-mono text-white/30 uppercase truncate">{a.subtitle}</p>
+                </div>
+                <div className="shrink-0 text-right">
+                  <span className="block text-[8px] font-mono font-bold text-amber-400/70 uppercase">{a.stat}</span>
+                  <span className="block text-[7px] font-mono text-white/30">{a.detail}</span>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="flex justify-center gap-6 mt-2 text-[8px] font-mono text-white/15 uppercase tracking-widest">
+        <span className="flex items-center gap-1"><Users className="h-2.5 w-2.5" /> 20,000+ participants</span>
+        <span className="flex items-center gap-1"><Globe className="h-2.5 w-2.5" /> 4,000+ teams</span>
+        <span className="flex items-center gap-1"><Cpu className="h-2.5 w-2.5" /> 8 domains</span>
+      </div>
+    </div>
+  )
+}
+
 export default function Hero() {
   const prefersReducedMotion = useReducedMotion()
 
@@ -116,7 +207,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.2 }}
-        className="text-lg md:text-xl text-white/60 max-w-2xl mb-10 leading-relaxed font-mono uppercase"
+        className="text-lg md:text-xl text-white/60 max-w-2xl mb-4 leading-relaxed font-mono uppercase"
       >
         From Local to Global Real-World Impact
       </motion.p>
@@ -124,8 +215,17 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.25 }}
+        className="mb-8"
+      >
+        <AchievementDropdown />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.3 }}
-        className="flex flex-wrap justify-center gap-4 mt-16"
+        className="flex flex-wrap justify-center gap-4"
       >
         <MagneticButton
           onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
@@ -140,9 +240,9 @@ export default function Hero() {
         >
           Contact Me
         </MagneticButton>
-      </motion.div>
+</motion.div>
 
-<motion.div
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.5 }}

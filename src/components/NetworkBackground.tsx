@@ -10,8 +10,8 @@ const nodes = [
   { id: 4, x: 70, y: 15, label: 'DEVELOPMENT' },
   { id: 5, x: 90, y: 20, label: 'TESTING', special: true },
   { id: 6, x: 80, y: 50, label: 'DEPLOYMENT' },
-  { id: 7, x: 60, y: 70, label: 'MAINTENANCE', special: true },
-  { id: 8, x: 40, y: 65, label: 'OPTIMIZATION' },
+  { id: 7, x: 68, y: 78, label: 'MAINTENANCE', special: true }, // x:60
+  { id: 8, x: 30, y: 74, label: 'OPTIMIZATION' }, // x:40
   { id: 9, x: 20, y: 50, label: 'ANALYSIS' },
 ]
 
