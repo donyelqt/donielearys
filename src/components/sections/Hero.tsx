@@ -112,7 +112,15 @@ const achievements = [
 
 const AchievementDropdown = () => {
   const [open, setOpen] = useState(false)
+  const [iconIndex, setIconIndex] = useState(0)
   const primary = achievements[0]
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIconIndex(i => (i + 1) % 2)
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <div className="relative w-full max-w-md mx-auto mt-2">
@@ -120,8 +128,34 @@ const AchievementDropdown = () => {
         onClick={() => setOpen(!open)}
         className="w-full flex items-center gap-3 px-4 py-3 bg-red-900/20 border border-red-600/40 hover:border-red-500/60 text-left transition-all duration-300 shadow-[0_0_20px_-6px_rgba(220,38,38,0.12)] hover:shadow-[0_0_30px_-6px_rgba(220,38,38,0.2)] group"
       >
-        <div className="p-1.5 bg-red-950/60 border border-red-600/40 shrink-0">
-          <Trophy className="h-4 w-4 text-amber-300" />
+        <div className="p-2 bg-red-950/60 border border-red-600/40 shrink-0 relative w-10 h-10 flex items-center justify-center">
+          <AnimatePresence mode="wait">
+            {iconIndex === 0 ? (
+              <motion.div
+                key="amd"
+                initial={{ opacity: 0, rotateY: 90, scale: 0.6, filter: "blur(4px)" }}
+                animate={{ opacity: 1, rotateY: 0, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, rotateY: -90, scale: 0.6, filter: "blur(4px)" }}
+                transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-amber-300 drop-shadow-[0_0_8px_rgba(252,211,77,0.4)]">
+                  <path d="M18.324 9.137l1.559 1.56h2.556v2.557L24 14.814V9.137zM2 9.52l-2 4.96h1.309l.37-.982H3.9l.408.982h1.338L3.432 9.52zm4.209 0v4.955h1.238v-3.092l1.338 1.562h.188l1.338-1.556v3.091h1.238V9.52H10.47l-1.592 1.845L7.287 9.52zm6.283 0v4.96h2.057c1.979 0 2.88-1.046 2.88-2.472 0-1.36-.937-2.488-2.747-2.488zm1.237.91h.792c1.17 0 1.63.711 1.63 1.57 0 .728-.372 1.572-1.616 1.572h-.806zm-10.985.273l.791 1.932H2.008zm17.137.307l-1.604 1.603v2.25h2.246l1.604-1.607h-2.246z" fill="currentColor" />
+                </svg>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="trophy"
+                initial={{ opacity: 0, rotateY: 90, scale: 0.6, filter: "blur(4px)" }}
+                animate={{ opacity: 1, rotateY: 0, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, rotateY: -90, scale: 0.6, filter: "blur(4px)" }}
+                transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                <Trophy className="h-5 w-5 text-amber-300 drop-shadow-[0_0_8px_rgba(252,211,77,0.4)]" />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-[11px] font-bold text-white tracking-tight truncate">{primary.title}</p>
