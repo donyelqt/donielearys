@@ -234,7 +234,7 @@ export default function Hero() {
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.1 }}
         className="text-5xl md:text-8xl font-bold tracking-tighter bg-clip-text text-transparent bg-linear-to-br from-white via-white/80 to-white/40 mb-6 max-w-4xl uppercase"
       >
-        Doniele Arys Antonio
+        Doniele Antonio
       </motion.h1>
 
       <motion.p
@@ -243,7 +243,7 @@ export default function Hero() {
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.2 }}
         className="text-lg md:text-xl text-white/60 max-w-2xl mb-4 leading-relaxed font-mono uppercase"
       >
-        From Local to Global Real-World Impact
+        From Local to Global
       </motion.p>
 
       <motion.div
