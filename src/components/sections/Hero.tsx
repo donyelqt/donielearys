@@ -85,8 +85,8 @@ const MagneticButton = ({
 const achievements = [
   {
     title: "AMD Developer Hackathon: ACT II",
-    subtitle: "AMD | Google Deepmind | lablab.ai",
-    stat: "Top 20 Global",
+    subtitle: "AMD | Google Deepmind",
+    stat: "Top 20 Global - Solo",
     detail: "94% accuracy · 4K tokens · Solo · 8 domains",
     highlight: true,
   },
@@ -164,7 +164,7 @@ const AchievementDropdown = () => {
         )}
       </AnimatePresence>
 
-      <div className="flex justify-center gap-6 mt-2 text-[8px] font-mono text-white/15 uppercase tracking-widest">
+      <div className="flex justify-center gap-6 mt-2 text-[8px] font-mono text-white/45 uppercase tracking-widest">
         <span className="flex items-center gap-1"><Users className="h-2.5 w-2.5" /> 20,000+ participants</span>
         <span className="flex items-center gap-1"><Globe className="h-2.5 w-2.5" /> 4,000+ teams</span>
         <span className="flex items-center gap-1"><Cpu className="h-2.5 w-2.5" /> 8 domains</span>
