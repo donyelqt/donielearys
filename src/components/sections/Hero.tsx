@@ -128,7 +128,7 @@ const AchievementDropdown = () => {
         onClick={() => setOpen(!open)}
         className="w-full flex items-center gap-3 px-4 py-3 bg-red-900/20 border border-red-600/40 hover:border-red-500/60 text-left transition-all duration-300 shadow-[0_0_20px_-6px_rgba(220,38,38,0.12)] hover:shadow-[0_0_30px_-6px_rgba(220,38,38,0.2)] group"
       >
-        <div className="p-2 bg-red-950/60 border border-red-600/40 shrink-0 relative w-10 h-10 flex items-center justify-center">
+        <div className="p-2 bg-red-950/60 border border-red-600/40 shrink-0 relative w-8 h-8 flex items-center justify-center">
           <AnimatePresence mode="wait">
             {iconIndex === 0 ? (
               <motion.div
@@ -232,7 +232,8 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.1 }}
-        className="text-5xl md:text-8xl font-bold tracking-tighter bg-clip-text text-transparent bg-linear-to-br from-white via-white/80 to-white/40 mb-6 max-w-4xl uppercase"
+        className="text-4xl md:text-8xl font-bold tracking-tighter bg-clip-text text-transparent bg-linear-to-br 
+        from-white via-white/80 to-white/40 mb-6 max-w-4xl uppercase"
       >
         Doniele Antonio
       </motion.h1>
