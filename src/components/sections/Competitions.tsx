@@ -115,12 +115,12 @@ export default function Competitions() {
   const prefersReducedMotion = useReducedMotion()
 
   return (
-    <section id="competitions" className="py-20 px-4">
+    <section id="competitions" className="py-20 px-4 overflow-x-hidden">
       <motion.div
         variants={prefersReducedMotion ? {} : containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true }}
+        viewport={{ once: true, amount: 0.2 }}
         className="max-w-7xl mx-auto mb-12"
       >
         <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4">Featured Competitions & Achievements</motion.h2>
@@ -131,46 +131,45 @@ export default function Competitions() {
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {competitions.map((comp, i) => (
-          <motion.div
+          <motion.article
             key={i}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ delay: i * 0.1, duration: 0.5 }}
-            whileHover={{ y: -4 }}
-            className={`group relative p-6 border transition-all duration-300 ${
+            className={`card-hover-lift group relative p-6 border overflow-hidden transition-all duration-300 will-change-transform ${
                 comp.highlight
                   ? "bg-red-900/30 border-red-600/50 hover:border-red-500/70 shadow-[0_0_30px_-8px_rgba(220,38,38,0.15)] hover:shadow-[0_0_40px_-8px_rgba(220,38,38,0.25)]"
                   : "bg-white/5 border-white/10 hover:border-white/20"
               }`}
           >
             {comp.highlight && (
-              <div className="absolute top-0 left-4 -translate-y-1/2 px-2 py-0.5 text-[8px] font-mono uppercase bg-red-600 text-white tracking-wider">
+              <div className="absolute top-0 left-4 -translate-y-1/2 px-2 py-0.5 text-[8px] font-mono uppercase bg-red-600 text-white tracking-wider z-10">
                 Featured
               </div>
             )}
-            <div className="absolute top-4 right-4">
+            <div className="absolute top-4 right-4 z-10">
               <span className={`px-2 py-1 text-[8px] font-mono uppercase border rounded-sm ${comp.badgeColor}`}>
                 {comp.badge}
               </span>
             </div>
 
             <div className="flex items-start gap-4">
-              <div className={`p-2 border ${comp.highlight ? "bg-red-950/60 border-red-600/40" : "bg-white/5 border-white/10"}`}>
+              <div className={`shrink-0 p-2 border ${comp.highlight ? "bg-red-950/60 border-red-600/40" : "bg-white/5 border-white/10"}`}>
                 {comp.icon}
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-base font-bold tracking-tight mb-1 pr-16">{comp.title}</h3>
-                <p className="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-3">{comp.issuer}</p>
-                <p className="text-xs text-white/60 leading-relaxed line-clamp-3">{comp.description}</p>
+                <h3 className="text-base font-bold tracking-tight mb-1 pr-20 md:pr-16 break-words">{comp.title}</h3>
+                <p className="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-3 break-words">{comp.issuer}</p>
+                <p className="text-xs text-white/60 leading-relaxed line-clamp-3 break-words">{comp.description}</p>
               </div>
             </div>
 
-            <div className={`mt-4 pt-4 border-t flex justify-between items-center ${comp.highlight ? "border-red-600/30" : "border-white/5"}`}>
+            <div className={`mt-4 pt-4 border-t flex flex-wrap justify-between items-center gap-2 ${comp.highlight ? "border-red-600/30" : "border-white/5"}`}>
               <span className="text-[10px] font-mono text-white/30">{comp.date}</span>
               <span className={`text-[10px] font-mono ${comp.highlight ? "text-amber-300/80" : "text-amber-400/60"}`}>{comp.achievement}</span>
             </div>
-          </motion.div>
+          </motion.article>
         ))}
       </div>
     </section>
