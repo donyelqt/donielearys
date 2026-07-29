@@ -190,6 +190,13 @@
     animation: grid-breathe 8s ease-in-out infinite;
   }
 
+  /* Disable expensive infinite animations on mobile to prevent glitching */
+  @media (max-width: 768px) {
+    .grid-pattern::before {
+      animation: none;
+    }
+  }
+
   @keyframes marquee-left {
     0% { transform: translateX(0); }
     100% { transform: translateX(-25%); }
@@ -221,13 +228,17 @@
     transform: translateZ(0);
   }
 
-  /* Hover-lift only on devices that support true hover (desktop with mouse) */
+  /* Hover-lift only on devices that support true hover (desktop with mouse).
+     IMPORTANT: We use a CSS custom property so framer-motion's transform
+     doesn't conflict. The card uses translateY(-4px) via :hover, but only
+     on devices with a real mouse. */
   @media (hover: hover) and (pointer: fine) {
-    .card-hover-lift:hover {
-      transform: translateY(-4px);
-    }
     .card-hover-lift {
       transition: transform 300ms ease-out;
+      will-change: transform;
+    }
+    .card-hover-lift:hover {
+      transform: translate3d(0, -4px, 0) !important;
     }
   }
 

@@ -120,7 +120,7 @@ export default function Competitions() {
         variants={prefersReducedMotion ? {} : containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.1 }}
         className="max-w-7xl mx-auto mb-12"
       >
         <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4">Featured Competitions & Achievements</motion.h2>
@@ -135,16 +135,17 @@ export default function Competitions() {
             key={i}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ delay: i * 0.1, duration: 0.5 }}
-            className={`card-hover-lift group relative p-6 border overflow-hidden transition-all duration-300 will-change-transform ${
+            viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
+            transition={{ delay: prefersReducedMotion ? 0 : i * 0.05, duration: 0.4, ease: "easeOut" }}
+            style={{ transform: "translateZ(0)" }}
+            className={`card-hover-lift relative p-6 border rounded-sm transition-[border-color,box-shadow] duration-300 ${
                 comp.highlight
                   ? "bg-red-900/30 border-red-600/50 hover:border-red-500/70 shadow-[0_0_30px_-8px_rgba(220,38,38,0.15)] hover:shadow-[0_0_40px_-8px_rgba(220,38,38,0.25)]"
                   : "bg-white/5 border-white/10 hover:border-white/20"
               }`}
           >
             {comp.highlight && (
-              <div className="absolute top-0 left-4 -translate-y-1/2 px-2 py-0.5 text-[8px] font-mono uppercase bg-red-600 text-white tracking-wider z-10">
+              <div className="absolute -top-2 left-4 px-2 py-0.5 text-[8px] font-mono uppercase bg-red-600 text-white tracking-wider z-20 rounded-sm shadow-lg">
                 Featured
               </div>
             )}
