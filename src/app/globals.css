@@ -221,6 +221,16 @@
     transform: translateZ(0);
   }
 
+  /* Hover-lift only on devices that support true hover (desktop with mouse) */
+  @media (hover: hover) and (pointer: fine) {
+    .card-hover-lift:hover {
+      transform: translateY(-4px);
+    }
+    .card-hover-lift {
+      transition: transform 300ms ease-out;
+    }
+  }
+
   .terminal-body {
     content-visibility: auto;
     contain: layout paint style;
