@@ -255,3 +255,76 @@
     tab-size: 4;
   }
 }
+
+  /* =========================================================================
+     PURE-CSS CRAFTING ANIMATIONS (Certifications)
+     Replaces ~70+ framer-motion `repeat: Infinity` animations with GPU-only
+     CSS keyframes. No JS work per frame, no React re-renders, no IntersectionObserver
+     thrash — eliminates the up/down jitter on adjacent Competitions cards.
+     ========================================================================= */
+  @keyframes crafting-fade-1-kf {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+  @keyframes crafting-fade-2-kf {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+  }
+  @keyframes crafting-fade-3-kf {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.4; }
+  }
+  @keyframes crafting-progress-kf {
+    0% { width: 0%; }
+    50%, 100% { width: 100%; }
+  }
+  @keyframes crafting-overlay-kf {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.5; }
+  }
+
+  .crafting-fade-1,
+  .crafting-fade-2,
+  .crafting-fade-3,
+  .crafting-progress-bar,
+  .crafting-overlay {
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    will-change: opacity;
+  }
+
+  .crafting-fade-1 {
+    animation-name: crafting-fade-1-kf;
+  }
+  .crafting-fade-2 {
+    animation-name: crafting-fade-2-kf;
+  }
+  .crafting-fade-3 {
+    animation-name: crafting-fade-3-kf;
+    animation-duration: 2.4s;
+  }
+  .crafting-progress-bar {
+    animation-name: crafting-progress-kf;
+    animation-duration: 2s;
+    will-change: width;
+  }
+  .crafting-overlay {
+    animation-name: crafting-overlay-kf;
+    animation-duration: 1.5s;
+  }
+
+  /* Reduce motion on mobile to be extra safe (devices already weak GPUs) */
+  @media (max-width: 768px) {
+    .crafting-fade-1,
+    .crafting-fade-2,
+    .crafting-fade-3 {
+      animation-duration: 4s;
+    }
+    .crafting-progress-bar {
+      animation-duration: 4s;
+    }
+    .crafting-overlay {
+      animation-duration: 3s;
+    }
+  }
