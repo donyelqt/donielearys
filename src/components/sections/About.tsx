@@ -98,7 +98,7 @@ export default function About() {
           className="max-w-4xl mx-auto relative"
         >
           <div className="macos-terminal rounded-2xl overflow-hidden shadow-2xl border border-white/10 mr-0 lg:mr-12">
-            <div className="terminal-header flex items-center gap-3 px-4 py-3 bg-[#1a1a1a] border-b border-white/5">
+            <div className="terminal-header flex items-center gap-3 px-4 py-3 bg-[#0f0f0f] border-b border-white/5">
               <div className="flex gap-2">
                 <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
                 <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
@@ -110,7 +110,7 @@ export default function About() {
               <div className="w-8" />
             </div>
             <div
-              className="terminal-body bg-[#0c0c0c] p-4 h-[520px] overflow-y-auto font-mono text-sm [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+              className="terminal-body bg-[#050505] p-4 h-[520px] overflow-y-auto font-mono text-sm [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
               style={{ contentVisibility: 'auto', contain: 'layout paint style' }}
             >
               {renderedLines.map((line, index) => (
