@@ -13,7 +13,7 @@ const terminalLines = [
   { type: 'output', text: '◉ Infrastructure Security', delay: 2300 },
   { type: 'output', text: '◉ Applied Machine Learning', delay: 2500 },
   { type: 'command', text: 'cat current_status.txt', delay: 3100 },
-  { type: 'output', text: '💼 Accenture - Cloud Engineer Intern (Cloud Elite)', delay: 3600 },
+  { type: 'output', text: '💼 Accenture - Software Engineer Intern (Cloud Elite)', delay: 3600 },
   { type: 'output', text: '🚀 Avaron - AI Infrastructure & Security Engineer', delay: 3700 },
   { type: 'output', text: '📍 Baguio City, Philippines', delay: 3800 },
   { type: 'command', text: 'neofetch', delay: 4400 },

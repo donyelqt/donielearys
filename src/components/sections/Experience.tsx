@@ -13,8 +13,8 @@ interface ExperienceEntry {
   description: string
   icon: React.ReactNode
   color: string
+  validationBadge?: string
 }
-
 const experiences: ExperienceEntry[] = [
   {
     id: 'stealth-2023',
@@ -114,7 +114,7 @@ const experiences: ExperienceEntry[] = [
   },
   {
     id: 'uc-research-2025',
-    title: "Applied AI Research Scientist",
+    title: "Applied AI Research Engineer",
     company: "University of the Cordilleras",
     location: "Baguio City, CAR, Philippines",
     date: "Dec 2025 - Present",
@@ -123,6 +123,7 @@ const experiences: ExperienceEntry[] = [
     description: "Lead researcher on AgenticHinaing—a neuro-symbolic multi-agent civic social listening framework. Used it for a technical interview at Silicon Peach by a former senior dev of IBM and was accepted to advance from 80% completion to full autonomous data center deployment at Atlanta Tech Village, built by contributors from IBM, Yahoo, Apple, Georgia Tech, NVIDIA, UCLA, UC Berkeley, and Red Hat Asia. Technically validated by a former IBM senior software engineer using ICLR, NAACL, and EMNLP evaluation frameworks — achieved TRL 7 Technology Readiness Level.",
     icon: <GlobeIcon />,
     color: "#4DAED4",
+    validationBadge: "Ex-IBM Senior Software Engineer (US-based IBM)",
   },
   {
     id: 'avaron-2026',
@@ -150,7 +151,7 @@ const experiences: ExperienceEntry[] = [
   },
   {
     id: 'accenture-2026',
-    title: "Cloud Engineer Intern · Cloud Elite",
+    title: "Software Engineer Intern · Cloud Elite",
     company: "Accenture",
     location: "Quezon City, NCR, Philippines",
     date: "Jun 2026 - Present",
@@ -276,6 +277,24 @@ const EntryCard = memo(({ exp, index, reduced }: { exp: ExperienceEntry; index: 
               <p className="text-[11px] md:text-[13px] font-bold tracking-tight pl-[2.2rem]" style={{ color: exp.color }}>
                 {exp.company}
               </p>
+               {exp.validationBadge && (
+                 <span
+                   className="inline-flex items-center mt-1.5 ml-[2.2rem] text-[9px] font-mono uppercase tracking-[0.15em] px-2 py-0.5"
+                   style={{
+                     color: '#C8E0FF',
+                     borderColor: '#0062D533',
+                     backgroundColor: 'rgba(0, 98, 213, 0.08)',
+                     borderStyle: 'solid',
+                     borderWidth: '1px',
+                   }}
+                 >
+                  <svg className="w-2.5 h-2.5 mr-1 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#0062D5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 12l2 2 4-4" />
+                    <circle cx="12" cy="12" r="10" />
+                  </svg>
+                  {exp.validationBadge}
+                </span>
+              )}
             </div>
             <div className="shrink-0 text-left sm:text-right">
               <span className="text-[10px] md:text-[11px] font-mono text-white/35 uppercase tracking-[0.14em]">
@@ -305,14 +324,14 @@ const EntryCard = memo(({ exp, index, reduced }: { exp: ExperienceEntry; index: 
             </span>
             {active && (
               <span
-                className="text-[9px] font-mono uppercase tracking-[0.2em] px-1.5 py-0.5"
-                style={{
-                  color: TRAJECTORY_COLOR,
-                  backgroundColor: `hsla(var(--crimson), 0.1)`,
-                  border: `1px solid hsla(var(--crimson), 0.2)`,
-                }}
+                  className="text-[9px] font-mono uppercase tracking-[0.2em] px-1.5 py-0.5"
+                  style={{
+                    color: TRAJECTORY_COLOR,
+                    backgroundColor: `hsla(var(--crimson), 0.1)`,
+                    border: `1px solid hsla(var(--crimson), 0.2)`,
+                  }}
               >
-                active
+                  active
               </span>
             )}
           </div>
