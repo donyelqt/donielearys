@@ -75,8 +75,8 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
-    --grid-major: rgba(255, 255, 255, 0.03);
-    --grid-minor: rgba(255, 255, 255, 0.08);
+    --grid-major: rgba(255, 255, 255, 0.05);
+    --grid-minor: rgba(255, 255, 255, 0.10);
   }
 }
 
@@ -85,7 +85,7 @@
     border-color: var(--color-border);
   }
   body {
-    background-color: var(--color-background);
+    background-color: #000000;
     color: var(--color-foreground);
     font-feature-settings: "rlig" 1, "calt" 1;
     overflow-x: hidden;
