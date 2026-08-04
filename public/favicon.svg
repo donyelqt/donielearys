@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" fill="#000000"/>
+  <!--
+    "DA" pixel monogram
+    3x3px cells. D has open top-right and bottom-right corners.
+  -->
+  <g fill="#ffffff" shape-rendering="crispEdges">
+
+    <!-- D: x=5 base, 3 cols (5,9,13) x 4 rows (9,13,17,21) -->
+
+    <!-- D Row 0: left + middle only (no right = top-right corner removed) -->
+    <rect x="5"  y="9"  width="3" height="3"/>
+    <rect x="9"  y="9"  width="3" height="3"/>
+
+    <!-- D Row 1: left pillar + right -->
+    <rect x="5"  y="13" width="3" height="3"/>
+    <rect x="13" y="13" width="3" height="3"/>
+
+    <!-- D Row 2: left pillar + right -->
+    <rect x="5"  y="17" width="3" height="3"/>
+    <rect x="13" y="17" width="3" height="3"/>
+
+    <!-- D Row 3: left + middle, no right (bottom-right corner removed) -->
+    <rect x="5"  y="21" width="3" height="3"/>
+    <rect x="9"  y="21" width="3" height="3"/>
+
+    <!-- A: x=18 base, 3 cols (18,21,24) x 4 rows -->
+
+    <!-- A Row 0: full bar -->
+    <rect x="18" y="9"  width="3" height="3"/>
+    <rect x="21" y="9"  width="3" height="3"/>
+    <rect x="24" y="9"  width="3" height="3"/>
+
+    <!-- A Row 1: sides only -->
+    <rect x="18" y="13" width="3" height="3"/>
+    <rect x="24" y="13" width="3" height="3"/>
+
+    <!-- A Row 2: full crossbar -->
+    <rect x="18" y="17" width="3" height="3"/>
+    <rect x="21" y="17" width="3" height="3"/>
+    <rect x="24" y="17" width="3" height="3"/>
+
+    <!-- A Row 3: sides only -->
+    <rect x="18" y="21" width="3" height="3"/>
+    <rect x="24" y="21" width="3" height="3"/>
+
+  </g>
+</svg>
