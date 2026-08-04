@@ -219,14 +219,14 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5 }}
-        className="flex items-center justify-center gap-3 mb-8 group"
+className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x-3 mb-8 group"
       >
-        <span className="text-red-500 text-sm font-mono select-none">❯</span>
-        <span className="text-[11px] font-mono font-bold text-white/60 uppercase tracking-[0.25em]">
+        <span className="text-red-500 text-[13px] sm:text-sm font-mono select-none leading-none">❯</span>
+        <span className="text-[10px] sm:text-[11px] font-mono font-bold text-white/60 uppercase tracking-[0.15em] sm:tracking-[0.25em]">
           AI & Software Engineer
         </span>
-        <span className="text-[11px] font-mono text-white/15">—</span>
-        <span className="text-[11px] font-mono text-white/30 uppercase tracking-[0.15em]">
+        <span className="text-[10px] sm:text-[11px] font-mono text-white/15">—</span>
+        <span className="text-[10px] sm:text-[11px] font-mono text-white/30 uppercase tracking-[0.1em] sm:tracking-[0.15em]">
           DonieleCode
         </span>
       </motion.div>
