@@ -157,12 +157,11 @@ const experiences: ExperienceEntry[] = [
     date: "Jun 2026 - Present",
     periodLabel: "2026",
     isCurrent: true,
-    description: "Cloud Elite engineering intern at Accenture — specializing in cloud architecture, DevOps pipelines, and enterprise-scale infrastructure solutions.",
+    description: "full-stack, cloud infrastructure, & AI for enterprise banking solutions\n\nled technical architecture debriefs for a 30+ engineering intern cohort, translating monolithic vs. microservices architectures and REST APIs into production engineering practices\n\nrecognized by an Advanced Application Engineering Manager for technical communication and real-world software architecture experience\n\nreceived individualized recognition as the only intern personally encouraged by an Advanced Application Engineering Manager to pursue a full-time software engineer role before graduation and to mentor fellow Cloud Elite interns during debrief",
     icon: <RocketIcon />,
     color: "#E84D4D",
   },
 ]
-
 const startYear = (date: string) => {
   const m = date.match(/(\w{3,9})[\s-]+(\d{4})/)
   return m ? parseInt(m[2]) : 9999
