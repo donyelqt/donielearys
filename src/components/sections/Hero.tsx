@@ -213,7 +213,13 @@ export default function Hero() {
   return (
     <section className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
       <NetworkBackground />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-white/[0.07] rounded-full blur-[120px] -z-10" />
+      {/* Ambient glow — scales with viewport: 280px mobile, 380px tablet, 500px desktop */}
+      <div className="
+        absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+        w-70 h-70 sm:w-95 sm:h-95 lg:w-125 lg:h-125
+        bg-white/[0.07] rounded-full blur-[80px] sm:blur-[100px] lg:blur-[120px]
+        -z-10
+      " />
       
       <motion.div
         initial={{ opacity: 0, y: 20 }}
