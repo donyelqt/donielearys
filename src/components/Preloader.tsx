@@ -36,9 +36,9 @@ const asciiLogo = `
 `
 
 /* Timing */
-const LINE_GAP = 100
-const PROGRESS_MS = 1800
-const HOLD_AFTER_BOOT = 600
+const LINE_GAP = 220
+const PROGRESS_MS = 3500
+const HOLD_AFTER_BOOT = 1000
 const CURTAIN_MS = 0.7
 const CURTAIN_EASE: [number, number, number, number] = [0.76, 0, 0.24, 1]
 
