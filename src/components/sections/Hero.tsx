@@ -185,7 +185,7 @@ const AchievementDropdown = () => {
                   <Trophy className="h-3.5 w-3.5 text-white/40" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[10px] font-bold text-white/80 truncate">{a.title}</p>
+                  <p className="text-[11px] font-bold text-white/80 truncate">{a.title}</p>
                   <p className="text-[8px] font-mono text-white/30 uppercase truncate">{a.subtitle}</p>
                 </div>
                 <div className="shrink-0 text-right">
@@ -219,13 +219,16 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5 }}
-        className="flex items-center gap-2 px-3 py-1 rounded-none border border-white/10 bg-white/5 text-xs font-mono text-white/60 mb-8 uppercase tracking-widest"
+        className="flex items-center justify-center gap-3 mb-8 group"
       >
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-none bg-red-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-none h-2 w-2 bg-red-600"></span>
+        <span className="text-red-500 text-sm font-mono select-none">❯</span>
+        <span className="text-[11px] font-mono font-bold text-white/60 uppercase tracking-[0.25em]">
+          AI & Software Engineer
         </span>
-        AI & Software Engineer
+        <span className="text-[11px] font-mono text-white/15">—</span>
+        <span className="text-[11px] font-mono text-white/30 uppercase tracking-[0.15em]">
+          DonieleCode
+        </span>
       </motion.div>
 
       <motion.h1
@@ -264,14 +267,14 @@ export default function Hero() {
       >
         <MagneticButton
           onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-          className="px-6 py-3 bg-white text-black text-[10px] font-bold rounded-none flex items-center gap-2 hover:bg-white/90 transition-all group uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          className="px-6 py-3 bg-white text-black text-[11px] font-bold rounded-none flex items-center gap-2 hover:bg-white/90 transition-all group uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
         >
           View Projects
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </MagneticButton>
         <MagneticButton
           onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-          className="px-6 py-3 border border-white/20 text-white text-[10px] font-bold rounded-none hover:bg-white/5 transition-all uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          className="px-6 py-3 border border-white/20 text-white text-[11px] font-bold rounded-none hover:bg-white/5 transition-all uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
         >
           Contact Me
         </MagneticButton>
@@ -317,3 +320,5 @@ export default function Hero() {
     </section>
   )
 }
+
+
