@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Doniele Arys Antonio - AI & Software Engineer",
+  title: "Doniele - AI & Software Engineer",
   description: "Developing Agentic AI Architectures",
   icons: {
     icon: "/favicon.svg",
