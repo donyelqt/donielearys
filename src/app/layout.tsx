@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/Navbar";
 import MouseSpotlight from "@/components/MouseSpotlight";
 import ScrollProgress, { BackToTop } from "@/components/ScrollProgress";
+import PreloaderWrapper from "@/components/PreloaderWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,6 +20,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Doniele Arys Antonio - AI & Software Engineer",
   description: "Developing Agentic AI Architectures",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
@@ -44,9 +48,11 @@ export default function RootLayout({
           <MouseSpotlight />
           <div className="fixed inset-0 grid-pattern pointer-events-none -z-10" />
           <Navbar />
-          <main id="main-content" className="flex-1 pt-24">
-            {children}
-          </main>
+          <PreloaderWrapper>
+            <main id="main-content" className="flex-1 pt-24">
+              {children}
+            </main>
+          </PreloaderWrapper>
         </ThemeProvider>
       </body>
     </html>
