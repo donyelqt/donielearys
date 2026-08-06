@@ -10,13 +10,14 @@ import {
   SiPostgresql,
   SiDocker,
   SiPython,
-  SiServerless,
   SiTensorflow,
   SiPytorch,
+  SiLangchain,
   SiKubernetes,
-  SiGithub,
+  SiGit,
+  SiFastapi,
   SiNodedotjs,
-  SiGraphql,
+  SiAnthropic,
 } from 'react-icons/si'
 
 const techRow1 = [
@@ -27,26 +28,34 @@ const techRow1 = [
   { name: "PostgreSQL", Icon: SiPostgresql },
   { name: "Docker", Icon: SiDocker },
   { name: "Python", Icon: SiPython },
-  { name: "AWS", Icon: SiServerless },
+  { name: "AWS", Icon: "aws" as const },
 ]
 
 const techRow2 = [
   { name: "TensorFlow", Icon: SiTensorflow },
   { name: "PyTorch", Icon: SiPytorch },
-  { name: "LangChain", Icon: SiGraphql },
+  { name: "LangChain", Icon: SiLangchain },
   { name: "Kubernetes", Icon: SiKubernetes },
-  { name: "Git", Icon: SiGithub },
-  { name: "FastAPI", Icon: SiPython },
+  { name: "Git", Icon: SiGit },
+  { name: "FastAPI", Icon: SiFastapi },
   { name: "Node.js", Icon: SiNodedotjs },
-  { name: "Anthropic", Icon: SiReact },
+  { name: "Anthropic", Icon: SiAnthropic },
 ]
 
-function TechItem({ name, Icon }: { name: string, Icon: React.ElementType }) {
+function TechItem({ name, Icon }: { name: string; Icon: React.ElementType | "aws" }) {
   return (
     <div className="flex items-center gap-3 px-6 py-3 border border-white/10 rounded-none mx-2 group cursor-pointer bg-white/5 hover:bg-white/10 transition-all duration-300">
-      <div className="text-white group-hover:scale-110 transition-transform duration-300">
-        <Icon className="w-5 h-5" />
-      </div>
+      {Icon === "aws" ? (
+        <div className="flex items-center justify-center w-5 h-5 border border-white/15 group-hover:border-white/30 transition-colors duration-300">
+          <span className="font-mono text-[7px] font-bold text-white/85 group-hover:text-white tracking-tight leading-none">
+            AWS
+          </span>
+        </div>
+      ) : (
+        <div className="text-white group-hover:scale-110 transition-transform duration-300">
+          <Icon className="w-5 h-5" />
+        </div>
+      )}
       <span className="font-mono text-xs uppercase tracking-widest text-white/70 group-hover:text-white transition-colors whitespace-nowrap">
         {name}
       </span>
@@ -54,7 +63,7 @@ function TechItem({ name, Icon }: { name: string, Icon: React.ElementType }) {
   )
 }
 
-function MarqueeRow({ items, direction = 'left' }: { items: typeof techRow1, direction?: 'left' | 'right' }) {
+function MarqueeRow({ items, direction = 'left' }: { items: typeof techRow1; direction?: 'left' | 'right' }) {
   const animationClass = direction === 'left' ? 'animate-marquee-left' : 'animate-marquee-right'
 
   return (
