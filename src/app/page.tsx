@@ -4,6 +4,7 @@ import TechStack from "@/components/sections/TechStack";
 import Experience from "@/components/sections/Experience";
 import Projects from "@/components/sections/Projects";
 import Certifications from "@/components/sections/Certifications";
+import Testimonials from "@/components/sections/Testimonials";
 import Competitions from "@/components/sections/Competitions";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/Footer";
@@ -18,6 +19,7 @@ export default function Home() {
         <Experience />
         <Projects />
         <Certifications />
+        <Testimonials />
         <Competitions />
         <Contact />
       </div>

@@ -12,6 +12,7 @@ const navItems = [
   { name: 'Experience', href: '#experience' },
   { name: 'Projects', href: '#projects' },
   { name: 'Certifications', href: '#certifications' },
+  { name: 'Validation', href: '#testimonials' },
   { name: 'Competitions', href: '#competitions' },
   { name: 'Contact', href: '#contact' },
 ]
@@ -127,7 +128,6 @@ export default function Navbar() {
         >
           <div className="flex items-center gap-8">
             <div className="text-xl font-bold tracking-tighter">DonieleAI</div>
-
             <div className="hidden lg:flex gap-1 relative" ref={navRef}>
               {navItems.map((item) => {
                 const isActive = activeSection === item.name
