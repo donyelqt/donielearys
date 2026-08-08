@@ -29,7 +29,7 @@ const testimonials = [
         quote: 'Good young software engineer',
         context: 'PH Startup Week 2025 · Nov 14, 2025',
         pending: false,
-        attribution: 'Verbal · Facebook Messenger chat log · Witnessed by UC InTTO employees at PH Startup Week 2025',
+        attribution: 'Verbal · Witnessed by UC InTTO employees at PH Startup Week 2025',
       },
       {
         name: 'Former Investor',
@@ -37,7 +37,16 @@ const testimonials = [
         quote: 'It doesn\'t matter if your team are students as long as they have the talent, grit and passion.',
         context: 'PH Startup Week 2025 · Nov 14, 2025',
         pending: false,
-        attribution: 'Verbal · Facebook Messenger chat log · Witnessed by UC InTTO employees at PH Startup Week 2025',
+        attribution: 'Verbal · Witnessed by UC InTTO employees at PH Startup Week 2025',
+      },
+      {
+        name: 'Leandro',
+        role: 'Project Technical Staff · Incubator Baguio · Former E27 Singapore & UC InTTO',
+        quote:
+          'Based on your skill, I think you\'re more than capable of building a system that isn\'t easy to replicate, right?',
+        context: 'Co-founder feedback on Tarana-ai architecture',
+        pending: false,
+        attribution: 'Verbal · 2025',
       },
 ]
 
@@ -81,7 +90,7 @@ export default function Testimonials() {
         </motion.p>
       </motion.div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
         {testimonials.map((t, i) => (
           <motion.div
             key={i}
@@ -90,7 +99,11 @@ export default function Testimonials() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
             className={`relative p-6 border border-white/10 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/20 transition-all duration-300 ${
-              i === testimonials.length - 1 ? 'lg:col-start-2' : ''
+              i < 3
+                ? 'lg:col-span-2'
+                : i === 3
+                  ? 'lg:col-span-2 lg:col-start-2'
+                  : 'lg:col-span-2 lg:col-start-4'
             }`}
           >
             {t.pending && (
