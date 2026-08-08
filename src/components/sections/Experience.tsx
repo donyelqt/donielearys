@@ -108,7 +108,7 @@ const experiences: ExperienceEntry[] = [
     date: "Apr 2025 - Present",
     periodLabel: "2025",
     isCurrent: true,
-    description: "Sole technical executor for the LGU-backed agentic AI travel platform — owning 100% of architecture, infrastructure, security, and scalability across all core platform features. Co-founded with a non-technical partner handling operations and business development. BFF-based DDD monolith reduced cross-domain coupling ~40%. Real-time itinerary engine raised recommendation relevance ~45%. Custom Agentic AI + RAG pipeline (Gemini API, pgvector, PostgreSQL) lifted contextual accuracy ~50%. 99%+ uptime via Vercel, Supabase, NextAuth.js. Generated $470+ USD in startup funding. Recognized at Philippine Startup Week 2025.",
+    description: "Led engineering execution across teams of 5-10+ members (core team + interns) for the LGU-backed agentic AI travel platform, owning architecture, infrastructure, security, and scalability for 100% of core platform features. Co-founded with a non-technical partner handling operations and business development. BFF-based DDD monolith reduced cross-domain coupling ~40%. Real-time itinerary engine raised recommendation relevance ~45%. Custom Agentic AI + RAG pipeline (Gemini API, pgvector, PostgreSQL) lifted contextual accuracy ~50%. 99%+ uptime via Vercel, Supabase, NextAuth.js, serving 150+ waitlisted and 130+ beta users. Generated $470+ USD in startup funding. Recognized at Philippine Startup Week 2025. Engaged by DOST-PCIEERD for startup ecosystem insights.",
     icon: <TerminalIcon />,
     color: "#E84D4D",
   },
