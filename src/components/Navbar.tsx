@@ -6,12 +6,14 @@ import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
 
+const showCertifications = process.env.NEXT_PUBLIC_CERTIFICATIONS_ENABLED !== 'false'
+
 const navItems = [
   { name: 'Home', href: '#' },
   { name: 'About', href: '#about' },
   { name: 'Experience', href: '#experience' },
   { name: 'Projects', href: '#projects' },
-  { name: 'Certifications', href: '#certifications' },
+  ...(showCertifications ? [{ name: 'Certifications', href: '#certifications' }] : []),
   { name: 'Validation', href: '#testimonials' },
   { name: 'Competitions', href: '#competitions' },
   { name: 'Contact', href: '#contact' },

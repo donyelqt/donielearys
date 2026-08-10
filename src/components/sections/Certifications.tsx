@@ -74,6 +74,9 @@ const certifications = [
 ]
 
 export default function Certifications() {
+  // Feature flag: set NEXT_PUBLIC_CERTIFICATIONS_ENABLED=false in .env.local to hide
+  const isEnabled = process.env.NEXT_PUBLIC_CERTIFICATIONS_ENABLED !== 'false'
+  if (!isEnabled) return null
   // Generate scrambled titles ONCE per mount (stable across re-renders)
   const crafts = useMemo(
     () => certifications.map((cert) => ({ ...cert, scrambledTitle: scrambleText(cert.title) })),
