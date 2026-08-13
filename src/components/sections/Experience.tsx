@@ -133,7 +133,7 @@ const experiences: ExperienceEntry[] = [
     date: "Feb 2026 - Jun 2026",
     periodLabel: "2026",
     isCurrent: false,
-    description: "Led agentic AI infrastructure and security architecture for the world's first autonomous self-healing data center platform. Resolved NVIDIA/Docker CUDA mismatches, achieving 10x–42x inference speed gains. Engineered LangGraph workflows with Pydantic v2 for 99%+ response reliability. Secured ₱600,000+ in funding. Achieved SOC 2, OWASP, and NIST 800-53 compliance. Led code reviews and maintained architectural coherence across a distributed team with contributors from ex-IBM, UCLA, AWS, UC Berkeley, NVIDIA, Georgia Tech, Yahoo, and Red Hat Asia.",
+    description: "Led agentic AI infrastructure and security architecture for the mission and vision of avaron to be the world's first autonomous self-healing data center platform. Resolved NVIDIA/Docker CUDA mismatches, achieving 10x–42x inference speed gains. Engineered LangGraph workflows with Pydantic v2 for 99%+ response reliability. Secured ₱600,000+ in funding. Achieved SOC 2, OWASP, and NIST 800-53 compliance. Led code reviews and maintained architectural coherence across a distributed team with contributors from ex-IBM, UCLA, AWS, UC Berkeley, NVIDIA, Georgia Tech, Yahoo, and Red Hat Asia.",
     icon: <RocketIcon />,
     color: "#E84D4D",
   },
