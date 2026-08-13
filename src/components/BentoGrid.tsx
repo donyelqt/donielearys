@@ -21,7 +21,7 @@ export const BentoGrid = ({
   );
 };
 
-export const BentoGridItem = memo(({ className, title, description, header, icon, type }: { className?: string; title?: string | React.ReactNode; description?: string | React.ReactNode; header?: React.ReactNode; icon?: React.ReactNode; type?: "experience" | "project"; }) => {
+export const BentoGridItem = memo(({ className, title, description, header, icon, type, status, statusClass }: { className?: string; title?: string | React.ReactNode; description?: string | React.ReactNode; header?: React.ReactNode; icon?: React.ReactNode; type?: "experience" | "project"; status?: string; statusClass?: string; }) => {
   const isExperience = type === "experience";
   const isProject = type === "project";
 
@@ -45,6 +45,11 @@ export const BentoGridItem = memo(({ className, title, description, header, icon
       )}>
         {icon && (
           <div className={cn("mb-3 sm:mb-4", isProject && "mt-4 sm:mt-6")}>{icon}</div>
+        )}
+        {status && (
+          <p className={cn("text-[9px] font-mono uppercase tracking-[0.2em] mb-2", statusClass)}>
+            {status}
+          </p>
         )}
         <div className={cn(
           "font-sans font-bold text-neutral-200",

@@ -23,11 +23,11 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
 }
 
-const statusColors: Record<string, string> = {
-  'Active Development': 'bg-violet-500/20 text-violet-400 border-violet-500/30',
-  'Live': 'bg-green-500/20 text-green-400 border-green-500/30',
-  'Beta Testing': 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-  'Research Production': 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
+const statusText: Record<string, string> = {
+  'Active Development': 'text-violet-400/80',
+  'Live': 'text-green-400/80',
+  'Beta Testing': 'text-amber-400/80',
+  'Research Production': 'text-cyan-400/80',
 }
 
 const projects = [
@@ -40,9 +40,6 @@ const projects = [
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-white/20">AV</span>
         </div>
-        <span className={`absolute top-1.5 right-1.5 xs:top-2 xs:right-2 sm:top-3 sm:right-3 px-1.5 py-0.5 xs:px-2 xs:py-1 text-[6px] xs:text-[7px] sm:text-[8px] font-mono uppercase border rounded-sm ${statusColors['Active Development']}`}>
-          Active Development
-        </span>
       </div>
     ),
     icon: <Server className="h-4 w-4 text-violet-400" />,
@@ -57,9 +54,6 @@ const projects = [
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-white/20">TW</span>
         </div>
-        <span className={`absolute top-1 right-1 sm:top-2 sm:right-2 px-1.5 py-0.5 text-[6px] sm:text-[7px] font-mono uppercase border rounded-sm ${statusColors['Live']}`}>
-          Live
-        </span>
       </div>
     ),
     icon: <Users className="h-4 w-4 text-amber-400" />,
@@ -74,9 +68,6 @@ const projects = [
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-white/20">TN</span>
         </div>
-        <span className={`absolute top-1 right-1 sm:top-2 sm:right-2 px-1.5 py-0.5 text-[6px] sm:text-[7px] font-mono uppercase border rounded-sm ${statusColors['Beta Testing']}`}>
-          Beta Testing
-        </span>
       </div>
     ),
     icon: <Compass className="h-4 w-4 text-pink-400" />,
@@ -91,9 +82,6 @@ const projects = [
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-white/20">AG</span>
         </div>
-        <span className={`absolute top-1.5 right-1.5 xs:top-2 xs:right-2 sm:top-3 sm:right-3 px-1.5 py-0.5 xs:px-2 xs:py-1 text-[6px] xs:text-[7px] sm:text-[8px] font-mono uppercase border rounded-sm ${statusColors['Research Production']}`}>
-          Research Production
-        </span>
       </div>
     ),
     icon: <Brain className="h-4 w-4 text-cyan-400" />,
@@ -134,6 +122,8 @@ export default function Projects() {
               header={project.header}
               icon={project.icon}
               className={project.className}
+              status={project.status}
+              statusClass={statusText[project.status]}
             />
           ))}
         </BentoGrid>
