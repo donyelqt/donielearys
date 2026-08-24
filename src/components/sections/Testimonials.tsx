@@ -77,7 +77,7 @@ export default function Testimonials() {
       >
         <motion.h2
           variants={itemVariants}
-          className="text-3xl md:text-5xl font-bold mb-4"
+          className="text-gradient text-3xl md:text-5xl font-bold mb-4"
         >
           Validation
         </motion.h2>

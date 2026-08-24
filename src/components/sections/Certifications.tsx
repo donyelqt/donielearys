@@ -5,9 +5,21 @@ import { BookOpen, Code, Database, Cloud, Brain, Lock, Cog, Sparkles } from 'luc
 
 const SCRAMBLE_CHARS = '!@#$%^&*()_+-=[]{}|;:,.<>?/~`'
 
-// Pre-generate scrambled text ONCE at module load — no per-frame state updates
+/* Deterministic scramble: seeded from the title itself so server and client
+   render identical output (Math.random() here caused hydration mismatches). */
 function scrambleText(text: string): string {
-  return text.split('').map(() => SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)]).join('')
+  let seed = 0
+  for (let i = 0; i < text.length; i++) {
+    seed = (seed * 31 + text.charCodeAt(i)) >>> 0
+  }
+  return text
+    .split('')
+    .map((ch, i) => {
+      if (ch === ' ') return ' '
+      seed = (seed * 1664525 + 1013904223 + (i + 1)) >>> 0
+      return SCRAMBLE_CHARS[seed % SCRAMBLE_CHARS.length]
+    })
+    .join('')
 }
 
 const certifications = [
@@ -74,19 +86,20 @@ const certifications = [
 ]
 
 export default function Certifications() {
-  // Feature flag: set NEXT_PUBLIC_CERTIFICATIONS_ENABLED=false in .env.local to hide
+  // Feature flag: set NEXT_PUBLIC_CERTIFICATIONS_ENABLED=false in .env.local to hide.
+  // Hooks run unconditionally before any early return (Rules of Hooks).
   const isEnabled = process.env.NEXT_PUBLIC_CERTIFICATIONS_ENABLED !== 'false'
-  if (!isEnabled) return null
   // Generate scrambled titles ONCE per mount (stable across re-renders)
   const crafts = useMemo(
     () => certifications.map((cert) => ({ ...cert, scrambledTitle: scrambleText(cert.title) })),
     []
   )
+  if (!isEnabled) return null
 
   return (
     <section id="certifications" className="py-20 px-4">
       <div className="max-w-7xl mx-auto mb-12">
-        <h2 className="text-4xl md:text-5xl font-bold mb-4">Certifications</h2>
+        <h2 className="text-gradient text-4xl md:text-5xl font-bold mb-4">Certifications</h2>
         <p className="text-white/50 max-w-xl">
           Professional credentials and continuous learning.
         </p>
@@ -99,11 +112,11 @@ export default function Certifications() {
             className="group relative mb-6 p-6 bg-white/5 border border-white/10 transition-colors duration-300"
             style={{ animationDelay: `${i * 0.2}s` }}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-violet-900/10 via-transparent to-amber-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-linear-to-r from-violet-900/10 via-transparent to-amber-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
             <div className="flex flex-col lg:flex-row gap-6 relative">
               <div
-                className={`flex-shrink-0 w-full lg:w-48 h-32 rounded-lg bg-gradient-to-br ${cert.color} border border-white/10 flex items-center justify-center crafting-fade-1`}
+                className={`flex-shrink-0 w-full lg:w-48 h-32 rounded-lg bg-linear-to-br ${cert.color} border border-white/10 flex items-center justify-center crafting-fade-1`}
                 style={{ animationDelay: `${i * 0.2}s` }}
               >
                 <div className="p-3 bg-black/40 backdrop-blur-sm rounded-lg">
@@ -159,7 +172,7 @@ export default function Certifications() {
 
                 <div className="relative h-1 bg-white/10 rounded-full overflow-hidden">
                   <div
-                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-violet-500/50 to-amber-500/50 rounded-full crafting-progress-bar"
+                    className="absolute inset-y-0 left-0 bg-linear-to-r from-violet-500/50 to-amber-500/50 rounded-full crafting-progress-bar"
                     style={{ animationDelay: `${i * 0.3}s` }}
                   />
                 </div>

@@ -47,9 +47,9 @@ export default function Contact() {
           className="flex items-center gap-2 mb-3"
         >
           <span className="text-red-500 text-[13px] font-mono select-none leading-none" aria-hidden="true">❯</span>
-          <h2 className="text-[10px] sm:text-[11px] font-mono font-bold text-white/60 uppercase tracking-[0.2em] sm:tracking-[0.25em]">
+          <span className="text-[10px] sm:text-[11px] font-mono font-bold text-white/60 uppercase tracking-[0.2em] sm:tracking-[0.25em]">
             Contact
-          </h2>
+          </span>
           <span className="flex-1 h-px bg-white/10 ml-1" aria-hidden="true" />
           <span className="flex items-center gap-1.5 text-[9px] font-mono uppercase tracking-[0.2em] text-white/40">
             <span

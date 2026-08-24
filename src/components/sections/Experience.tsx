@@ -205,7 +205,7 @@ const dotVariants = {
   }),
 }
 
-const EntryCard = memo(({ exp, index, reduced }: { exp: ExperienceEntry; index: number; reduced: boolean }) => {
+const EntryCard = memo(({ exp, index }: { exp: ExperienceEntry; index: number }) => {
   const active = exp.isCurrent
   return (
     <motion.div
@@ -342,7 +342,7 @@ const EntryCard = memo(({ exp, index, reduced }: { exp: ExperienceEntry; index: 
 
 EntryCard.displayName = 'EntryCard'
 
-const PeriodBlock = memo(({ period, entries, startIndex, reduced }: { period: string; entries: ExperienceEntry[]; startIndex: number; reduced: boolean }) => (
+const PeriodBlock = memo(({ period, entries, startIndex }: { period: string; entries: ExperienceEntry[]; startIndex: number }) => (
   <div className="relative">
     <div className="relative pl-10 md:pl-14 mb-5">
       <div className="absolute left-[0.2rem] md:left-[0.2rem] top-1">
@@ -369,7 +369,7 @@ const PeriodBlock = memo(({ period, entries, startIndex, reduced }: { period: st
         />
       )}
       {entries.map((exp, i) => (
-        <EntryCard key={exp.id} exp={exp} index={startIndex + i} reduced={reduced} />
+        <EntryCard key={exp.id} exp={exp} index={startIndex + i} />
       ))}
     </div>
   </div>
@@ -411,7 +411,7 @@ export default function Experience() {
       >
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>
-            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight mb-3 text-white">
+            <h2 className="text-gradient text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight mb-3">
               Career Trajectory
             </h2>
             <p className="text-white/45 max-w-lg text-sm md:text-base leading-relaxed">
@@ -438,7 +438,7 @@ export default function Experience() {
 
           <div className="relative flex flex-col gap-10 md:gap-12">
             {blocks.map(({ period, entries, startIndex }) => (
-              <PeriodBlock key={period} period={period} entries={entries} startIndex={startIndex} reduced={reduced} />
+              <PeriodBlock key={period} period={period} entries={entries} startIndex={startIndex} />
             ))}
           </div>
         </div>

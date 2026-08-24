@@ -44,7 +44,7 @@ const techRow2 = [
 
 function TechItem({ name, Icon }: { name: string; Icon: React.ElementType | "aws" }) {
   return (
-    <div className="flex items-center gap-3 px-6 py-3 border border-white/10 rounded-none mx-2 group cursor-pointer bg-white/5 hover:bg-white/10 transition-all duration-300">
+    <div className="flex items-center gap-3 px-6 py-3 border border-white/10 rounded-none mx-2 group bg-white/5 hover:bg-white/10 transition-all duration-300">
       {Icon === "aws" ? (
         <div className="flex items-center justify-center w-5 h-5 border border-white/15 group-hover:border-white/30 transition-colors duration-300">
           <span className="font-mono text-[7px] font-bold text-white/85 group-hover:text-white tracking-tight leading-none">
@@ -72,13 +72,16 @@ function MarqueeRow({ items, direction = 'left' }: { items: typeof techRow1; dir
         className={`flex ${animationClass}`}
         style={{ width: 'max-content', willChange: 'transform', backfaceVisibility: 'hidden' }}
       >
-        {[0, 1, 2, 3].map((copy) =>
-          items.map((tech, i) => (
-            <div key={`${copy}-${tech.name}-${i}`} className="flex-shrink-0">
-              <TechItem {...tech} />
-            </div>
-          ))
-        )}
+        {/* Copies after the first are pure loop padding — hidden from assistive tech */}
+        {[0, 1, 2, 3].map((copy) => (
+          <div key={copy} aria-hidden={copy > 0 || undefined} className="flex">
+            {items.map((tech, i) => (
+              <div key={`${tech.name}-${i}`} className="flex-shrink-0">
+                <TechItem {...tech} />
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
       <div className="absolute inset-0 pointer-events-none bg-linear-to-r from-background via-transparent to-background z-10" />
     </div>
@@ -96,7 +99,7 @@ export default function TechStack() {
           viewport={{ once: true }}
           className="text-center"
         >
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">Tech Stack</h2>
+          <h2 className="text-gradient text-3xl md:text-5xl font-bold mb-4">Tech Stack</h2>
           <p className="text-white/50 max-w-xl mx-auto">
             I leverage the most powerful tools in the industry to build robust applications.
           </p>

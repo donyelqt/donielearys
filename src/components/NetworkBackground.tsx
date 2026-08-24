@@ -125,14 +125,12 @@ const AnimatedNode = ({ node }: { node: typeof nodes[0] }) => {
 }
 
 export default function NetworkBackground() {
-  const prefersReducedMotion = useReducedMotion()
-
   return (
-    <div 
-      className="absolute inset-0 overflow-hidden pointer-events-none -z-10" 
+    <div
+      className="absolute inset-0 overflow-hidden pointer-events-none -z-10"
       style={{ opacity: 0.3 }}
     >
-      <svg width="100%" height="100%" className="absolute inset-0">
+      <svg aria-hidden="true" focusable="false" width="100%" height="100%" className="absolute inset-0">
         <defs>
           <radialGradient id="nodeGradient" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="white" stopOpacity="1" />

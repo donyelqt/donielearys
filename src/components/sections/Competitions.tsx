@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { Award, BadgeCheck, BookOpen, FileBadge, GraduationCap, Rocket, Shield, Trophy, Medal, Star, Zap } from 'lucide-react'
+import { Award, BadgeCheck, Medal, Rocket, Shield, Star, Trophy, Zap } from 'lucide-react'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -123,7 +123,7 @@ export default function Competitions() {
         viewport={{ once: true, amount: 0.1 }}
         className="max-w-7xl mx-auto mb-12"
       >
-        <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-4">Featured Competitions & Achievements</motion.h2>
+        <motion.h2 variants={itemVariants} className="text-gradient text-4xl md:text-5xl font-bold mb-4">Featured Competitions & Achievements</motion.h2>
         <motion.p variants={itemVariants} className="text-white/50 max-w-xl">
           Featured recognition, rankings, and achievements in AI, cloud, and software development.
         </motion.p>

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect, useCallback, useRef, useMemo } from "react"
+import React, { useState, useEffect, useCallback, useRef } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 
 /* Boot sequence lines */
@@ -35,27 +35,26 @@ const asciiLogo = `
 ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═╝╚══════╝╚══════╝╚══════╝         ╚═════╝  ╚════╝  ╚═════╝  ╚══════╝
 `
 
-/* Timing */
-const LINE_GAP = 220
-const PROGRESS_MS = 3500
-const HOLD_AFTER_BOOT = 1000
+/* Timing — total runtime kept under ~2.5s; skippable at any moment */
+const LINE_GAP = 150
+const PROGRESS_MS = 2200
+const HOLD_AFTER_BOOT = 500
 const CURTAIN_MS = 0.7
 const CURTAIN_EASE: [number, number, number, number] = [0.76, 0, 0.24, 1]
 
-/* ProgressBar */
+/* ProgressBar — fills via transform scale, not layout-animating width */
 function ProgressBar({ prefersReducedMotion }: { prefersReducedMotion: boolean | null }) {
   return (
     <div className="w-full h-[2px] bg-white/10 relative overflow-hidden">
       <motion.div
-        className="absolute inset-y-0 left-0 bg-gradient-to-r from-white/40 via-white to-white/40"
-        initial={{ width: "0%" }}
-        animate={{ width: "100%" }}
+        className="absolute inset-y-0 left-0 w-full origin-left bg-linear-to-r from-white/40 via-white to-white/40"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
         transition={
           prefersReducedMotion
             ? { duration: 0 }
             : { duration: PROGRESS_MS / 1000, ease: "easeInOut" }
         }
-        style={{ willChange: "width" }}
       />
     </div>
   )
@@ -72,12 +71,14 @@ export default function Preloader() {
   const [showCursor, setShowCursor] = useState(true)
   const prefersReducedMotion = useReducedMotion()
   const rafRef = useRef<number>(0)
+  const skippedRef = useRef(false)
 
-  /* Blinking cursor */
+  /* Blinking cursor — stops once the sequence completes */
   useEffect(() => {
+    if (done) return
     const id = window.setInterval(() => setShowCursor((p) => !p), 500)
     return () => clearInterval(id)
-  }, [])
+  }, [done])
 
   /* Add one boot line */
   const addLine = useCallback((idx: number) => {
@@ -88,28 +89,23 @@ export default function Preloader() {
     setVisibleLines((prev) => [...prev, bootSequence[idx]])
   }, [])
 
-  /* Kick off staggered boot sequence */
+  /* Kick off staggered boot sequence. All state updates happen inside timer
+     callbacks (never synchronously in the effect body); the reduced-motion
+     path simply collapses every delay to zero. */
   useEffect(() => {
-    if (prefersReducedMotion) {
-      setVisibleLines(bootSequence)
-      setShowLogo(true)
-      setShowProgress(true)
-      setDone(true)
-      return
-    }
-
-    const tmLogo = window.setTimeout(() => setShowLogo(true), 200)
-    const tmProg = window.setTimeout(() => setShowProgress(true), 700)
+    const reduced = !!prefersReducedMotion
+    const tmLogo = window.setTimeout(() => setShowLogo(true), reduced ? 0 : 200)
+    const tmProg = window.setTimeout(() => setShowProgress(true), reduced ? 0 : 700)
 
     let idx = 0
     const tick = () => {
-        addLine(idx)
-        idx++
-        if (idx <= bootSequence.length) {
-          rafRef.current = window.setTimeout(tick, LINE_GAP)
-        }
+      addLine(idx)
+      idx++
+      if (idx <= bootSequence.length) {
+        rafRef.current = window.setTimeout(tick, reduced ? 0 : LINE_GAP)
       }
-    rafRef.current = window.setTimeout(tick, 700)
+    }
+    rafRef.current = window.setTimeout(tick, reduced ? 0 : 700)
 
     return () => {
       clearTimeout(rafRef.current)
@@ -134,12 +130,32 @@ export default function Preloader() {
     return () => window.clearTimeout(t)
   }, [exit, prefersReducedMotion])
 
-  const rendered = useMemo(() => visibleLines, [visibleLines])
+  /* Skip: any key or pointer press jumps straight to the curtain exit. */
+  useEffect(() => {
+    const skip = () => {
+      if (skippedRef.current || exit) return
+      skippedRef.current = true
+      clearTimeout(rafRef.current)
+      setShowLogo(true)
+      setDone(true)
+      setExit(true)
+    }
+    window.addEventListener("keydown", skip)
+    window.addEventListener("pointerdown", skip)
+    return () => {
+      window.removeEventListener("keydown", skip)
+      window.removeEventListener("pointerdown", skip)
+    }
+  }, [exit])
 
   if (hidden) return null
 
   return (
     <div className="fixed inset-0 z-[9999] overflow-hidden" aria-hidden={hidden} role="presentation">
+      <span className="sr-only" role="status">
+        {done ? "Portfolio ready" : "Loading portfolio"}
+      </span>
+
       {/* Content layer */}
       <motion.div
         className="absolute inset-0 flex flex-col items-center justify-center bg-black"
@@ -176,7 +192,7 @@ export default function Preloader() {
               </span>
             </div>
             <div className="min-h-[200px] sm:min-h-[220px] max-h-[260px] overflow-y-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {rendered.map((line, i) => {
+              {visibleLines.map((line, i) => {
                 if (line.type === "divider") return <div key={i} className="h-2" />
                 return (
                   <motion.div
@@ -290,8 +306,8 @@ export default function Preloader() {
       <div className="absolute bottom-4 left-6 text-[8px] font-mono text-white/15 uppercase tracking-widest select-none z-0">
         DonieleOS v2.6
       </div>
-      <div className="absolute bottom-4 right-6 text-[8px] font-mono text-white/15 uppercase tracking-widest select-none z-0">
-        {prefersReducedMotion ? "1 step" : "7 stages"}
+      <div className="absolute bottom-4 right-6 text-[9px] font-mono text-white/25 uppercase tracking-widest select-none z-0">
+        {prefersReducedMotion ? "loading" : "click or press any key to skip"}
       </div>
     </div>
   )

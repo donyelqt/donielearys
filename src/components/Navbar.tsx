@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
@@ -32,49 +32,24 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState('Home')
   const [indicatorPos, setIndicatorPos] = useState({ left: 0, width: 0 })
   const navRef = useRef<HTMLDivElement>(null)
+  const toggleRef = useRef<HTMLButtonElement>(null)
+  const mobilePanelRef = useRef<HTMLDivElement>(null)
 
+  /* One rAF-throttled scroll listener drives both the backdrop state and
+     active-section detection (previously two unthrottled listeners doing
+     layout reads on every scroll event). */
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
-    }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    let rafId = 0
 
-  useEffect(() => {
-    const updateIndicator = () => {
-      const activeIndex = navItems.findIndex(item => item.name === activeSection)
-      if (navRef.current && activeIndex >= 0) {
-        const navLinks = navRef.current.querySelectorAll('.nav-link')
-        const activeLink = navLinks[activeIndex] as HTMLElement
-        if (activeLink) {
-          const parentRect = navRef.current.getBoundingClientRect()
-          const linkRect = activeLink.getBoundingClientRect()
-          setIndicatorPos({
-            left: linkRect.left - parentRect.left,
-            width: linkRect.width
-          })
-        }
-      }
-    }
-
-    updateIndicator()
-    window.addEventListener('resize', updateIndicator)
-    return () => window.removeEventListener('resize', updateIndicator)
-  }, [activeSection])
-
-  useEffect(() => {
-    const getSectionActiveFromScroll = () => {
+    const measure = () => {
+      rafId = 0
       const scrollY = window.scrollY
-      const innerHeight = window.innerHeight
-      const heroEl = document.querySelector('section')
+      setScrolled(scrollY > 20)
 
-      if (heroEl) {
-        const heroBottom = heroEl.offsetTop + heroEl.offsetHeight
-        if (scrollY < heroBottom - 100) {
-          setActiveSection('Home')
-          return
-        }
+      const heroEl = document.querySelector('section')
+      if (heroEl && scrollY < heroEl.offsetTop + heroEl.offsetHeight - 100) {
+        setActiveSection('Home')
+        return
       }
 
       const sectionElements = navItems
@@ -87,23 +62,92 @@ export default function Navbar() {
 
       if (sectionElements.length === 0) return
 
-      const threshold = scrollY + innerHeight * 0.5
+      const threshold = scrollY + window.innerHeight * 0.5
       let found = 'Home'
-
-      for (let i = 0; i < sectionElements.length; i++) {
-        const sectionTop = sectionElements[i].el.offsetTop
-        if (threshold >= sectionTop) {
-          found = sectionElements[i].name
-        }
+      for (const section of sectionElements) {
+        if (threshold >= section.el.offsetTop) found = section.name
       }
-
       setActiveSection(found)
     }
 
-    getSectionActiveFromScroll()
-    window.addEventListener('scroll', getSectionActiveFromScroll, { passive: true })
-    return () => window.removeEventListener('scroll', getSectionActiveFromScroll)
+    const onScroll = () => {
+      if (!rafId) rafId = requestAnimationFrame(measure)
+    }
+
+    measure()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
   }, [])
+
+  useEffect(() => {
+    const updateIndicator = () => {
+      const activeIndex = navItems.findIndex(item => item.name === activeSection)
+      if (navRef.current && activeIndex >= 0) {
+        const navLinks = navRef.current.querySelectorAll('.nav-link')
+        const activeLink = navLinks[activeIndex] as HTMLElement | undefined
+        if (activeLink) {
+          const parentRect = navRef.current.getBoundingClientRect()
+          const linkRect = activeLink.getBoundingClientRect()
+          setIndicatorPos({
+            left: linkRect.left - parentRect.left,
+            width: linkRect.width
+          })
+        }
+      }
+    }
+
+    updateIndicator()
+    /* Re-measure once webfonts settle — link widths shift after font swap. */
+    document.fonts?.ready.then(updateIndicator)
+    window.addEventListener('resize', updateIndicator)
+    return () => window.removeEventListener('resize', updateIndicator)
+  }, [activeSection])
+
+  /* Mobile menu behavior: focus moves in, Tab cycles inside, Escape closes,
+     body scroll locks, and focus returns to the toggle on close. */
+  useEffect(() => {
+    if (!mobileMenuOpen) return
+
+    const previouslyFocused = document.activeElement as HTMLElement | null
+    const panel = mobilePanelRef.current
+    panel?.querySelector<HTMLElement>('a[href], button')?.focus()
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        setMobileMenuOpen(false)
+        return
+      }
+      if (e.key === 'Tab' && panel) {
+        const focusables = Array.from(
+          panel.querySelectorAll<HTMLElement>('a[href], button')
+        )
+        if (focusables.length === 0) return
+        const first = focusables[0]
+        const last = focusables[focusables.length - 1]
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      document.body.style.overflow = previousOverflow
+      previouslyFocused?.focus?.()
+    }
+  }, [mobileMenuOpen])
 
   const handleLinkClick = () => {
     setMobileMenuOpen(false)
@@ -121,6 +165,7 @@ export default function Navbar() {
         <motion.nav
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
+          aria-label="Primary"
           className={cn(
             "flex items-center justify-between w-full max-w-7xl px-6 py-4 transition-all duration-300",
             scrolled || mobileMenuOpen
@@ -137,6 +182,7 @@ export default function Navbar() {
                   <Link
                     key={item.name}
                     href={item.href}
+                    aria-current={isActive ? 'location' : undefined}
                     className={cn(
                       "nav-link px-5 py-2.5 text-[10px] font-mono uppercase tracking-widest transition-colors duration-200 relative z-10",
                       isActive ? "text-white" : "text-foreground/60 hover:text-foreground/80"
@@ -148,7 +194,7 @@ export default function Navbar() {
               })}
 
               <motion.div
-                className="absolute bottom-0 h-[1.5px] bg-gradient-to-r from-white/60 via-white to-white/60"
+                className="absolute bottom-0 h-[1.5px] bg-linear-to-r from-white/60 via-white to-white/60"
                 style={{
                   left: indicatorPos.left,
                   width: indicatorPos.width,
@@ -173,7 +219,9 @@ export default function Navbar() {
             </Link>
 
             <button
-              className="lg:hidden p-2 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm"
+              ref={toggleRef}
+              type="button"
+              className="lg:hidden p-2.5 -m-1 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
@@ -187,6 +235,10 @@ export default function Navbar() {
             {mobileMenuOpen && (
               <motion.div
                 id="mobile-menu"
+                ref={mobilePanelRef}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Site navigation"
                 initial={{ opacity: 0, scaleY: 0 }}
                 animate={{ opacity: 1, scaleY: 1 }}
                 exit={{ opacity: 0, scaleY: 0 }}
@@ -202,6 +254,7 @@ export default function Navbar() {
                         key={item.name}
                         href={item.href}
                         onClick={handleLinkClick}
+                        aria-current={isActive ? 'location' : undefined}
                         className={cn(
                           "px-5 py-3.5 text-base font-mono uppercase tracking-widest transition-colors relative",
                           isActive ? "text-white" : "text-foreground/60 hover:text-white"
@@ -210,7 +263,7 @@ export default function Navbar() {
                         {item.name}
                         {isActive && (
                           <motion.div
-                            className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-white/80 via-white to-white/80 rounded-full"
+                            className="absolute left-0 top-0 bottom-0 w-[2px] bg-linear-to-b from-white/80 via-white to-white/80 rounded-full"
                             initial={{ scaleY: 0 }}
                             animate={{ scaleY: 1 }}
                             exit={{ scaleY: 0 }}

@@ -13,10 +13,6 @@ const LinkedinIcon = () => (
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
 )
 
-const TwitterIcon = () => (
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
-)
-
 const MOTION_SPRING = { type: "spring", stiffness: 400, damping: 25 } as const
 
 const MagneticButton = ({
@@ -66,6 +62,7 @@ const MagneticButton = ({
   return (
     <motion.button
       ref={ref}
+      type="button"
       style={{ x: motionX, y: motionY }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.97 }}
@@ -113,19 +110,24 @@ const achievements = [
 const AchievementDropdown = () => {
   const [open, setOpen] = useState(false)
   const [iconIndex, setIconIndex] = useState(0)
+  const prefersReducedMotion = useReducedMotion()
   const primary = achievements[0]
 
   useEffect(() => {
+    if (prefersReducedMotion) return
     const interval = setInterval(() => {
       setIconIndex(i => (i + 1) % 2)
     }, 3000)
     return () => clearInterval(interval)
-  }, [])
+  }, [prefersReducedMotion])
 
   return (
     <div className="relative w-full max-w-md mx-auto mt-2">
       <button
+        type="button"
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        aria-controls="achievements-panel"
         className="w-full flex items-center gap-3 px-4 py-3 bg-red-900/20 border border-red-600/40 hover:border-red-500/60 text-left transition-all duration-300 shadow-[0_0_20px_-6px_rgba(220,38,38,0.12)] hover:shadow-[0_0_30px_-6px_rgba(220,38,38,0.2)] group"
       >
         <div className="p-2 bg-red-950/60 border border-red-600/40 shrink-0 relative w-8 h-8 flex items-center justify-center">
@@ -170,6 +172,7 @@ const AchievementDropdown = () => {
       <AnimatePresence>
         {open && (
           <motion.div
+            id="achievements-panel"
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
@@ -297,7 +300,7 @@ className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x
           href="https://github.com/donyelqt"
           target="_blank"
           rel="noopener noreferrer"
-          className="w-6 h-6 text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm"
+          className="flex h-11 w-11 -m-2.5 items-center justify-center text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm"
           aria-label="GitHub Profile"
         >
           <GithubIcon />
@@ -307,20 +310,10 @@ className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x
           href="https://linkedin.com/in/donielearysantonio"
           target="_blank"
           rel="noopener noreferrer"
-          className="w-6 h-6 text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm"
+          className="flex h-11 w-11 -m-2.5 items-center justify-center text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm"
           aria-label="LinkedIn Profile"
         >
           <LinkedinIcon />
-        </motion.a>
-        <motion.a
-          whileHover={{ scale: 1.15 }}
-          href="#"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-6 h-6 text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm"
-          aria-label="Twitter Profile"
-        >
-          <TwitterIcon />
         </motion.a>
       </motion.div>
     </section>

@@ -1,8 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  /* Small-phone step (used by ASCII logo / project marks). Default scale starts at sm. */
+  --breakpoint-xs: 26rem;
+
+  /* hsl() wrapper required: --background/--foreground store raw HSL parts,
+     e.g. "240 10% 3.9%". Unwrapped, every utility reading these tokens
+     (text-foreground, bg-background, from-background…) computed an invalid
+     color and silently fell back to black. */
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   
@@ -53,6 +60,8 @@
     --radius: 0rem;
     --grid-major: rgba(0, 0, 0, 0.04);
     --grid-minor: rgba(0, 0, 0, 0.08);
+    /* Legacy comma syntax so both hsl(var(--crimson)) and hsla(var(--crimson), a) resolve */
+    --crimson: 348, 82%, 58%;
   }
 
   .dark {
@@ -77,6 +86,7 @@
     --ring: 240 4.9% 83.9%;
     --grid-major: rgba(255, 255, 255, 0.03);
     --grid-minor: rgba(255, 255, 255, 0.08);
+    --crimson: 348, 82%, 58%;
   }
 }
 
@@ -326,5 +336,38 @@
     }
     .crafting-overlay {
       animation-duration: 3s;
+    }
+  }
+
+  /* =========================================================================
+     REDUCED MOTION
+     Targeted stops for every infinite CSS animation. Static fallbacks keep
+     state legible: marquee rows freeze on their first copy, the crafting
+     progress bars settle full-width, ambient pulses rest at base opacity.
+     Framer-motion entrances are handled per-component via useReducedMotion.
+     ========================================================================= */
+  @media (prefers-reduced-motion: reduce) {
+    .grid-pattern::before {
+      animation: none;
+    }
+    .animate-marquee-left,
+    .animate-marquee-right {
+      animation: none;
+    }
+    .crafting-fade-1,
+    .crafting-fade-2,
+    .crafting-fade-3,
+    .crafting-progress-bar,
+    .crafting-overlay {
+      animation: none;
+      will-change: auto;
+    }
+    .crafting-progress-bar {
+      width: 100%;
+    }
+    .animate-ping,
+    .animate-pulse,
+    .animate-spin {
+      animation: none;
     }
   }

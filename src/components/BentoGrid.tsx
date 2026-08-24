@@ -30,7 +30,7 @@ export const BentoGridItem = memo(({ className, title, description, header, icon
       whileHover={{ scale: 1.02, y: -4 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
       className={cn(
-        "flex flex-col h-full overflow-hidden rounded-none group/bento shadow-input shadow-black/40 dark:shadow-none",
+        "flex flex-col h-full overflow-hidden rounded-none group/bento shadow-black/40 dark:shadow-none",
         "p-4 sm:p-5 lg:p-6",
         "dark:bg-black dark:border-white/[0.1] bg-white/5 border border-white/10",
         "bento-item",

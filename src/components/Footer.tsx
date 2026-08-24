@@ -10,7 +10,6 @@ export default function Footer() {
         </div>
         
         <div className="flex gap-8 text-sm text-white/40 font-medium">
-          <a href="#" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Twitter</a>
           <a href="https://github.com/donyelqt" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
           <a href="https://linkedin.com/in/donielearysantonio" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
         </div>

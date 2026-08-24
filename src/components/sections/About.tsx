@@ -83,7 +83,7 @@ export default function About() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <motion.h2 className="text-3xl md:text-5xl font-bold mb-4">About</motion.h2>
+          <motion.h2 className="text-gradient text-3xl md:text-5xl font-bold mb-4">About</motion.h2>
           <motion.p className="text-white/50 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
             Self-taught full-stack engineer crafting agentic AI systems and robust infrastructure.
             From Baguio to global impact—one problem at a time.
@@ -97,8 +97,8 @@ export default function About() {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto relative"
         >
-          <div className="macos-terminal rounded-2xl overflow-hidden shadow-2xl border border-white/10 mr-0 lg:mr-12">
-            <div className="terminal-header flex items-center gap-3 px-4 py-3 bg-[#0f0f0f] border-b border-white/5">
+          <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/10 mr-0 lg:mr-12">
+            <div className="flex items-center gap-3 px-4 py-3 bg-[#0f0f0f] border-b border-white/5">
               <div className="flex gap-2">
                 <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
                 <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />

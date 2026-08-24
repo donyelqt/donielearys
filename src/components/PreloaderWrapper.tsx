@@ -1,25 +1,29 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useEffect, useSyncExternalStore } from "react"
 import Preloader from "./Preloader"
 
 /**
  * Thin client-only guard that shows the Preloader exactly once per
  * browser-tab session (sessionStorage). Subsequent client navigations
- * skip it entirely.
+ * skip it entirely. Snapshot reads keep this free of hydration mismatches
+ * and of setState-inside-effect cascades.
  */
-export default function PreloaderWrapper({ children }: { children: React.ReactNode }) {
-  const [show, setShow] = useState(true)
-  const [mounted, setMounted] = useState(false)
+const SEEN_KEY = "doniele_preloader_seen"
 
+const emptySubscribe = () => () => {}
+const getMounted = () => true
+const getMountedServer = () => false
+const getSeen = () => sessionStorage.getItem(SEEN_KEY) === "1"
+const getSeenServer = () => false
+
+export default function PreloaderWrapper({ children }: { children: React.ReactNode }) {
+  const mounted = useSyncExternalStore(emptySubscribe, getMounted, getMountedServer)
+  const seen = useSyncExternalStore(emptySubscribe, getSeen, getSeenServer)
+
+  /* Side-effect only: mark the preloader as shown for this tab session. */
   useEffect(() => {
-    setMounted(true)
-    const seen = sessionStorage.getItem("doniele_preloader_seen")
-    if (seen === "1") {
-      setShow(false)
-      return
-    }
-    sessionStorage.setItem("doniele_preloader_seen", "1")
+    sessionStorage.setItem(SEEN_KEY, "1")
   }, [])
 
   /* Before first hydration / mount, render nothing to match SSR */
@@ -35,7 +39,7 @@ export default function PreloaderWrapper({ children }: { children: React.ReactNo
 
   return (
     <>
-      {show && <Preloader />}
+      {!seen && <Preloader />}
       {children}
     </>
   )
