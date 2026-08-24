@@ -157,7 +157,7 @@ const experiences: ExperienceEntry[] = [
     date: "Jun 2026 - Present",
     periodLabel: "2026",
     isCurrent: true,
-    description: "full-stack, cloud infrastructure, & AI for enterprise banking solutions\n\nled technical architecture debriefs for a 30+ engineering intern cohort, translating monolithic vs. microservices architectures and REST APIs into production engineering practices\n\nrecognized by an Advanced Application Engineering Manager for technical communication and real-world software architecture experience\n\nreceived individualized recognition as the only intern personally encouraged by an Advanced Application Engineering Manager to pursue a full-time software engineer role before graduation and to mentor fellow Cloud Elite interns during debrief",
+    description: "led team of 8 members owning 100% of product direction, full-stack, infrastructure, & AI agent for enterprise banking solutions with 7 microservices & zero trust security principles\n\nled technical architecture debriefs for a 30+ engineering intern cohort, translating monolithic vs. microservices architectures and REST APIs into production engineering practices, giving 60%+ of the cohort early exposure to production-oriented system architecture\n\nrecognized by an Advanced Application Engineering Manager for technical communication and real-world software architecture experience\n\nreceived individualized recognition as the only intern personally encouraged by an Advanced Application Engineering Manager to pursue a full-time software engineering role before graduation and to mentor fellow Cloud Elite interns during debrief",
     icon: <RocketIcon />,
     color: "#E84D4D",
   },
@@ -176,10 +176,12 @@ const endYear = (date: string) => {
   return n ? parseInt(n[1]) : 9999
 }
 
+/* Reverse-chronological: newest start year first, then newest end year
+   (Present = 9999 sorts to the top within its year). */
 const sortedExperiences = [...experiences].sort((a, b) => {
   const ay = startYear(a.date), by = startYear(b.date)
-  if (ay !== by) return ay - by
-  return endYear(a.date) - endYear(b.date)
+  if (ay !== by) return by - ay
+  return endYear(b.date) - endYear(a.date)
 })
 
 const TRAJECTORY_COLOR = "hsl(var(--crimson))"
@@ -381,7 +383,7 @@ export default function Experience() {
   const prefersReducedMotion = useReducedMotion()
   const reduced = !!prefersReducedMotion
 
-  const periods = ['2023', '2024', '2025', '2026'] as const
+  const periods = ['2026', '2025', '2024', '2023'] as const
   const groupedByPeriod: Record<string, ExperienceEntry[]> = {}
   for (const p of periods) groupedByPeriod[p] = []
   for (const exp of sortedExperiences) {
