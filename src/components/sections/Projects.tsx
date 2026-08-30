@@ -24,10 +24,10 @@ const itemVariants = {
 }
 
 const statusText: Record<string, string> = {
-  'Active Development': 'text-violet-400/80',
-  'Live': 'text-green-400/80',
-  'Beta Testing': 'text-amber-400/80',
-  'Research Production': 'text-cyan-400/80',
+  'Active Development': 'text-crimson',
+  'Live': 'text-crimson',
+  'Beta Testing': 'text-crimson',
+  'Research Production': 'text-crimson',
 }
 
 const projects = [
@@ -36,13 +36,13 @@ const projects = [
     status: "Active Development",
     description: "AI-powered autonomous infrastructure platform for edge datacenters and modern compute. Features real-time telemetry, self-healing remediation, and operator-grade reporting. Built for defense and telecom operations with production deployments across active facilities.",
     header: (
-      <div className="relative flex flex-1 w-full h-full min-h-[4rem] sm:min-h-[6rem] rounded-none bg-linear-to-br from-violet-900/50 via-neutral-900 to-indigo-900/50 border border-white/5 overflow-hidden">
+      <div className="relative flex flex-1 w-full h-full min-h-[4rem] sm:min-h-[6rem] rounded-none bg-linear-to-br from-[var(--g1)] via-[var(--g2)] to-[var(--g3)] dark:from-[var(--g1)] dark:via-[var(--g2)] dark:to-[var(--g3)] border border-white/5 overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-white/20">AV</span>
         </div>
       </div>
     ),
-    icon: <Server className="h-4 w-4 text-violet-400" />,
+    icon: <Server className="h-4 w-4 text-crimson" />,
     className: "sm:col-span-2",
   },
   {
@@ -50,13 +50,13 @@ const projects = [
     status: "Live",
     description: "High-converting waitlist landing page for Tarana AI's early access program featuring email capture, referral tracking, and real-time waitlist position updates. 150+ registered users on waitlist.",
     header: (
-      <div className="relative flex flex-1 w-full h-full min-h-[4rem] sm:min-h-[5rem] rounded-none bg-linear-to-br from-amber-900/50 via-neutral-900 to-orange-900/50 border border-white/5 overflow-hidden">
+      <div className="relative flex flex-1 w-full h-full min-h-[4rem] sm:min-h-[5rem] rounded-none bg-linear-to-br from-[var(--g1)] via-[var(--g2)] to-[var(--g3)] dark:from-[var(--g1)] dark:via-[var(--g2)] dark:to-[var(--g3)] border border-white/5 overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-white/20">TW</span>
         </div>
       </div>
     ),
-    icon: <Users className="h-4 w-4 text-amber-400" />,
+    icon: <Users className="h-4 w-4 text-crimson" />,
     className: "sm:col-span-1",
   },
   {
@@ -64,13 +64,13 @@ const projects = [
     status: "Beta Testing",
     description: "Enterprise-grade Agentic AI RAG travel platform for Baguio City that generates real-time, personalized itineraries using multi-agent AI, vector embeddings, live traffic/weather data. Supported by LGU Baguio City and deployed with 100+ beta users.",
     header: (
-      <div className="relative flex flex-1 w-full h-full min-h-[4rem] sm:min-h-[5rem] rounded-none bg-linear-to-br from-pink-900/50 via-neutral-900 to-rose-900/50 border border-white/5 overflow-hidden">
+      <div className="relative flex flex-1 w-full h-full min-h-[4rem] sm:min-h-[5rem] rounded-none bg-linear-to-br from-[var(--g1)] via-[var(--g2)] to-[var(--g3)] dark:from-[var(--g1)] dark:via-[var(--g2)] dark:to-[var(--g3)] border border-white/5 overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-white/20">TN</span>
         </div>
       </div>
     ),
-    icon: <Compass className="h-4 w-4 text-pink-400" />,
+    icon: <Compass className="h-4 w-4 text-crimson" />,
     className: "sm:col-span-1",
   },
 {
@@ -78,13 +78,13 @@ const projects = [
     status: "Research Production",
     description: "Neuro-symbolic multi-agent civic social listening system with 18 autonomous agents across 7 pipeline nodes, featuring self-learning cyclic RAG, 5-signal credibility scoring, temporal-aware queries, and NLI-based claim verification for truth discovery.",
     header: (
-      <div className="relative flex flex-1 w-full h-full min-h-[4rem] sm:min-h-[6rem] rounded-none bg-linear-to-br from-cyan-900/50 via-neutral-900 to-teal-900/50 border border-white/5 overflow-hidden">
+      <div className="relative flex flex-1 w-full h-full min-h-[4rem] sm:min-h-[6rem] rounded-none bg-linear-to-br from-[var(--g1)] via-[var(--g2)] to-[var(--g3)] dark:from-[var(--g1)] dark:via-[var(--g2)] dark:to-[var(--g3)] border border-white/5 overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-white/20">AG</span>
         </div>
       </div>
     ),
-    icon: <Brain className="h-4 w-4 text-cyan-400" />,
+    icon: <Brain className="h-4 w-4 text-crimson" />,
     className: "sm:col-span-2",
   },
 ]
@@ -102,7 +102,7 @@ export default function Projects() {
         className="max-w-7xl mx-auto mb-8 sm:mb-12"
       >
         <motion.h2 variants={itemVariants} className="text-gradient text-2xl sm:text-3xl md:text-5xl font-bold mb-4">Featured Projects</motion.h2>
-        <motion.p variants={itemVariants} className="text-white/50 max-w-xl">
+        <motion.p variants={itemVariants} className="text-foreground/50 max-w-xl">
           A selection of my best work, ranging from local to global innovation of AI systems & applications. Focused on real-world impact, production-readiness, and cutting-edge research.
         </motion.p>
       </motion.div>
