@@ -3,6 +3,7 @@
 import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Quote, BadgeCheck } from 'lucide-react'
+import { SectionHeader } from '@/components/SectionHeader'
 
 const testimonials = [
   {
@@ -50,14 +51,6 @@ const testimonials = [
       },
 ]
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.2 },
-  },
-}
-
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
@@ -68,27 +61,19 @@ export default function Testimonials() {
 
   return (
     <section id="testimonials" className="py-20 px-4">
-      <motion.div
-        variants={prefersReducedMotion ? {} : containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        className="max-w-7xl mx-auto mb-12"
-      >
-        <motion.h2
-          variants={itemVariants}
-          className="text-gradient text-3xl md:text-5xl font-bold mb-4"
-        >
-          Validation
-        </motion.h2>
+      <SectionHeader index="05" title="Validation" eyebrow="Validation" meta="ENDORSED" />
+      <div className="max-w-7xl mx-auto">
         <motion.p
-          variants={itemVariants}
-          className="text-foreground/50 max-w-xl"
+          variants={prefersReducedMotion ? {} : itemVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          className="-mt-4 mb-12 text-foreground/50 max-w-xl"
         >
           Recognition from collaborators, mentors, and senior engineers who
           reviewed the work firsthand.
         </motion.p>
-      </motion.div>
+      </div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
         {testimonials.map((t, i) => (

@@ -41,35 +41,36 @@
 
 @layer base {
   :root {
+    --terminal-green: #4af626;
     --radius: 0rem;
-    /* Light — strict black / white / red editorial system. */
+    /* Light — original cool-neutral slate system. */
     --background: 0 0% 100%;
-    --foreground: 0 0% 7%;
+    --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 7%;
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 7%;
-    --primary: 0 0% 7%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 95%;
-    --secondary-foreground: 0 0% 7%;
-    --muted: 0 0% 95%;
-    --muted-foreground: 0 0% 40%;
-    --accent: 0 0% 95%;
-    --accent-foreground: 0 0% 7%;
-    --destructive: 0 84% 55%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 88%;
-    --input: 0 0% 88%;
-    --ring: 0 0% 7%;
-    --grid-major: rgba(0, 0, 0, 0.05);
-    --grid-minor: rgba(0, 0, 0, 0.09);
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --grid-major: rgba(0, 0, 0, 0.04);
+    --grid-minor: rgba(0, 0, 0, 0.08);
     --crimson: 0 84% 55%;
-    /* Light-mode accents */
     --indicator: hsl(0 84% 55%);
     --g1: rgb(10 10 10 / 0.6);
     --g2: rgb(0 0 0 / 0.9);
     --g3: rgb(225 0 35 / 0.6);
+    --scanline: rgba(0, 0, 0, 0.045);
   }
 
   .dark {
@@ -100,10 +101,25 @@
     --g1: rgb(12 12 12 / 0.55);
     --g2: rgb(0 0 0 / 0.92);
     --g3: rgb(225 0 35 / 0.55);
+    /* CRT scanline wash — faint white lines over the dark substrate (barely-there glow). */
+    --scanline: rgba(255, 255, 255, 0.028);
+  }
+
+  /* Dark mode: drop the circular vignette so the grid runs full-bleed
+     instead of fading into a center circle. Light mode keeps the mask. */
+  .dark .grid-pattern {
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
   }
 }
 
 @layer base {
+  /* Absolute rejection of border-radius — every corner is 90deg, mechanically.
+     Forced globally so no stray rounded-* utility leaks soft geometry. */
+  *:not(.apple-window):not(.apple-portrait):not(.traffic-light) {
+    border-radius: 0 !important;
+  }
+
   * {
     border-color: var(--color-border);
   }
@@ -144,8 +160,52 @@
     @apply bg-background/70 backdrop-blur-md border border-border;
   }
 
+  /* Gradients are prohibited in the brutalist system. Flat solid foreground
+     stands in for the old text-gradient — maximum contrast, zero slop. */
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-br from-foreground via-foreground/80 to-foreground/50;
+    color: hsl(var(--foreground));
+  }
+
+  /* One red word inside an otherwise-black macro heading. The ONLY accent. */
+  .text-accent {
+    color: hsl(var(--crimson));
+  }
+
+  /* Macro-typography — extreme scale + negative tracking per the discipline.
+     clamp() only, no fixed huge sizes that break small viewports. */
+  .display-mega {
+    font-size: clamp(1.95rem, 7.2vw, 5.7rem);
+    line-height: 0.82;
+    letter-spacing: -0.05em;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+  .display-xl {
+    font-size: clamp(1.8rem, 5.5vw, 4.25rem);
+    line-height: 0.86;
+    letter-spacing: -0.04em;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  /* Micro-typography label — monospace, wide tracking, uppercase. */
+  .tactical-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: hsl(var(--foreground) / 0.55);
+  }
+
+  /* Visible compartmentalization: 1px razor dividers via grid gap on a
+     contrasting parent background (engineering directive #1). */
+  .grid-divider {
+    display: grid;
+    gap: 1px;
+    background: hsl(var(--border));
+  }
+  .grid-divider > * {
+    background: hsl(var(--background));
   }
 
   .text-display {
@@ -282,6 +342,96 @@
     letter-spacing: 0;
     tab-size: 4;
   }
+
+  /* ---- TACTICAL TELEMETRY OVERLAYS --------------------------------------- */
+
+  /* CRT scanlines — horizontal electron-beam sweep simulation. Fixed, global,
+      non-interactive. Driven by --scanline (theme-aware) at very low alpha so
+      body copy keeps full contrast; this is texture, never a readability tax. */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 3px,
+      var(--scanline) 3px,
+      var(--scanline) 4px
+    );
+  }
+
+  /* Blueprint crosshair grid — faint + marks intersections, reinforcing the
+     mechanical frame. Sits behind content, above the base grid-pattern. */
+  .crosshair-grid {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -5;
+    background-image:
+      linear-gradient(to right, var(--grid-major) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-major) 1px, transparent 1px);
+    background-size: 64px 64px;
+    -webkit-mask-image: radial-gradient(circle at center, transparent 30%, black 120%);
+    mask-image: radial-gradient(circle at center, transparent 30%, black 120%);
+  }
+
+  /* Corner crop-marks — the four + registration ticks framing the viewport,
+     like a camera viewfinder / print registration target. */
+  .crop-marks::before,
+  .crop-marks::after {
+    content: '';
+    position: fixed;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+    z-index: 61;
+    border-color: hsl(var(--foreground) / 0.4);
+  }
+  .crop-marks::before {
+    top: 10px;
+    left: 10px;
+    border-top: 1px solid;
+    border-left: 1px solid;
+  }
+  .crop-marks::after {
+    bottom: 10px;
+    right: 10px;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+  }
+
+  /* Vertical barcode strip — repeating 1px bars, used as a technical asset. */
+  .barcode {
+    background-image: repeating-linear-gradient(
+      to right,
+      hsl(var(--foreground) / 0.55) 0,
+      hsl(var(--foreground) / 0.55) 1px,
+      transparent 1px,
+      transparent 3px,
+      hsl(var(--foreground) / 0.55) 3px,
+      hsl(var(--foreground) / 0.55) 4px,
+      transparent 4px,
+      transparent 7px
+    );
+  }
+
+  /* Crosshair glyph placed at grid intersections. */
+  .plus-mark {
+    font-family: var(--font-mono);
+    color: hsl(var(--foreground) / 0.35);
+    line-height: 1;
+  }
+
+  /* Hard 1px focus frame for interactive elements — no glow, no radius. */
+  .focus-hard {
+    outline: none;
+  }
+  .focus-hard:focus-visible {
+    outline: 2px solid hsl(var(--crimson));
+    outline-offset: -2px;
+  }
 }
 
   /* =========================================================================
@@ -389,3 +539,18 @@
       animation: none;
     }
   }
+
+@layer components {
+  /* Apple-terminal About variant: opt back into rounded geometry despite the
+     global square-corner rule. Placed in components layer (after base) so its
+     !important beats the base-layer !important. */
+  .apple-window {
+    border-radius: 1rem !important;
+  }
+  .apple-window .traffic-light {
+    border-radius: 9999px !important;
+  }
+  .apple-portrait {
+    border-radius: 9999px !important;
+  }
+}
