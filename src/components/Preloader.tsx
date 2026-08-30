@@ -45,9 +45,9 @@ const CURTAIN_EASE: [number, number, number, number] = [0.76, 0, 0.24, 1]
 /* ProgressBar — fills via transform scale, not layout-animating width */
 function ProgressBar({ prefersReducedMotion }: { prefersReducedMotion: boolean | null }) {
   return (
-    <div className="w-full h-[2px] bg-white/10 relative overflow-hidden">
+    <div className="w-full h-[2px] bg-foreground/10 relative overflow-hidden">
       <motion.div
-        className="absolute inset-y-0 left-0 w-full origin-left bg-linear-to-r from-white/40 via-white to-white/40"
+        className="absolute inset-y-0 left-0 w-full origin-left bg-linear-to-r from-foreground/40 via-foreground to-foreground/40"
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={
@@ -158,7 +158,7 @@ export default function Preloader() {
 
       {/* Content layer */}
       <motion.div
-        className="absolute inset-0 flex flex-col items-center justify-center bg-black"
+        className="absolute inset-0 flex flex-col items-center justify-center bg-background"
         animate={exit ? { opacity: 0, scale: 0.97 } : { opacity: 1, scale: 1 }}
         transition={exit ? { duration: 0.25, ease: "easeIn" } : { duration: 0.6, ease: "easeOut" }}
       >
@@ -170,7 +170,7 @@ export default function Preloader() {
               animate={{ opacity: 1, filter: "blur(0px)" }}
               exit={{ opacity: 0, filter: "blur(4px)" }}
               transition={{ duration: prefersReducedMotion ? 0 : 0.8, ease: "easeOut" }}
-              className="ascii-art text-white/90 text-[5px] xs:text-[6px] sm:text-[7px] md:text-[8px] leading-tight text-center select-none mb-6"
+              className="ascii-art text-foreground/90 text-[5px] xs:text-[6px] sm:text-[7px] md:text-[8px] leading-tight text-center select-none mb-6"
               aria-hidden="true"
             >
               {asciiLogo}
@@ -180,14 +180,14 @@ export default function Preloader() {
 
         {/* Boot terminal */}
         <div className="w-full max-w-md mx-auto">
-          <div className="border border-white/10 bg-white/[0.02] px-5 py-4">
-            <div className="flex items-center gap-2 mb-3 pb-3 border-b border-white/5">
+          <div className="border border-foreground/10 bg-foreground/[0.02] px-5 py-4">
+            <div className="flex items-center gap-2 mb-3 pb-3 border-b border-foreground/5">
               <div className="flex gap-1.5">
                 <div className="w-2 h-2 rounded-full bg-[#ff5f56]" />
                 <div className="w-2 h-2 rounded-full bg-[#ffbd2e]" />
                 <div className="w-2 h-2 rounded-full bg-[#27c93f]" />
               </div>
-              <span className="text-[10px] font-mono text-white/30 uppercase tracking-widest ml-auto">
+              <span className="text-[10px] font-mono text-foreground/30 uppercase tracking-widest ml-auto">
                 boot — sh
               </span>
             </div>
@@ -205,25 +205,25 @@ export default function Preloader() {
                     {line.type === "prompt" ? (
                       <div className="flex items-center gap-2">
                         <span className="text-red-500 text-sm flex-shrink-0">{'❯'}</span>
-                        <span className="text-white/90 font-mono text-[11px] sm:text-xs">
+                        <span className="text-foreground/90 font-mono text-[11px] sm:text-xs">
                           {line.text}
                         </span>
                         <span
-                          className={`inline-block w-2 h-[14px] bg-white/70 flex-shrink-0 ${
+                          className={`inline-block w-2 h-[14px] bg-foreground/70 flex-shrink-0 ${
                             showCursor ? "opacity-100" : "opacity-0"
                           } transition-opacity duration-75`}
                         />
                       </div>
                     ) : line.type === "success" ? (
-                      <div className="text-green-400/80 font-mono text-[10px] sm:text-[11px] pl-4">
+                       <div className="text-[hsl(var(--crimson))]/80 font-mono text-[10px] sm:text-[11px] pl-4">
                         {line.text}
                       </div>
                     ) : line.type === "warn" ? (
-                      <div className="text-amber-400/80 font-mono text-[10px] sm:text-[11px] pl-4">
+                       <div className="text-foreground/60 font-mono text-[10px] sm:text-[11px] pl-4">
                         {line.text}
                       </div>
                     ) : (
-                      <div className="text-white/50 font-mono text-[10px] sm:text-[11px]">
+                      <div className="text-foreground/50 font-mono text-[10px] sm:text-[11px]">
                         {line.text}
                       </div>
                     )}
@@ -242,10 +242,10 @@ export default function Preloader() {
                 transition={{ duration: 0.4 }}
               >
                 <div className="flex items-center justify-between mt-3 mb-1.5">
-                  <span className="text-[10px] font-mono text-white/30 uppercase tracking-widest">
+                  <span className="text-[10px] font-mono text-foreground/30 uppercase tracking-widest">
                     Initializing
                   </span>
-                  <span className="text-[10px] font-mono text-white/20 tracking-wider">
+                  <span className="text-[10px] font-mono text-foreground/20 tracking-wider">
                     {prefersReducedMotion ? "100%" : "loading..."}
                   </span>
                 </div>
@@ -264,16 +264,16 @@ export default function Preloader() {
             <span className="relative flex h-1.5 w-1.5">
               <span
                 className={`absolute inline-flex h-full w-full rounded-full ${
-                  done ? "bg-green-400" : "bg-red-400"
+                  done ? "bg-[hsl(var(--crimson))]" : "bg-red-400"
                 } ${done ? "" : "animate-ping opacity-75"}`}
               />
               <span
                 className={`relative inline-flex h-1.5 w-1.5 rounded-full ${
-                  done ? "bg-green-500" : "bg-red-600"
+                  done ? "bg-red-500" : "bg-red-600"
                 }`}
               />
             </span>
-            <span className="text-[10px] font-mono text-white/30 uppercase tracking-widest">
+            <span className="text-[10px] font-mono text-foreground/30 uppercase tracking-widest">
               {done ? "System Ready" : "Booting..."}
             </span>
           </motion.div>
@@ -282,7 +282,7 @@ export default function Preloader() {
 
       {/* Curtain exit shaders (above content, z-20) */}
       <motion.div
-        className="absolute top-0 left-0 right-0 h-1/2 bg-black z-20"
+        className="absolute top-0 left-0 right-0 h-1/2 bg-background z-20"
         animate={exit ? { scaleY: 1 } : { scaleY: 0 }}
         transition={
           exit
@@ -292,7 +292,7 @@ export default function Preloader() {
         style={{ transformOrigin: "top", willChange: "transform" }}
       />
       <motion.div
-        className="absolute bottom-0 left-0 right-0 h-1/2 bg-black z-20"
+        className="absolute bottom-0 left-0 right-0 h-1/2 bg-background z-20"
         animate={exit ? { scaleY: 1 } : { scaleY: 0 }}
         transition={
           exit
@@ -303,10 +303,10 @@ export default function Preloader() {
       />
 
       {/* Footer tags */}
-      <div className="absolute bottom-4 left-6 text-[10px] font-mono text-white/15 uppercase tracking-widest select-none z-0">
+      <div className="absolute bottom-4 left-6 text-[10px] font-mono text-foreground/15 uppercase tracking-widest select-none z-0">
         DonieleOS v2.6
       </div>
-      <div className="absolute bottom-4 right-6 text-[10px] font-mono text-white/25 uppercase tracking-widest select-none z-0">
+      <div className="absolute bottom-4 right-6 text-[10px] font-mono text-foreground/25 uppercase tracking-widest select-none z-0">
         {prefersReducedMotion ? "loading" : "click or press any key to skip"}
       </div>
     </div>

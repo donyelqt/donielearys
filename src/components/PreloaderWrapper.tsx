@@ -16,8 +16,8 @@ export default function PreloaderWrapper({ children }: { children: React.ReactNo
 
   if (!mounted) {
     return (
-      <div className="fixed inset-0 z-[9999] bg-black flex items-center justify-center">
-        <div className="text-white/30 font-mono text-[10px] uppercase tracking-widest">initializing…</div>
+      <div className="fixed inset-0 z-[9999] bg-background flex items-center justify-center">
+        <div className="text-foreground/30 font-mono text-[10px] uppercase tracking-widest">initializing…</div>
       </div>
     )
   }
