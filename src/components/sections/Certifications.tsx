@@ -1,201 +1,206 @@
 "use client"
 
-import React, { useMemo } from 'react'
-import { BookOpen, Code, Database, Cloud, Brain, Lock, Cog, Sparkles } from 'lucide-react'
+import Image from "next/image"
+import { motion, useReducedMotion } from "framer-motion"
+import { ExternalLink, BadgeCheck, Award, Calendar, Building2 } from "lucide-react"
 
-const SCRAMBLE_CHARS = '!@#$%^&*()_+-=[]{}|;:,.<>?/~`'
-
-/* Deterministic scramble: seeded from the title itself so server and client
-   render identical output (Math.random() here caused hydration mismatches). */
-function scrambleText(text: string): string {
-  let seed = 0
-  for (let i = 0; i < text.length; i++) {
-    seed = (seed * 31 + text.charCodeAt(i)) >>> 0
-  }
-  return text
-    .split('')
-    .map((ch, i) => {
-      if (ch === ' ') return ' '
-      seed = (seed * 1664525 + 1013904223 + (i + 1)) >>> 0
-      return SCRAMBLE_CHARS[seed % SCRAMBLE_CHARS.length]
-    })
-    .join('')
-}
-
+/* Single source of truth — add future certs here. No lorem, no scramble. */
 const certifications = [
   {
-    title: "Lorem ipsum dolor sit amet",
-    issuer: "Consectetur Adipiscing Elit",
-    date: "2025 - Present",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    skills: ["React", "Node.js", "TypeScript", "PostgreSQL"],
-    icon: <Brain className="h-6 w-6 text-violet-400" />,
-    progress: 75,
-    color: "from-violet-900/50 to-purple-900/50",
+    id: "sap-gen-ai-developer",
+    title: "SAP Certified Associate",
+    subtitle: "Generative AI Developer",
+    issuer: "SAP",
+    credentialId: "C_AIG_2409",
+    date: "Aug 2025",
+    status: "Certified" as const,
+    featured: true as const,
+    description:
+      "Certifies ability to solve business problems using SAP's Generative AI Hub on SAP BTP — advanced prompt engineering, prompt template development, lifecycle management, and workflow orchestration in SAP AI Launchpad and SAP AI Core with LLMs.",
+    skills: ["SAP AI Core", "Generative AI Hub", "SAP AI Launchpad", "LLMs", "Prompt Engineering", "Workflow Orchestration"],
+    badge: "/sap-gen-ai-badge.png",
+    verifyHref: "https://www.credly.com/badges/af0b8e32-f788-4bc4-8e31-dcaedde2c664",
+    accent: "#0A2A6B",
   },
   {
-    title: "Sed do eiusmod tempor",
-    issuer: "Incididunt Ut Labore",
+    id: "google-ai-essentials",
+    title: "Google AI Essentials",
+    subtitle: "Specialization — Coursera",
+    issuer: "Google · Coursera",
+    credentialId: "Foundations",
     date: "2025",
-    description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    skills: ["AWS", "Cloud Computing", "Infrastructure"],
-    icon: <Cloud className="h-6 w-6 text-amber-400" />,
-    progress: 40,
-    color: "from-amber-900/50 to-orange-900/50",
-  },
-  {
-    title: "Duis aute irure dolor",
-    issuer: "Reprehenderit Voluptate",
-    date: "2023 - Present",
-    description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    skills: ["Python", "Machine Learning", "Data Science"],
-    icon: <Code className="h-6 w-6 text-cyan-400" />,
-    progress: 85,
-    color: "from-cyan-900/50 to-blue-900/50",
-  },
-  {
-    title: "Excepteur sint occaecat",
-    issuer: "Cupidatat Non Proident",
-    date: "2024 - Present",
-    description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    skills: ["LangChain", "Vector DBs", "Agentic AI"],
-    icon: <BookOpen className="h-6 w-6 text-green-400" />,
-    progress: 60,
-    color: "from-green-900/50 to-emerald-900/50",
-  },
-  {
-    title: "Nemo enim ipsam voluptatem",
-    issuer: "Quia Voluptas Sit",
-    date: "2026",
-    description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.",
-    skills: ["Security", "Zero Trust", "Compliance"],
-    icon: <Lock className="h-6 w-6 text-red-400" />,
-    progress: 55,
-    color: "from-red-900/50 to-rose-900/50",
-  },
-  {
-    title: "Neque porro quisquam",
-    issuer: "Est Qui Dolorem",
-    date: "2024",
-    description: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
-    skills: ["PostgreSQL", "MongoDB", "Redis"],
-    icon: <Database className="h-6 w-6 text-pink-400" />,
-    progress: 70,
-    color: "from-pink-900/50 to-rose-900/50",
+    status: "Completed" as const,
+    featured: false as const,
+    description:
+      "Foundational AI literacy — prompting essentials, responsible AI, and applying generative AI at work. Introductory breadth, not a system-based build.",
+    skills: ["Prompting", "Responsible AI", "Gen AI at Work"],
+    badge: null as string | null,
+    verifyHref: "#", // replace with your Coursera share URL
   },
 ]
 
 export default function Certifications() {
-  // Feature flag: set NEXT_PUBLIC_CERTIFICATIONS_ENABLED=false in .env.local to hide.
-  // Hooks run unconditionally before any early return (Rules of Hooks).
-  const isEnabled = process.env.NEXT_PUBLIC_CERTIFICATIONS_ENABLED !== 'false'
-  // Generate scrambled titles ONCE per mount (stable across re-renders)
-  const crafts = useMemo(
-    () => certifications.map((cert) => ({ ...cert, scrambledTitle: scrambleText(cert.title) })),
-    []
-  )
+  const isEnabled = process.env.NEXT_PUBLIC_CERTIFICATIONS_ENABLED !== "false"
+  const prefersReducedMotion = useReducedMotion()
   if (!isEnabled) return null
 
+  const cert = certifications[0] as typeof certifications[0] & { badge: string }
+
   return (
-    <section id="certifications" className="py-20 px-4">
-      <div className="max-w-7xl mx-auto mb-12">
-        <h2 className="text-gradient text-4xl md:text-5xl font-bold mb-4">Certifications</h2>
-        <p className="text-white/50 max-w-xl">
-          Professional credentials and continuous learning.
-        </p>
+    <section id="certifications" className="py-24 md:py-32 px-4 overflow-hidden">
+      {/* Header — mirrors Contact/Experience terminal grammar */}
+      <div className="max-w-7xl mx-auto mb-10 md:mb-14">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.45 }}
+          className="flex items-center gap-2 mb-3"
+        >
+          <span className="text-red-500 text-[13px] font-mono leading-none" aria-hidden="true">❯</span>
+          <span className="text-[10px] sm:text-[11px] font-mono font-bold text-white/60 uppercase tracking-[0.25em]">Credentials</span>
+          <span className="flex-1 h-px bg-white/10 ml-1" aria-hidden="true" />
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.2em] text-white/40">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]" aria-hidden="true" />
+            verified
+          </span>
+        </motion.div>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.45, delay: 0.05 }}
+          className="text-4xl md:text-6xl font-bold tracking-tighter leading-[0.9] uppercase text-white"
+        >
+          Certifications
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.45, delay: 0.1 }}
+          className="mt-4 text-[13px] md:text-sm leading-relaxed text-white/55 max-w-[60ch]"
+        >
+          Vendor-validated proof — not course completions. One credential shipped, more in pipeline. Every badge links to its issuer.
+        </motion.p>
       </div>
 
-      <div className="max-w-7xl mx-auto">
-        {crafts.map((cert, i) => (
-          <div
-            key={i}
-            className="group relative mb-6 p-6 bg-white/5 border border-white/10 transition-colors duration-300"
-            style={{ animationDelay: `${i * 0.2}s` }}
-          >
-            <div className="absolute inset-0 bg-linear-to-r from-violet-900/10 via-transparent to-amber-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      {/* Featured credential — editorial, not card-grid */}
+      <motion.article
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
+        className="max-w-7xl mx-auto"
+      >
+        <div className="relative grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-0 border border-white/10 bg-white/[0.02] overflow-hidden">
+          {/* SAP blue top rule — committed color, owns the edge */}
+          <div className="absolute top-0 inset-x-0 h-[2px] bg-[#0A4DB5]" aria-hidden="true" />
+          <div className="absolute inset-0 pointer-events-none opacity-[0.015]" style={{ backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`, backgroundSize: `24px 24px` }} aria-hidden="true" />
 
-            <div className="flex flex-col lg:flex-row gap-6 relative">
-              <div
-                className={`flex-shrink-0 w-full lg:w-48 h-32 rounded-lg bg-linear-to-br ${cert.color} border border-white/10 flex items-center justify-center crafting-fade-1`}
-                style={{ animationDelay: `${i * 0.2}s` }}
-              >
-                <div className="p-3 bg-black/40 backdrop-blur-sm rounded-lg">
-                  {cert.icon}
-                </div>
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between gap-4 mb-3">
-                  <div>
-                    <h3
-                      className="text-lg font-bold tracking-tight mb-1 text-white/20 crafting-fade-2"
-                      style={{ animationDelay: `${i * 0.2}s` }}
-                    >
-                      {cert.scrambledTitle}
-                    </h3>
-                    <p
-                      className="text-[10px] font-mono uppercase tracking-widest text-white/20 crafting-fade-3"
-                      style={{ animationDelay: `${i * 0.2}s` }}
-                    >
-                      {cert.issuer} · {cert.date}
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0 text-right">
-                    <span
-                      className="text-2xl font-bold text-white/20 crafting-fade-2 inline-block"
-                      style={{ animationDelay: `${i * 0.2}s` }}
-                    >
-                      {cert.progress}%
-                    </span>
-                    <p className="text-[10px] font-mono uppercase text-white/10">LOCKED</p>
-                  </div>
-                </div>
-
-                <div
-                  className="text-sm text-white/20 leading-relaxed mb-4 font-mono crafting-fade-3"
-                  style={{ animationDelay: `${i * 0.2}s` }}
-                >
-                  {'████████ ████████ ██████ ████ ███████ ██████ ████████ ████████ ████ ██████'}
-                </div>
-
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {cert.skills.map((skill, j) => (
-                    <span
-                      key={j}
-                      className="px-2 py-1 text-[10px] font-mono uppercase bg-white/5 border border-white/10 text-white/20 crafting-fade-1"
-                      style={{ animationDelay: `${i * 0.2 + j * 0.1}s` }}
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="relative h-1 bg-white/10 rounded-full overflow-hidden">
-                  <div
-                    className="absolute inset-y-0 left-0 bg-linear-to-r from-violet-500/50 to-amber-500/50 rounded-full crafting-progress-bar"
-                    style={{ animationDelay: `${i * 0.3}s` }}
-                  />
-                </div>
-              </div>
+          {/* Badge pane */}
+          <div className="relative bg-[#F8F9FA] p-6 sm:p-8 flex flex-col items-center justify-center border-b lg:border-b-0 lg:border-r border-black/10">
+            {/* soft isometric echo behind badge */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#E8EFFB] via-transparent to-white pointer-events-none" aria-hidden="true" />
+            <div className="relative w-full max-w-[360px] aspect-square rounded-2xl overflow-hidden bg-white shadow-[0_20px_60px_-20px_rgba(10,42,107,0.35),0_1px_0_rgba(0,0,0,0.06)] ring-1 ring-black/5">
+              <Image
+                src={cert.badge}
+                alt="SAP Generative AI Developer — Certified badge"
+                width={800}
+                height={800}
+                className="h-full w-full object-cover"
+                priority
+              />
             </div>
-
-            <div
-              className="absolute inset-0 pointer-events-none crafting-overlay"
-              style={{ animationDelay: `${i * 0.2}s` }}
-            >
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Cog className="h-12 w-12 text-white/10 animate-spin" />
-              </div>
+            <div className="relative mt-5 flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[#0A2A6B]/70">
+              <BadgeCheck className="h-3.5 w-3.5 text-[#0A6ED1]" />
+              Issued by SAP Certification
             </div>
           </div>
-        ))}
 
-        <div className="mt-8 flex items-center justify-center gap-3 text-white/40">
-          <Sparkles className="h-4 w-4 animate-pulse" />
-          <span className="text-sm font-mono uppercase tracking-widest">Crafting in progress...</span>
-          <Sparkles className="h-4 w-4 animate-pulse" />
+          {/* Detail pane — dark, matches site world */}
+          <div className="relative p-6 sm:p-8 lg:p-10 flex flex-col">
+            {/* Status */}
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-mono font-bold uppercase tracking-[0.18em] bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true" />
+                Certified
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.18em] bg-white/5 text-white/60 border border-white/10">
+                <Award className="h-3 w-3" /> SAP BTP
+              </span>
+            </div>
+
+            <h3 className="text-[22px] sm:text-[26px] font-bold tracking-tight leading-none text-white">
+              {cert.title}
+            </h3>
+            <p className="mt-1 text-[18px] sm:text-[20px] font-bold tracking-tight leading-none text-[#5BA8FF]">{cert.subtitle}</p>
+
+            <dl className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3 text-[10px] font-mono uppercase tracking-[0.18em] border-y border-white/10 py-4">
+              <div>
+                <dt className="text-white/35 flex items-center gap-1.5"><Building2 className="h-3 w-3" /> Issuer</dt>
+                <dd className="mt-1 text-white/85 font-bold tracking-[0.12em]">{cert.issuer}</dd>
+              </div>
+              <div>
+                <dt className="text-white/35 flex items-center gap-1.5"><Calendar className="h-3 w-3" /> Issued</dt>
+                <dd className="mt-1 text-white/85">{cert.date}</dd>
+              </div>
+              <div>
+                <dt className="text-white/35">Credential ID</dt>
+                <dd className="mt-1 text-white/85 break-all">{cert.credentialId}</dd>
+              </div>
+            </dl>
+
+            <p className="mt-5 text-[13px] sm:text-[14px] leading-[1.7] text-white/65 max-w-[62ch]">
+              {cert.description}
+            </p>
+
+            <div className="mt-5 flex flex-wrap gap-2">
+              {cert.skills.map((s) => (
+                <span key={s} className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.14em] bg-white/[0.06] border border-white/10 text-white/70">
+                  {s}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              <a
+                href={cert.verifyHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-black text-[11px] font-bold uppercase tracking-[0.16em] hover:bg-white/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              >
+                Verify Credential <ExternalLink className="h-3.5 w-3.5" />
+              </a>
+              <a
+                href="#competitions"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-white/15 text-white text-[11px] font-bold uppercase tracking-[0.16em] hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+              >
+                View proof context
+              </a>
+            </div>
+
+
+          </div>
         </div>
-      </div>
+
+        {/* Secondary — Foundations */}
+        <div className="mt-4 border border-white/10 bg-white/[0.02] px-5 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center gap-4">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="hidden sm:flex h-9 w-9 items-center justify-center rounded-sm bg-white text-black font-black text-[11px] tracking-tighter shrink-0">G</div>
+            <div className="min-w-0">
+              <p className="text-[13px] font-bold tracking-tight text-white leading-none">Google AI Essentials <span className="font-normal text-white/50">— Coursera</span></p>
+              <p className="mt-1 text-[10px] font-mono uppercase tracking-[0.18em] text-white/40">Foundations · 2025 · Google · Coursera</p>
+            </div>
+          </div>
+          <div className="sm:ml-auto flex items-center gap-2">
+            <span className="hidden sm:inline-flex px-2 py-1 text-[10px] font-mono uppercase tracking-widest bg-white/5 border border-white/10 text-white/60">Prompting · Responsible AI</span>
+            <a href="#" className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-[0.16em] text-white/60 hover:text-white transition-colors">Verify <ExternalLink className="h-3 w-3" /></a>
+          </div>
+        </div>
+
+      </motion.article>
     </section>
-  );
+  )
 }
