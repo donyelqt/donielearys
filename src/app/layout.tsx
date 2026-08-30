@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import MouseSpotlight from "@/components/MouseSpotlight";
 import ScrollProgress, { BackToTop } from "@/components/ScrollProgress";
 import PreloaderWrapper from "@/components/PreloaderWrapper";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -47,11 +46,10 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col selection:bg-foreground selection:text-background scroll-smooth">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+      <body className="min-h-full flex flex-col selection:bg-foreground selection:text-background scroll-smooth crop-marks">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <ScrollProgress />
           <BackToTop />
-          <MouseSpotlight />
           <div className="fixed inset-0 grid-pattern pointer-events-none -z-10" />
           <Navbar />
           <PreloaderWrapper>

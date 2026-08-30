@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
-import { Menu, X, FileText, Moon, Sun } from 'lucide-react'
+import { Menu, X, FileText, Sun, Moon } from 'lucide-react'
 import { useTheme } from 'next-themes'
 
 const showCertifications = process.env.NEXT_PUBLIC_CERTIFICATIONS_ENABLED !== 'false'
@@ -32,11 +32,12 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('Home')
   const [indicatorPos, setIndicatorPos] = useState({ left: 0, width: 0 })
+  const [mounted, setMounted] = useState(false)
   const navRef = useRef<HTMLDivElement>(null)
   const toggleRef = useRef<HTMLButtonElement>(null)
   const mobilePanelRef = useRef<HTMLDivElement>(null)
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const { resolvedTheme, setTheme } = useTheme()
+
   useEffect(() => setMounted(true), [])
 
   /* One rAF-throttled scroll listener drives both the backdrop state and
@@ -173,7 +174,7 @@ export default function Navbar() {
           className={cn(
             "flex items-center justify-between w-full max-w-7xl px-6 py-4 transition-all duration-300",
             scrolled || mobileMenuOpen
-              ? "bg-background/90 backdrop-blur-xl"
+              ? "bg-background"
               : "bg-transparent"
           )}
         >
@@ -221,6 +222,21 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+              aria-label="Toggle color theme"
+              className="flex items-center justify-center w-11 h-11 border border-foreground/20 text-foreground hover:bg-foreground/5 transition-colors focus-hard"
+            >
+              {!mounted ? (
+                <span className="block w-[18px] h-[18px]" aria-hidden="true" />
+              ) : resolvedTheme === 'dark' ? (
+                <Sun size={18} aria-hidden="true" />
+              ) : (
+                <Moon size={18} aria-hidden="true" />
+              )}
+            </button>
+
             {/* Compact resume access below sm — the labeled CTA needs the wider header */}
             <Link
               href="/resume.pdf"
@@ -237,30 +253,9 @@ export default function Navbar() {
             </Link>
 
             <button
-              type="button"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              aria-label={mounted ? `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode` : 'Toggle color theme'}
-              aria-pressed={mounted ? theme === 'dark' : undefined}
-              className="flex items-center justify-center w-11 h-11 border border-foreground/15 text-foreground rounded-none hover:bg-foreground/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50"
-            >
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.span
-                  key={mounted ? (theme === 'dark' ? 'dark' : 'light') : 'init'}
-                  initial={{ opacity: 0, rotate: -45 }}
-                  animate={{ opacity: 1, rotate: 0 }}
-                  exit={{ opacity: 0, rotate: 45 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex items-center justify-center"
-                >
-                  {!mounted ? <Moon size={18} /> : theme === 'dark' ? <Moon size={18} /> : <Sun size={18} />}
-                </motion.span>
-              </AnimatePresence>
-            </button>
-
-            <button
               ref={toggleRef}
               type="button"
-              className="lg:hidden p-2.5 -m-1 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 rounded-sm"
+              className="lg:hidden p-2.5 -m-1 text-foreground focus-hard"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
@@ -283,7 +278,7 @@ export default function Navbar() {
                 exit={{ opacity: 0, scaleY: 0 }}
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
                 style={{ transformOrigin: "top" }}
-                 className="absolute top-full left-0 right-0 bg-background/95 backdrop-blur-2xl border-b border-foreground/10 lg:hidden overflow-hidden"
+                 className="absolute top-full left-0 right-0 bg-background border-b border-foreground/10 lg:hidden overflow-hidden"
               >
                 <div className="flex flex-col p-6 gap-1">
                   {navItems.map((item) => {

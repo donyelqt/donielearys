@@ -15,7 +15,7 @@ export default function ScrollProgress() {
   return (
     <motion.div
       aria-hidden="true"
-      className="fixed top-0 left-0 right-0 h-[2px] bg-foreground/20 origin-left z-50"
+      className="fixed top-0 left-0 right-0 h-[2px] origin-left z-50 bg-[hsl(var(--crimson))]"
       style={{ scaleX }}
     />
   )
@@ -54,7 +54,7 @@ export function BackToTop() {
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
       onClick={() => window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' })}
-      className="fixed bottom-8 right-8 z-40 p-3 bg-foreground/10 backdrop-blur-sm border border-foreground/10 hover:bg-foreground/20 transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50"
+      className="fixed bottom-8 right-8 z-40 p-3 bg-foreground/10 border border-foreground/15 hover:bg-foreground/20 transition-colors focus-hard"
       aria-label="Back to top"
     >
       <ArrowUp className="w-5 h-5" />
