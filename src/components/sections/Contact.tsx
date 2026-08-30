@@ -54,7 +54,7 @@ export default function Contact() {
           <span className="flex items-center gap-1.5 text-[9px] font-mono uppercase tracking-[0.2em] text-foreground/40">
             <span
               className="inline-block w-1.5 h-1.5 rounded-full"
-              style={{ backgroundColor: 'hsl(var(--crimson))', boxShadow: '0 0 6px hsla(var(--crimson), 0.55)' }}
+              style={{ backgroundColor: 'hsl(var(--crimson))' }}
               aria-hidden="true"
             />
             open
@@ -67,7 +67,7 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.45, delay: 0.05 }}
           viewport={{ once: true, amount: 0.4 }}
-          className="text-4xl md:text-6xl font-bold tracking-tighter bg-clip-text text-transparent bg-linear-to-br from-foreground via-foreground/80 to-foreground/40 mb-6 uppercase"
+          className="display-xl mb-6"
         >
           Initialize Contact.
         </motion.h2>

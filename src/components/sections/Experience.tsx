@@ -1,6 +1,7 @@
 "use client"
 import React, { memo } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { SectionHeader } from '../SectionHeader'
 
 interface ExperienceEntry {
   id: string
@@ -380,9 +381,6 @@ const PeriodBlock = memo(({ period, entries, startIndex }: { period: string; ent
 PeriodBlock.displayName = 'PeriodBlock'
 
 export default function Experience() {
-  const prefersReducedMotion = useReducedMotion()
-  const reduced = !!prefersReducedMotion
-
   const periods = ['2026', '2025', '2024', '2023'] as const
   const groupedByPeriod: Record<string, ExperienceEntry[]> = {}
   for (const p of periods) groupedByPeriod[p] = []
@@ -404,30 +402,14 @@ export default function Experience() {
 
   return (
     <section id="experience" className="py-24 md:py-32 px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: reduced ? 0 : 0.5 }}
-        viewport={{ once: true }}
-        className="max-w-7xl mx-auto mb-16 md:mb-20"
-      >
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-          <div>
-            <h2 className="text-gradient text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight mb-3">
-              Career Trajectory
-            </h2>
-            <p className="text-foreground/45 max-w-lg text-sm md:text-base leading-relaxed">
-              From local labs to global deployments — a chronological path of building, researching, and shipping.
-            </p>
-          </div>
-          <span
-            className="text-[10px] font-mono uppercase tracking-[0.25em] flex-shrink-0"
-            style={{ color: TRAJECTORY_COLOR }}
-          >
-            {sortedExperiences.length} milestones
-          </span>
-        </div>
-      </motion.div>
+        <SectionHeader
+          index="02"
+          title="Career Trajectory"
+          meta={`${sortedExperiences.length} MILESTONES`}
+        />
+        <p className="max-w-7xl mx-auto -mt-4 mb-12 text-[13px] md:text-sm leading-relaxed text-foreground/45">
+          From local labs to global deployments — a chronological path of building, researching, and shipping.
+        </p>
 
       <div className="max-w-7xl mx-auto">
         <div className="relative">

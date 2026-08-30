@@ -3,6 +3,7 @@
 import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Award, BadgeCheck, Medal, Rocket, Shield, Star, Trophy, Zap } from 'lucide-react'
+import { SectionHeader } from "@/components/SectionHeader"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -36,9 +37,9 @@ const competitions: CompetitionEntry[] = [
     issuer: "AMD | Google Deepmind",
     date: "Jul 2026",
     description: "Top 20 Global Standing out of 20,000+ participants & 4,000+ teams worldwide as a solo competitor. Achieved 94% high agent accuracy on the AMD Harness Eval across 8 domains while using only 4,000+ tokens, demonstrating highly efficient general-purpose AI agents without sacrificing accuracy. Mentored and judged by senior software engineers from Google, AMD, AWS, and more.",
-    icon: <Trophy className="h-5 w-5 text-white dark:text-yellow-300" />,
+    icon: <Trophy className="h-5 w-5 text-white dark:text-red-300" />,
     badge: "Top 20 Global",
-    badgeColor: "bg-white text-[hsl(0_68%_44%)] border border-[hsl(0_68%_44%)]/30 font-bold dark:bg-foreground dark:text-background dark:border-foreground/50",
+    badgeColor: "bg-white text-[hsl(0_68%_44%)] border border-[hsl(0_68%_44%)]/30 font-bold dark:bg-white dark:text-black dark:border-white/50 dark:font-bold",
     achievement: "94% Accuracy | 4K Tokens",
     highlight: true,
   },
@@ -144,8 +145,8 @@ export default function Competitions() {
         viewport={{ once: true, amount: 0.1 }}
         className="max-w-7xl mx-auto mb-12"
       >
-        <motion.h2 variants={itemVariants} className="text-gradient text-4xl md:text-5xl font-bold mb-4">Featured Competitions & Achievements</motion.h2>
-        <motion.p variants={itemVariants} className="text-foreground/50 max-w-xl">
+        <SectionHeader index="06" title="Featured Competitions & Achievements" eyebrow="Achievements" meta="RANKINGS" />
+        <motion.p variants={itemVariants} className="text-foreground/50 max-w-xl -mt-8">
           Featured recognition, rankings, and achievements in AI, cloud, and software development.
         </motion.p>
       </motion.div>
@@ -161,14 +162,14 @@ export default function Competitions() {
             style={{ transform: "translateZ(0)" }}
             className={`card-hover-lift relative p-6 border rounded-sm transition-[border-color,box-shadow] duration-300 ${
                 comp.highlight
-                  ? "bg-[hsl(0_68%_44%)] border-white/30 hover:border-white/50 text-white shadow-[0_0_30px_-8px_rgba(190,30,45,0.35)] hover:shadow-[0_0_40px_-8px_rgba(190,30,45,0.45)] dark:bg-red-900/30 dark:border-red-600/50 dark:hover:border-red-500/70 dark:shadow-[0_0_30px_-8px_rgba(220,38,38,0.15)] dark:hover:shadow-[0_0_40px_-8px_rgba(220,38,38,0.25)]"
-                  : "bg-foreground/5 border-foreground/10 hover:border-foreground/20"
+                  ? "bg-[hsl(0_68%_44%)] border-white/30 hover:border-white/50 text-white shadow-[0_0_30px_-8px_rgba(190,30,45,0.35)] hover:shadow-[0_0_40px_-8px_rgba(190,30,45,0.45)] dark:bg-red-900/30 dark:border-red-600/50 dark:hover:border-red-500/70 dark:text-foreground dark:shadow-[0_0_30px_-8px_rgba(220,38,38,0.15)] dark:hover:shadow-[0_0_40px_-8px_rgba(220,38,38,0.25)]"
+                  : "bg-foreground/5 border-foreground/10 hover:border-foreground/20 dark:bg-white/5 dark:border-white/10"
               }`}
           >
             {comp.highlight && (
-              <div className="absolute -top-2 left-4 px-2 py-0.5 text-[8px] font-mono uppercase bg-white text-[hsl(0_68%_44%)] dark:bg-red-600 dark:text-foreground tracking-wider z-20 rounded-sm shadow-lg">
-                Featured
-              </div>
+                 <div className="absolute -top-2 left-4 px-2 py-0.5 text-[8px] font-mono uppercase bg-white text-[hsl(0_68%_44%)] tracking-wider z-20 dark:bg-red-600 dark:text-foreground">
+                 Featured
+               </div>
             )}
             <div className="absolute top-4 right-4 z-10">
               <span className={`px-2 py-1 text-[8px] font-mono uppercase border rounded-sm ${comp.badgeColor}`}>
@@ -177,19 +178,19 @@ export default function Competitions() {
             </div>
 
             <div className="flex items-start gap-4">
-              <div className={`shrink-0 p-2 border ${comp.highlight ? "bg-white/15 border-white/30 dark:bg-red-950/60 dark:border-red-600/40" : "bg-foreground/5 border-foreground/10"}`}>
+                <div className={`shrink-0 p-2 border ${comp.highlight ? "bg-white/15 border-white/30 dark:bg-red-950/60 dark:border-red-600/40" : "bg-foreground/5 border-foreground/10 dark:bg-white/5 dark:border-white/10"}`}>
                 {comp.icon}
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className={`text-base font-bold tracking-tight mb-1 pr-20 md:pr-16 break-words ${comp.highlight ? "text-white dark:text-foreground" : "text-foreground"}`}>{comp.title}</h3>
-                <p className={`text-[10px] font-mono uppercase tracking-widest mb-3 break-words ${comp.highlight ? "text-white/70 dark:text-foreground/40" : "text-foreground/40"}`}>{comp.issuer}</p>
-                <p className={`text-xs leading-relaxed line-clamp-3 break-words ${comp.highlight ? "text-white/80 dark:text-foreground/60" : "text-foreground/60"}`}>{comp.description}</p>
+                  <h3 className={`text-base font-bold tracking-tight mb-1 pr-20 md:pr-16 break-words ${comp.highlight ? "text-white dark:text-foreground" : "text-foreground"}`}>{comp.title}</h3>
+                  <p className={`text-[10px] font-mono uppercase tracking-widest mb-3 break-words ${comp.highlight ? "text-white/70 dark:text-foreground/40" : "text-foreground/40"}`}>{comp.issuer}</p>
+                  <p className={`text-xs leading-relaxed line-clamp-3 break-words ${comp.highlight ? "text-white/80 dark:text-foreground/60" : "text-foreground/60"}`}>{comp.description}</p>
               </div>
             </div>
 
-            <div className={`mt-4 pt-4 border-t flex flex-wrap justify-between items-center gap-2 ${comp.highlight ? "border-white/25 dark:border-red-600/30" : "border-foreground/5"}`}>
-              <span className={`text-[10px] font-mono ${comp.highlight ? "text-white/60 dark:text-foreground/30" : "text-foreground/30"}`}>{comp.date}</span>
-              <span className={`text-[10px] font-mono ${comp.highlight ? "text-white/90 dark:text-yellow-300/80" : comp.noGold ? "text-red-400/60 dark:text-red-400/60" : "text-red-400/60 dark:text-yellow-400/60"}`}>{comp.achievement}</span>
+              <div className={`mt-4 pt-4 border-t flex flex-wrap justify-between items-center gap-2 ${comp.highlight ? "border-white/25 dark:border-red-600/30" : "border-foreground/5"}`}>
+                <span className={`text-[10px] font-mono ${comp.highlight ? "text-white/60 dark:text-foreground/30" : "text-foreground/30"}`}>{comp.date}</span>
+                <span className={`text-[10px] font-mono ${comp.highlight ? "text-white/90 dark:text-red-400/80" : comp.noGold ? "text-red-400/60 dark:text-red-400/60" : "text-red-400/60 dark:text-red-400/60"}`}>{comp.achievement}</span>
             </div>
           </motion.article>
         ))}
