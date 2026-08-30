@@ -47,7 +47,7 @@ export const BentoGridItem = memo(({ className, title, description, header, icon
           <div className={cn("mb-3 sm:mb-4", isProject && "mt-4 sm:mt-6")}>{icon}</div>
         )}
         {status && (
-          <p className={cn("text-[9px] font-mono uppercase tracking-[0.2em] mb-2", statusClass)}>
+          <p className={cn("text-[10px] font-mono uppercase tracking-[0.2em] mb-2", statusClass)}>
             {status}
           </p>
         )}
@@ -59,7 +59,7 @@ export const BentoGridItem = memo(({ className, title, description, header, icon
           {title}
         </div>
         <div className={cn(
-          "font-sans font-normal text-neutral-400 text-[11px] sm:text-[13px] leading-relaxed",
+          "font-sans font-normal text-neutral-400 text-xs sm:text-[13px] leading-relaxed",
           "mt-3 sm:mt-4",
           isExperience && "line-clamp-none",
           !isExperience && "line-clamp-4 sm:line-clamp-3"

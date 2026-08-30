@@ -161,10 +161,10 @@ const AchievementDropdown = () => {
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-[11px] font-bold text-white tracking-tight truncate">{primary.title}</p>
-          <p className="text-[8px] font-mono text-white/40 uppercase tracking-wider truncate">{primary.subtitle}</p>
+          <p className="text-[10px] font-mono text-white/40 uppercase tracking-wider truncate">{primary.subtitle}</p>
         </div>
         <div className="shrink-0 flex items-center gap-2">
-          <span className="px-1.5 py-0.5 text-[8px] font-mono font-bold bg-white text-black uppercase tracking-wider">{primary.stat}</span>
+          <span className="px-1.5 py-0.5 text-[10px] font-mono font-bold bg-white text-black uppercase tracking-wider">{primary.stat}</span>
           <ChevronDown className={`h-3.5 w-3.5 text-white/50 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
         </div>
       </button>
@@ -189,11 +189,11 @@ const AchievementDropdown = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[11px] font-bold text-white/80 truncate">{a.title}</p>
-                  <p className="text-[8px] font-mono text-white/30 uppercase truncate">{a.subtitle}</p>
+                  <p className="text-[10px] font-mono text-white/30 uppercase truncate">{a.subtitle}</p>
                 </div>
                 <div className="shrink-0 text-right">
-                  <span className="block text-[8px] font-mono font-bold text-amber-400/70 uppercase">{a.stat}</span>
-                  <span className="block text-[7px] font-mono text-white/30">{a.detail}</span>
+                  <span className="block text-[10px] font-mono font-bold text-amber-400/70 uppercase">{a.stat}</span>
+                  <span className="block text-[10px] font-mono text-white/30">{a.detail}</span>
                 </div>
               </div>
             ))}
@@ -201,7 +201,7 @@ const AchievementDropdown = () => {
         )}
       </AnimatePresence>
 
-      <div className="flex justify-center gap-6 mt-2 text-[8px] font-mono text-white/45 uppercase tracking-widest">
+      <div className="flex justify-center gap-6 mt-2 text-[10px] font-mono text-white/45 uppercase tracking-widest">
         <span className="flex items-center gap-1"><Users className="h-2.5 w-2.5" /> 20,000+ participants</span>
         <span className="flex items-center gap-1"><Globe className="h-2.5 w-2.5" /> 4,000+ teams</span>
         <span className="flex items-center gap-1"><Cpu className="h-2.5 w-2.5" /> 8 domains</span>

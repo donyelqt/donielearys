@@ -22,6 +22,17 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.svg",
   },
+  openGraph: {
+    title: "Doniele — AI & Software Engineer",
+    description:
+      "Agentic AI architectures, production infrastructure, and applied research. Top 20 Global, AMD Developer Hackathon.",
+    type: "profile",
+  },
+  twitter: {
+    card: "summary",
+    title: "Doniele — AI & Software Engineer",
+    description: "Developing Agentic AI Architectures",
+  },
 };
 
 export default function RootLayout({

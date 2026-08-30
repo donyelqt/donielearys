@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, FileText } from 'lucide-react'
 
 const showCertifications = process.env.NEXT_PUBLIC_CERTIFICATIONS_ENABLED !== 'false'
 
@@ -174,7 +174,13 @@ export default function Navbar() {
           )}
         >
           <div className="flex items-center gap-8">
-            <div className="text-xl font-bold tracking-tighter">DonieleAI</div>
+            <Link
+              href="#"
+              aria-label="DonieleAI — back to top"
+              className="text-xl font-bold tracking-tighter hover:opacity-80 transition-opacity"
+            >
+              DonieleAI
+            </Link>
             <div className="hidden lg:flex gap-1 relative" ref={navRef}>
               {navItems.map((item) => {
                 const isActive = activeSection === item.name
@@ -211,6 +217,14 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-4">
+            {/* Compact resume access below sm — the labeled CTA needs the wider header */}
+            <Link
+              href="/resume.pdf"
+              aria-label="Access resume"
+              className="sm:hidden flex items-center justify-center w-11 h-11 border border-white/20 text-white rounded-none hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+            >
+              <FileText size={18} />
+            </Link>
             <Link
               href="/resume.pdf"
               className="hidden sm:block px-6 py-2.5 text-[10px] font-bold bg-white text-black rounded-none hover:bg-white/90 transition-colors uppercase tracking-widest"

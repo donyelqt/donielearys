@@ -38,30 +38,15 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
+    /* Dark-only world: every color token below is fully defined under `.dark`,
+       which the <html> element carries permanently. The former light-theme
+       values here were dead code that could never render. */
     --radius: 0rem;
     --grid-major: rgba(0, 0, 0, 0.04);
     --grid-minor: rgba(0, 0, 0, 0.08);
-    /* Legacy comma syntax so both hsl(var(--crimson)) and hsla(var(--crimson), a) resolve */
-    --crimson: 348, 82%, 58%;
+    /* Aligned with the red-500 prompt/highlight family so the site runs one red.
+       Legacy comma syntax so both hsl(var(--crimson)) and hsla(var(--crimson), a) resolve */
+    --crimson: 0, 84%, 60%;
   }
 
   .dark {
@@ -86,7 +71,7 @@
     --ring: 240 4.9% 83.9%;
     --grid-major: rgba(255, 255, 255, 0.03);
     --grid-minor: rgba(255, 255, 255, 0.08);
-    --crimson: 348, 82%, 58%;
+    --crimson: 0, 84%, 60%;
   }
 }
 

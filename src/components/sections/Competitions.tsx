@@ -87,7 +87,7 @@ const competitions = [
     icon: <Zap className="h-5 w-5 text-violet-400" />,
     badge: "Finalist (9 & X)",
     badgeColor: "bg-violet-500/20 text-violet-400 border-violet-500/30",
-    achievement: " Top Startups in the Cordillera Region",
+    achievement: "Top Startups in the Cordillera Region",
   },
   {
     title: "AI.DEAS FOR IMPACT 2025",

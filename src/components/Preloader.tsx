@@ -187,7 +187,7 @@ export default function Preloader() {
                 <div className="w-2 h-2 rounded-full bg-[#ffbd2e]" />
                 <div className="w-2 h-2 rounded-full bg-[#27c93f]" />
               </div>
-              <span className="text-[9px] font-mono text-white/30 uppercase tracking-widest ml-auto">
+              <span className="text-[10px] font-mono text-white/30 uppercase tracking-widest ml-auto">
                 boot — sh
               </span>
             </div>
@@ -242,10 +242,10 @@ export default function Preloader() {
                 transition={{ duration: 0.4 }}
               >
                 <div className="flex items-center justify-between mt-3 mb-1.5">
-                  <span className="text-[9px] font-mono text-white/30 uppercase tracking-widest">
+                  <span className="text-[10px] font-mono text-white/30 uppercase tracking-widest">
                     Initializing
                   </span>
-                  <span className="text-[9px] font-mono text-white/20 tracking-wider">
+                  <span className="text-[10px] font-mono text-white/20 tracking-wider">
                     {prefersReducedMotion ? "100%" : "loading..."}
                   </span>
                 </div>
@@ -273,7 +273,7 @@ export default function Preloader() {
                 }`}
               />
             </span>
-            <span className="text-[9px] font-mono text-white/30 uppercase tracking-widest">
+            <span className="text-[10px] font-mono text-white/30 uppercase tracking-widest">
               {done ? "System Ready" : "Booting..."}
             </span>
           </motion.div>
@@ -303,10 +303,10 @@ export default function Preloader() {
       />
 
       {/* Footer tags */}
-      <div className="absolute bottom-4 left-6 text-[8px] font-mono text-white/15 uppercase tracking-widest select-none z-0">
+      <div className="absolute bottom-4 left-6 text-[10px] font-mono text-white/15 uppercase tracking-widest select-none z-0">
         DonieleOS v2.6
       </div>
-      <div className="absolute bottom-4 right-6 text-[9px] font-mono text-white/25 uppercase tracking-widest select-none z-0">
+      <div className="absolute bottom-4 right-6 text-[10px] font-mono text-white/25 uppercase tracking-widest select-none z-0">
         {prefersReducedMotion ? "loading" : "click or press any key to skip"}
       </div>
     </div>

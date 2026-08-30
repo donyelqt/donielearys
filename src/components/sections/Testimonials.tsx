@@ -137,11 +137,11 @@ export default function Testimonials() {
               <p className="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-2">
                 {t.role}
               </p>
-              <p className="text-[9px] font-mono uppercase tracking-[0.2em] text-white/25">
+              <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/25">
                 {t.context}
               </p>
               {t.attribution && (
-                <p className="text-[9px] font-mono uppercase tracking-[0.2em] text-white/20 mt-1">
+                <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/20 mt-1">
                   {t.attribution}
                 </p>
               )}

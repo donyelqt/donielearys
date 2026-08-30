@@ -280,7 +280,7 @@ const EntryCard = memo(({ exp, index }: { exp: ExperienceEntry; index: number })
               </p>
                {exp.validationBadge && (
                  <span
-                   className="inline-flex items-center mt-1.5 ml-[2.2rem] text-[9px] font-mono uppercase tracking-[0.15em] px-2 py-0.5"
+                   className="inline-flex items-center mt-1.5 ml-[2.2rem] text-[10px] font-mono uppercase tracking-[0.15em] px-2 py-0.5"
                    style={{
                      color: '#C8E0FF',
                      borderColor: '#0062D533',
@@ -303,7 +303,7 @@ const EntryCard = memo(({ exp, index }: { exp: ExperienceEntry; index: number })
               </span>
               {active && (
                 <span
-                  className="block mt-1 text-[9px] font-mono uppercase tracking-[0.2em] font-bold"
+                  className="block mt-1 text-[10px] font-mono uppercase tracking-[0.2em] font-bold"
                   style={{ color: TRAJECTORY_COLOR }}
                 >
                   ─ current
@@ -320,12 +320,12 @@ const EntryCard = memo(({ exp, index }: { exp: ExperienceEntry; index: number })
             <svg className="w-2.5 h-2.5 text-white/15 shrink-0" viewBox="0 0 10 10" fill="currentColor">
               <circle cx="5" cy="5" r="1.5" />
             </svg>
-            <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-white/18">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/18">
               {exp.location}
             </span>
             {active && (
               <span
-                  className="text-[9px] font-mono uppercase tracking-[0.2em] px-1.5 py-0.5"
+                  className="text-[10px] font-mono uppercase tracking-[0.2em] px-1.5 py-0.5"
                   style={{
                     color: TRAJECTORY_COLOR,
                     backgroundColor: `hsla(var(--crimson), 0.1)`,

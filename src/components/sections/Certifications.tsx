@@ -147,7 +147,7 @@ export default function Certifications() {
                     >
                       {cert.progress}%
                     </span>
-                    <p className="text-[8px] font-mono uppercase text-white/10">LOCKED</p>
+                    <p className="text-[10px] font-mono uppercase text-white/10">LOCKED</p>
                   </div>
                 </div>
 
@@ -162,7 +162,7 @@ export default function Certifications() {
                   {cert.skills.map((skill, j) => (
                     <span
                       key={j}
-                      className="px-2 py-1 text-[9px] font-mono uppercase bg-white/5 border border-white/10 text-white/20 crafting-fade-1"
+                      className="px-2 py-1 text-[10px] font-mono uppercase bg-white/5 border border-white/10 text-white/20 crafting-fade-1"
                       style={{ animationDelay: `${i * 0.2 + j * 0.1}s` }}
                     >
                       {skill}
