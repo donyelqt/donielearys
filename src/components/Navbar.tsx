@@ -4,7 +4,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
-import { Menu, X, FileText } from 'lucide-react'
+import { Menu, X, FileText, Moon, Sun } from 'lucide-react'
+import { useTheme } from 'next-themes'
 
 const showCertifications = process.env.NEXT_PUBLIC_CERTIFICATIONS_ENABLED !== 'false'
 
@@ -34,6 +35,9 @@ export default function Navbar() {
   const navRef = useRef<HTMLDivElement>(null)
   const toggleRef = useRef<HTMLButtonElement>(null)
   const mobilePanelRef = useRef<HTMLDivElement>(null)
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
 
   /* One rAF-throttled scroll listener drives both the backdrop state and
      active-section detection (previously two unthrottled listeners doing
@@ -157,11 +161,11 @@ export default function Navbar() {
     <>
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-white focus:text-black focus:font-bold"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-foreground focus:text-background focus:font-bold"
       >
         Skip to content
       </a>
-      <div className="fixed top-0 left-0 right-0 z-50 flex justify-center border-b border-white/5">
+      <div className="fixed top-0 left-0 right-0 z-50 flex justify-center border-b border-foreground/5">
         <motion.nav
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -169,7 +173,7 @@ export default function Navbar() {
           className={cn(
             "flex items-center justify-between w-full max-w-7xl px-6 py-4 transition-all duration-300",
             scrolled || mobileMenuOpen
-              ? "bg-black/90 backdrop-blur-xl"
+              ? "bg-background/90 backdrop-blur-xl"
               : "bg-transparent"
           )}
         >
@@ -191,7 +195,7 @@ export default function Navbar() {
                     aria-current={isActive ? 'location' : undefined}
                     className={cn(
                       "nav-link px-5 py-2.5 text-[10px] font-mono uppercase tracking-widest transition-colors duration-200 relative z-10",
-                      isActive ? "text-white" : "text-foreground/60 hover:text-foreground/80"
+                      isActive ? "text-foreground" : "text-foreground/60 hover:text-foreground/80"
                     )}
                   >
                     {item.name}
@@ -200,7 +204,7 @@ export default function Navbar() {
               })}
 
               <motion.div
-                className="absolute bottom-0 h-[1.5px] bg-linear-to-r from-white/60 via-white to-white/60"
+                className="absolute bottom-0 h-[1.5px] bg-linear-to-r from-[var(--indicator)] via-[var(--indicator)] to-[var(--indicator)]"
                 style={{
                   left: indicatorPos.left,
                   width: indicatorPos.width,
@@ -221,21 +225,42 @@ export default function Navbar() {
             <Link
               href="/resume.pdf"
               aria-label="Access resume"
-              className="sm:hidden flex items-center justify-center w-11 h-11 border border-white/20 text-white rounded-none hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+              className="sm:hidden flex items-center justify-center w-11 h-11 border border-foreground/20 text-foreground rounded-none hover:bg-foreground/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50"
             >
               <FileText size={18} />
             </Link>
             <Link
               href="/resume.pdf"
-              className="hidden sm:block px-6 py-2.5 text-[10px] font-bold bg-white text-black rounded-none hover:bg-white/90 transition-colors uppercase tracking-widest"
+              className="hidden sm:block px-6 py-2.5 text-[10px] font-bold bg-foreground text-background rounded-none hover:bg-foreground/90 transition-colors uppercase tracking-widest"
             >
               Access Resume
             </Link>
 
             <button
+              type="button"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              aria-label={mounted ? `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode` : 'Toggle color theme'}
+              aria-pressed={mounted ? theme === 'dark' : undefined}
+              className="flex items-center justify-center w-11 h-11 border border-foreground/15 text-foreground rounded-none hover:bg-foreground/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50"
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={mounted ? (theme === 'dark' ? 'dark' : 'light') : 'init'}
+                  initial={{ opacity: 0, rotate: -45 }}
+                  animate={{ opacity: 1, rotate: 0 }}
+                  exit={{ opacity: 0, rotate: 45 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex items-center justify-center"
+                >
+                  {!mounted ? <Moon size={18} /> : theme === 'dark' ? <Moon size={18} /> : <Sun size={18} />}
+                </motion.span>
+              </AnimatePresence>
+            </button>
+
+            <button
               ref={toggleRef}
               type="button"
-              className="lg:hidden p-2.5 -m-1 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm"
+              className="lg:hidden p-2.5 -m-1 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 rounded-sm"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
@@ -258,7 +283,7 @@ export default function Navbar() {
                 exit={{ opacity: 0, scaleY: 0 }}
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
                 style={{ transformOrigin: "top" }}
-                className="absolute top-full left-0 right-0 bg-black/95 backdrop-blur-2xl border-b border-white/10 lg:hidden overflow-hidden"
+                 className="absolute top-full left-0 right-0 bg-background/95 backdrop-blur-2xl border-b border-foreground/10 lg:hidden overflow-hidden"
               >
                 <div className="flex flex-col p-6 gap-1">
                   {navItems.map((item) => {
@@ -271,13 +296,13 @@ export default function Navbar() {
                         aria-current={isActive ? 'location' : undefined}
                         className={cn(
                           "px-5 py-3.5 text-base font-mono uppercase tracking-widest transition-colors relative",
-                          isActive ? "text-white" : "text-foreground/60 hover:text-white"
+                          isActive ? "text-foreground" : "text-foreground/60 hover:text-foreground"
                         )}
                       >
                         {item.name}
                         {isActive && (
                           <motion.div
-                            className="absolute left-0 top-0 bottom-0 w-[2px] bg-linear-to-b from-white/80 via-white to-white/80 rounded-full"
+                            className="absolute left-0 top-0 bottom-0 w-[2px] bg-linear-to-b from-[var(--indicator)] via-[var(--indicator)] to-[var(--indicator)] rounded-full"
                             initial={{ scaleY: 0 }}
                             animate={{ scaleY: 1 }}
                             exit={{ scaleY: 0 }}
@@ -291,7 +316,7 @@ export default function Navbar() {
                   <Link
                     href="/resume.pdf"
                     onClick={handleLinkClick}
-                    className="mt-6 px-6 py-4 text-center text-xs font-bold bg-white text-black rounded-none uppercase tracking-widest"
+                         className="mt-6 px-6 py-4 text-center text-xs font-bold bg-foreground text-background rounded-none uppercase tracking-widest"
                   >
                     Access Resume
                   </Link>

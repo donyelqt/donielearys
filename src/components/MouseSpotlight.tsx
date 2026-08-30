@@ -35,7 +35,7 @@ export default function MouseSpotlight() {
       className="fixed inset-0 pointer-events-none -z-10"
       style={
         {
-          background: `radial-gradient(${radius}px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.06), transparent 80%)`,
+          background: `radial-gradient(${radius}px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), hsl(var(--foreground) / 0.06), transparent 80%)`,
         } as React.CSSProperties
       }
     />

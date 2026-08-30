@@ -29,7 +29,7 @@ const EdgeWithSignal = ({ from, to, index }: { from: typeof nodes[0], to: typeof
         y1={`${from.y}%`}
         x2={`${to.x}%`}
         y2={`${to.y}%`}
-        stroke="white"
+        stroke="hsl(var(--foreground))"
         strokeWidth="0.5"
         initial={{ pathLength: 0, opacity: 0 }}
         animate={{ 
@@ -44,7 +44,7 @@ const EdgeWithSignal = ({ from, to, index }: { from: typeof nodes[0], to: typeof
       {!prefersReducedMotion && (
         <motion.circle
           r="4"
-          fill="white"
+          fill="hsl(var(--foreground))"
           initial={{ 
             cx: `${from.x}%`, 
             cy: `${from.y}%`,
@@ -77,7 +77,7 @@ const AnimatedNode = ({ node }: { node: typeof nodes[0] }) => {
           cx={`${node.x}%`}
           cy={`${node.y}%`}
           r="40"
-          stroke="white"
+          stroke="hsl(var(--foreground))"
           strokeWidth="1"
           strokeOpacity="0.2"
           fill="none"
@@ -93,11 +93,11 @@ const AnimatedNode = ({ node }: { node: typeof nodes[0] }) => {
         cx={`${node.x}%`}
         cy={`${node.y}%`}
         r="10"
-        fill="white"
+        fill="hsl(var(--foreground))"
         initial={prefersReducedMotion ? { opacity: 0.5 } : { scale: 0 }}
         animate={{ 
           scale: 1,
-          filter: prefersReducedMotion ? "none" : ["drop-shadow(0 0 0px #fff)", "drop-shadow(0 0 10px #fff)", "drop-shadow(0 0 0px #fff)"],
+          filter: prefersReducedMotion ? "none" : ["drop-shadow(0 0 0px hsl(var(--foreground)))", "drop-shadow(0 0 10px hsl(var(--foreground)))", "drop-shadow(0 0 0px hsl(var(--foreground)))"],
           opacity: [0.5, 1, 0.5]
         }}
         transition={{ 
@@ -110,7 +110,7 @@ const AnimatedNode = ({ node }: { node: typeof nodes[0] }) => {
         x={`${node.x}%`}
         y={`${node.y + 5}%`}
         textAnchor="middle"
-        fill="white"
+        fill="hsl(var(--foreground))"
         fontFamily="monospace"
         fontWeight="bold"
         className="uppercase tracking-widest text-[6px] md:text-[12px] lg:text-[14px]"
@@ -133,8 +133,8 @@ export default function NetworkBackground() {
       <svg aria-hidden="true" focusable="false" width="100%" height="100%" className="absolute inset-0">
         <defs>
           <radialGradient id="nodeGradient" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="white" stopOpacity="1" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
+            <stop offset="0%" stopColor="hsl(var(--foreground))" stopOpacity="1" />
+            <stop offset="100%" stopColor="hsl(var(--foreground))" stopOpacity="0" />
           </radialGradient>
         </defs>
 
