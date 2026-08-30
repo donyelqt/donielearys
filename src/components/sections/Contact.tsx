@@ -47,11 +47,11 @@ export default function Contact() {
           className="flex items-center gap-2 mb-3"
         >
           <span className="text-red-500 text-[13px] font-mono select-none leading-none" aria-hidden="true">❯</span>
-          <span className="text-[10px] sm:text-[11px] font-mono font-bold text-white/60 uppercase tracking-[0.2em] sm:tracking-[0.25em]">
+          <span className="text-[10px] sm:text-[11px] font-mono font-bold text-foreground/60 uppercase tracking-[0.2em] sm:tracking-[0.25em]">
             Contact
           </span>
-          <span className="flex-1 h-px bg-white/10 ml-1" aria-hidden="true" />
-          <span className="flex items-center gap-1.5 text-[9px] font-mono uppercase tracking-[0.2em] text-white/40">
+          <span className="flex-1 h-px bg-foreground/10 ml-1" aria-hidden="true" />
+          <span className="flex items-center gap-1.5 text-[9px] font-mono uppercase tracking-[0.2em] text-foreground/40">
             <span
               className="inline-block w-1.5 h-1.5 rounded-full"
               style={{ backgroundColor: 'hsl(var(--crimson))', boxShadow: '0 0 6px hsla(var(--crimson), 0.55)' }}
@@ -67,7 +67,7 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.45, delay: 0.05 }}
           viewport={{ once: true, amount: 0.4 }}
-          className="text-4xl md:text-6xl font-bold tracking-tighter bg-clip-text text-transparent bg-linear-to-br from-white via-white/80 to-white/40 mb-6 uppercase"
+          className="text-4xl md:text-6xl font-bold tracking-tighter bg-clip-text text-transparent bg-linear-to-br from-foreground via-foreground/80 to-foreground/40 mb-6 uppercase"
         >
           Initialize Contact.
         </motion.h2>
@@ -78,25 +78,25 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.45, delay: 0.1 }}
           viewport={{ once: true, amount: 0.4 }}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 mb-10 text-[10px] font-mono uppercase tracking-[0.2em] border-t border-b border-white/5 py-4"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 mb-10 text-[10px] font-mono uppercase tracking-[0.2em] border-t border-b border-foreground/5 py-4"
         >
           <div className="flex items-baseline justify-between gap-3 sm:contents">
-            <dt className="text-white/30">Status</dt>
-            <dd className="text-white/70 sm:text-left">
+            <dt className="text-foreground/30">Status</dt>
+            <dd className="text-foreground/70 sm:text-left">
               AI Engineer · Cloud Elite @ Accenture
             </dd>
           </div>
           <div className="flex items-baseline justify-between gap-3 sm:contents">
-            <dt className="text-white/30">Response</dt>
-            <dd className="text-white/70 sm:text-left">{'< 24h'}</dd>
+            <dt className="text-foreground/30">Response</dt>
+            <dd className="text-foreground/70 sm:text-left">{'< 24h'}</dd>
           </div>
           <div className="flex items-baseline justify-between gap-3 sm:contents">
-            <dt className="text-white/30">Channels</dt>
-            <dd className="text-white/70 sm:text-left">Email · GitHub · LinkedIn</dd>
+            <dt className="text-foreground/30">Channels</dt>
+            <dd className="text-foreground/70 sm:text-left">Email · GitHub · LinkedIn</dd>
           </div>
           <div className="flex items-baseline justify-between gap-3 sm:contents">
-            <dt className="text-white/30">Location</dt>
-            <dd className="text-white/70 sm:text-left">Baguio City, PH · UTC+8</dd>
+            <dt className="text-foreground/30">Location</dt>
+            <dd className="text-foreground/70 sm:text-left">Baguio City, PH · UTC+8</dd>
           </div>
         </motion.dl>
 
@@ -111,9 +111,9 @@ export default function Contact() {
           <a
             href={`mailto:${EMAIL}`}
             aria-label={`Send email to ${EMAIL}`}
-            className="px-6 py-3 bg-white text-black text-[11px] font-bold rounded-none flex items-center justify-center gap-2 hover:bg-white/90 transition-all uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+            className="px-6 py-3 bg-foreground text-background text-[11px] font-bold rounded-none flex items-center justify-center gap-2 hover:bg-foreground/90 transition-all uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            <span className="text-black/70" aria-hidden="true">❯</span>
+            <span className="text-background/70" aria-hidden="true">❯</span>
             Send Email
           </a>
           <button
@@ -121,9 +121,9 @@ export default function Contact() {
             onClick={handleCopy}
             aria-label={copied ? 'Email address copied to clipboard' : 'Copy email address to clipboard'}
             aria-live="polite"
-            className="px-6 py-3 border border-white/20 text-white text-[11px] font-bold rounded-none hover:bg-white/5 transition-all uppercase tracking-widest flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+            className="px-6 py-3 border border-foreground/20 text-foreground text-[11px] font-bold rounded-none hover:bg-foreground/5 transition-all uppercase tracking-widest flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            <span className="text-white/50" aria-hidden="true">❯</span>
+            <span className="text-foreground/50" aria-hidden="true">❯</span>
             {copied ? 'Copied' : 'Copy Address'}
           </button>
         </motion.div>
@@ -141,9 +141,9 @@ export default function Contact() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Open GitHub profile (donyelqt)"
-            className="px-6 py-3 border border-white/20 text-white text-[11px] font-bold rounded-none hover:bg-white/5 transition-all uppercase tracking-widest flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+            className="px-6 py-3 border border-foreground/20 text-foreground text-[11px] font-bold rounded-none hover:bg-foreground/5 transition-all uppercase tracking-widest flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            <span className="text-white/50" aria-hidden="true">❯</span>
+            <span className="text-foreground/50" aria-hidden="true">❯</span>
             GitHub
           </a>
           <a
@@ -151,16 +151,16 @@ export default function Contact() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Open LinkedIn profile (donielearysantonio)"
-            className="px-6 py-3 border border-white/20 text-white text-[11px] font-bold rounded-none hover:bg-white/5 transition-all uppercase tracking-widest flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+            className="px-6 py-3 border border-foreground/20 text-foreground text-[11px] font-bold rounded-none hover:bg-foreground/5 transition-all uppercase tracking-widest flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            <span className="text-white/50" aria-hidden="true">❯</span>
+            <span className="text-foreground/50" aria-hidden="true">❯</span>
             LinkedIn
           </a>
         </motion.div>
 
         {/* Email fallback link — assistive tech + JS-disabled fallback */}
-        <p className="mt-6 text-[9px] font-mono uppercase tracking-[0.2em] text-white/25 break-all">
-          <span className="text-white/40">{'// '}</span>
+        <p className="mt-6 text-[9px] font-mono uppercase tracking-[0.2em] text-foreground/25 break-all">
+          <span className="text-foreground/40">{'// '}</span>
           {EMAIL}
         </p>
       </div>
