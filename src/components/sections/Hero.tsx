@@ -128,9 +128,9 @@ const AchievementDropdown = () => {
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-controls="achievements-panel"
-        className="w-full flex items-center gap-3 px-4 py-3 bg-red-900/20 border border-red-600/40 hover:border-red-500/60 text-left transition-all duration-300 shadow-[0_0_20px_-6px_rgba(220,38,38,0.12)] hover:shadow-[0_0_30px_-6px_rgba(220,38,38,0.2)] group"
+        className="w-full flex items-center gap-3 px-4 py-3 bg-[hsl(0_68%_44%)] border border-white/30 hover:border-white/50 text-white shadow-[0_0_20px_-6px_rgba(190,30,45,0.35)] hover:shadow-[0_0_30px_-6px_rgba(190,30,45,0.45)] group dark:bg-red-900/20 dark:border-red-600/40 dark:hover:border-red-500/60 dark:shadow-[0_0_20px_-6px_rgba(220,38,38,0.12)] dark:hover:shadow-[0_0_30px_-6px_rgba(220,38,38,0.2)]"
       >
-        <div className="p-2 bg-red-950/60 border border-red-600/40 shrink-0 relative w-8 h-8 flex items-center justify-center">
+        <div className="p-2 bg-white/15 border border-white/30 dark:bg-red-950/60 dark:border-red-600/40 shrink-0 relative w-8 h-8 flex items-center justify-center">
           <AnimatePresence mode="wait">
             {iconIndex === 0 ? (
               <motion.div
@@ -141,7 +141,7 @@ const AchievementDropdown = () => {
                 transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
                 className="absolute inset-0 flex items-center justify-center"
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-amber-300 drop-shadow-[0_0_8px_rgba(252,211,77,0.4)]">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white dark:text-amber-300 drop-shadow-[0_0_8px_rgba(244,63,94,0.4)] dark:drop-shadow-[0_0_8px_rgba(252,211,77,0.4)]">
                   <path d="M18.324 9.137l1.559 1.56h2.556v2.557L24 14.814V9.137zM2 9.52l-2 4.96h1.309l.37-.982H3.9l.408.982h1.338L3.432 9.52zm4.209 0v4.955h1.238v-3.092l1.338 1.562h.188l1.338-1.556v3.091h1.238V9.52H10.47l-1.592 1.845L7.287 9.52zm6.283 0v4.96h2.057c1.979 0 2.88-1.046 2.88-2.472 0-1.36-.937-2.488-2.747-2.488zm1.237.91h.792c1.17 0 1.63.711 1.63 1.57 0 .728-.372 1.572-1.616 1.572h-.806zm-10.985.273l.791 1.932H2.008zm17.137.307l-1.604 1.603v2.25h2.246l1.604-1.607h-2.246z" fill="currentColor" />
                 </svg>
               </motion.div>
@@ -154,18 +154,18 @@ const AchievementDropdown = () => {
                 transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
                 className="absolute inset-0 flex items-center justify-center"
               >
-                <Trophy className="h-5 w-5 text-amber-300 drop-shadow-[0_0_8px_rgba(252,211,77,0.4)]" />
+                <Trophy className="h-5 w-5 text-white dark:text-amber-300 drop-shadow-[0_0_8px_rgba(244,63,94,0.4)] dark:drop-shadow-[0_0_8px_rgba(252,211,77,0.4)]" />
               </motion.div>
             )}
           </AnimatePresence>
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[11px] font-bold text-white tracking-tight truncate">{primary.title}</p>
-          <p className="text-[10px] font-mono text-white/40 uppercase tracking-wider truncate">{primary.subtitle}</p>
+          <p className="text-[11px] font-bold text-white dark:text-foreground tracking-tight truncate">{primary.title}</p>
+          <p className="text-[10px] font-mono text-white/70 dark:text-foreground/40 uppercase tracking-wider truncate">{primary.subtitle}</p>
         </div>
         <div className="shrink-0 flex items-center gap-2">
-          <span className="px-1.5 py-0.5 text-[10px] font-mono font-bold bg-white text-black uppercase tracking-wider">{primary.stat}</span>
-          <ChevronDown className={`h-3.5 w-3.5 text-white/50 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
+          <span className="px-1.5 py-0.5 text-[10px] font-mono font-bold bg-white text-[hsl(0_68%_44%)] dark:bg-foreground dark:text-background uppercase tracking-wider">{primary.stat}</span>
+          <ChevronDown className={`h-3.5 w-3.5 text-white/70 dark:text-foreground/50 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
         </div>
       </button>
 
@@ -177,23 +177,23 @@ const AchievementDropdown = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="absolute inset-x-0 top-full mt-2 bg-black/90 border border-white/10 backdrop-blur-xl z-20"
+            className="absolute inset-x-0 top-full mt-2 bg-background/90 border border-foreground/10 backdrop-blur-xl z-20"
           >
             {achievements.slice(1).map((a, i) => (
               <div
                 key={i}
-                className={`flex items-center gap-3 px-4 py-2.5 border-b border-white/5 last:border-0 hover:bg-white/[0.03] transition-colors cursor-default ${a.highlight ? "bg-red-900/10" : ""}`}
+                className={`flex items-center gap-3 px-4 py-2.5 border-b border-foreground/5 last:border-0 hover:bg-foreground/[0.03] transition-colors cursor-default ${a.highlight ? "bg-red-900/10" : ""}`}
               >
-                <div className="p-1 bg-white/5 border border-white/10 shrink-0">
-                  <Trophy className="h-3.5 w-3.5 text-white/40" />
+                <div className="p-1 bg-foreground/5 border border-foreground/10 shrink-0">
+                  <Trophy className="h-3.5 w-3.5 text-foreground/40" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[11px] font-bold text-white/80 truncate">{a.title}</p>
-                  <p className="text-[10px] font-mono text-white/30 uppercase truncate">{a.subtitle}</p>
+                  <p className="text-[11px] font-bold text-foreground/80 truncate">{a.title}</p>
+                  <p className="text-[10px] font-mono text-foreground/30 uppercase truncate">{a.subtitle}</p>
                 </div>
                 <div className="shrink-0 text-right">
-                  <span className="block text-[10px] font-mono font-bold text-amber-400/70 uppercase">{a.stat}</span>
-                  <span className="block text-[10px] font-mono text-white/30">{a.detail}</span>
+                  <span className="block text-[10px] font-mono font-bold text-red-400/70 dark:text-amber-400/70 uppercase">{a.stat}</span>
+                  <span className="block text-[10px] font-mono text-foreground/30">{a.detail}</span>
                 </div>
               </div>
             ))}
@@ -201,7 +201,7 @@ const AchievementDropdown = () => {
         )}
       </AnimatePresence>
 
-      <div className="flex justify-center gap-6 mt-2 text-[10px] font-mono text-white/45 uppercase tracking-widest">
+      <div className="flex justify-center gap-6 mt-2 text-[10px] font-mono text-foreground/45 uppercase tracking-widest">
         <span className="flex items-center gap-1"><Users className="h-2.5 w-2.5" /> 20,000+ participants</span>
         <span className="flex items-center gap-1"><Globe className="h-2.5 w-2.5" /> 4,000+ teams</span>
         <span className="flex items-center gap-1"><Cpu className="h-2.5 w-2.5" /> 8 domains</span>
@@ -220,7 +220,7 @@ export default function Hero() {
       <div className="
         absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
         w-70 h-70 sm:w-95 sm:h-95 lg:w-125 lg:h-125
-        bg-white/[0.07] rounded-full blur-[80px] sm:blur-[100px] lg:blur-[120px]
+        bg-foreground/[0.07] rounded-full blur-[80px] sm:blur-[100px] lg:blur-[120px]
         -z-10
       " />
       
@@ -231,11 +231,11 @@ export default function Hero() {
 className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x-3 mb-8 group"
       >
         <span className="text-red-500 text-[13px] sm:text-sm font-mono select-none leading-none">❯</span>
-        <span className="text-[10px] sm:text-[11px] font-mono font-bold text-white/60 uppercase tracking-[0.15em] sm:tracking-[0.25em]">
+        <span className="text-[10px] sm:text-[11px] font-mono font-bold text-foreground/60 uppercase tracking-[0.15em] sm:tracking-[0.25em]">
           AI & Software Engineer
         </span>
-        <span className="text-[10px] sm:text-[11px] font-mono text-white/15">—</span>
-        <span className="text-[10px] sm:text-[11px] font-mono text-white/30 uppercase tracking-[0.1em] sm:tracking-[0.15em]">
+        <span className="text-[10px] sm:text-[11px] font-mono text-foreground/15">—</span>
+        <span className="text-[10px] sm:text-[11px] font-mono text-foreground/30 uppercase tracking-[0.1em] sm:tracking-[0.15em]">
           DonieleCode
         </span>
       </motion.div>
@@ -245,7 +245,7 @@ className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x
         animate={{ opacity: 1, y: 0 }}
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.1 }}
         className="text-4xl md:text-8xl font-bold tracking-tighter bg-clip-text text-transparent bg-linear-to-br 
-        from-white via-white/80 to-white/40 mb-6 max-w-4xl uppercase"
+        from-foreground via-foreground/80 to-foreground/40 mb-6 max-w-4xl uppercase"
       >
         Doniele Antonio
       </motion.h1>
@@ -254,7 +254,7 @@ className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.2 }}
-        className="text-lg md:text-xl text-white/60 max-w-2xl mb-4 leading-relaxed font-mono uppercase"
+        className="text-lg md:text-xl text-foreground/60 max-w-2xl mb-4 leading-relaxed font-mono uppercase"
       >
         From Local to Global
       </motion.p>
@@ -276,14 +276,14 @@ className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x
       >
         <MagneticButton
           onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-          className="px-6 py-3 bg-white text-black text-[11px] font-bold rounded-none flex items-center gap-2 hover:bg-white/90 transition-all group uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          className="px-6 py-3 bg-foreground text-background text-[11px] font-bold rounded-none flex items-center gap-2 hover:bg-foreground/90 transition-all group uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           View Projects
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </MagneticButton>
         <MagneticButton
           onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-          className="px-6 py-3 border border-white/20 text-white text-[11px] font-bold rounded-none hover:bg-white/5 transition-all uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          className="px-6 py-3 border border-foreground/20 text-foreground text-[11px] font-bold rounded-none hover:bg-foreground/5 transition-all uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           Contact Me
         </MagneticButton>
@@ -300,7 +300,7 @@ className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x
           href="https://github.com/donyelqt"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-11 w-11 -m-2.5 items-center justify-center text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm"
+          className="flex h-11 w-11 -m-2.5 items-center justify-center text-foreground/50 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 rounded-sm"
           aria-label="GitHub Profile"
         >
           <GithubIcon />
@@ -310,7 +310,7 @@ className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x
           href="https://linkedin.com/in/donielearysantonio"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-11 w-11 -m-2.5 items-center justify-center text-white/50 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded-sm"
+          className="flex h-11 w-11 -m-2.5 items-center justify-center text-foreground/50 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50 rounded-sm"
           aria-label="LinkedIn Profile"
         >
           <LinkedinIcon />

@@ -228,7 +228,7 @@ const EntryCard = memo(({ exp, index }: { exp: ExperienceEntry; index: number })
             <div
               className="absolute inset-0 rounded-full"
               style={{
-                background: `radial-gradient(circle, ${exp.color}55 0%, transparent 70%)`,
+                background: `radial-gradient(circle, hsla(var(--crimson), 0.33) 0%, transparent 70%)`,
                 filter: 'blur(4px)',
                 opacity: 0.6,
               }}
@@ -236,15 +236,15 @@ const EntryCard = memo(({ exp, index }: { exp: ExperienceEntry; index: number })
             <div
               className="relative w-[7px] h-[7px] rounded-full"
               style={{
-                backgroundColor: active ? exp.color : TRAJECTORY_COLOR,
-                boxShadow: active ? `0 0 10px ${exp.color}99` : `0 0 4px hsla(var(--crimson), 0.45)`,
+                backgroundColor: TRAJECTORY_COLOR,
+                boxShadow: active ? '0 0 10px hsla(var(--crimson), 0.5)' : '0 0 4px hsla(var(--crimson), 0.45)',
               }}
             />
           </motion.div>
         </div>
 
         <div
-          className="group relative rounded-none border border-white/10 bg-white/[0.02] p-5 md:p-6 transition-all duration-300 hover:bg-white/5"
+          className="group relative rounded-none border border-foreground/10 bg-foreground/[0.02] p-5 md:p-6 transition-all duration-300 hover:bg-foreground/5"
           style={
             active
               ? {
@@ -266,30 +266,30 @@ const EntryCard = memo(({ exp, index }: { exp: ExperienceEntry; index: number })
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2.5 mb-1">
                 <span
-                  className="shrink-0 flex items-center justify-center w-7 h-7 rounded-[6px] text-white/80"
-                  style={{ backgroundColor: `${exp.color}20`, border: `1px solid ${exp.color}35` }}
+                  className="shrink-0 flex items-center justify-center w-7 h-7 rounded-[6px] text-foreground/80"
+                  style={{ backgroundColor: 'hsla(var(--crimson), 0.12)', border: '1px solid hsla(var(--crimson), 0.2)' }}
                 >
                   <span className="scale-[0.85]">{exp.icon}</span>
                 </span>
-                <h3 className="text-[13px] md:text-[15px] font-bold leading-tight text-white/90 tracking-tight">
+                <h3 className="text-[13px] md:text-[15px] font-bold leading-tight text-foreground/90 tracking-tight">
                   {exp.title}
                 </h3>
               </div>
-              <p className="text-[11px] md:text-[13px] font-bold tracking-tight pl-[2.2rem]" style={{ color: exp.color }}>
+                <p className="text-[11px] md:text-[13px] font-bold tracking-tight pl-[2.2rem]" style={{ color: TRAJECTORY_COLOR }}>
                 {exp.company}
               </p>
                {exp.validationBadge && (
                  <span
                    className="inline-flex items-center mt-1.5 ml-[2.2rem] text-[10px] font-mono uppercase tracking-[0.15em] px-2 py-0.5"
                    style={{
-                     color: '#C8E0FF',
-                     borderColor: '#0062D533',
-                     backgroundColor: 'rgba(0, 98, 213, 0.08)',
+                      color: 'hsl(var(--crimson))',
+                      borderColor: 'hsla(var(--crimson), 0.2)',
+                      backgroundColor: 'hsla(var(--crimson), 0.08)',
                      borderStyle: 'solid',
                      borderWidth: '1px',
                    }}
                  >
-                  <svg className="w-2.5 h-2.5 mr-1 shrink-0" viewBox="0 0 24 24" fill="none" stroke="#0062D5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                     <svg className="w-2.5 h-2.5 mr-1 shrink-0" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--crimson))" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 12l2 2 4-4" />
                     <circle cx="12" cy="12" r="10" />
                   </svg>
@@ -298,7 +298,7 @@ const EntryCard = memo(({ exp, index }: { exp: ExperienceEntry; index: number })
               )}
             </div>
             <div className="shrink-0 text-left sm:text-right">
-              <span className="text-[10px] md:text-[11px] font-mono text-white/35 uppercase tracking-[0.14em]">
+              <span className="text-[10px] md:text-[11px] font-mono text-foreground/35 uppercase tracking-[0.14em]">
                 {exp.date}
               </span>
               {active && (
@@ -312,15 +312,15 @@ const EntryCard = memo(({ exp, index }: { exp: ExperienceEntry; index: number })
             </div>
           </div>
 
-          <p className="relative text-[11px] md:text-[13px] text-white/40 leading-[1.7] pl-[2.2rem] whitespace-pre-line">
+          <p className="relative text-[11px] md:text-[13px] text-foreground/40 leading-[1.7] pl-[2.2rem] whitespace-pre-line">
             {exp.description}
           </p>
 
           <div className="relative flex items-center gap-3 mt-3.5 pl-[2.2rem] flex-wrap">
-            <svg className="w-2.5 h-2.5 text-white/15 shrink-0" viewBox="0 0 10 10" fill="currentColor">
+            <svg className="w-2.5 h-2.5 text-foreground/15 shrink-0" viewBox="0 0 10 10" fill="currentColor">
               <circle cx="5" cy="5" r="1.5" />
             </svg>
-            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/18">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-foreground/18">
               {exp.location}
             </span>
             {active && (
@@ -416,7 +416,7 @@ export default function Experience() {
             <h2 className="text-gradient text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight mb-3">
               Career Trajectory
             </h2>
-            <p className="text-white/45 max-w-lg text-sm md:text-base leading-relaxed">
+            <p className="text-foreground/45 max-w-lg text-sm md:text-base leading-relaxed">
               From local labs to global deployments — a chronological path of building, researching, and shipping.
             </p>
           </div>
