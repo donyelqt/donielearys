@@ -133,9 +133,9 @@ export default function About() {
               </div>
             </div>
           </div>
-          {/* Portrait: floats over the terminal corner on md+; sits in flow on phones
-              so it never covers the scrolling terminal. */}
-          <div className="hidden md:block absolute -top-3 -right-3 w-48 lg:w-[184px] h-48 lg:h-[184px] rounded-full overflow-hidden border-2 border-foreground/20 shadow-lg z-50">
+          {/* Portrait: floats over the terminal corner on every breakpoint so its
+              position stays identical from desktop down to mobile. */}
+          <div className="absolute -top-3 -right-3 w-28 sm:w-40 md:w-48 lg:w-[184px] h-28 sm:h-40 md:h-48 lg:h-[184px] rounded-full overflow-hidden border-2 border-foreground/20 shadow-lg z-50">
             <Image
               src="/donielecolored.jpg"
               alt="Doniele"
@@ -143,17 +143,6 @@ export default function About() {
               height={264}
               className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
             />
-          </div>
-          <div className="md:hidden flex justify-center mt-6">
-            <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-foreground/20 shadow-lg">
-              <Image
-                src="/donielecolored.jpg"
-                alt="Doniele"
-                width={264}
-                height={264}
-                className="object-cover grayscale"
-              />
-            </div>
           </div>
         </motion.div>
       </div>
