@@ -12,7 +12,7 @@ const certifications = [
     subtitle: "Generative AI Developer",
     issuer: "SAP",
     credentialId: "C_AIG_2409",
-    date: "Aug 2025",
+    date: "Aug 2026",
     status: "Certified" as const,
     featured: true as const,
     description:
