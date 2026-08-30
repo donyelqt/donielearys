@@ -164,7 +164,7 @@ const AchievementDropdown = () => {
           <p className="text-[10px] font-mono text-white/70 dark:text-foreground/40 uppercase tracking-wider truncate">{primary.subtitle}</p>
         </div>
         <div className="shrink-0 flex items-center gap-2">
-          <span className="px-1.5 py-0.5 text-[10px] font-mono font-bold bg-white text-[hsl(0_68%_44%)] dark:bg-foreground dark:text-background uppercase tracking-wider">{primary.stat}</span>
+          <span className="px-1.5 py-0.5 text-[10px] font-mono font-bold bg-white text-black uppercase tracking-wider">{primary.stat}</span>
           <ChevronDown className={`h-3.5 w-3.5 text-white/70 dark:text-foreground/50 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
         </div>
       </button>
@@ -216,13 +216,6 @@ export default function Hero() {
   return (
     <section className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
       <NetworkBackground />
-      {/* Ambient glow — scales with viewport: 280px mobile, 380px tablet, 500px desktop */}
-      <div className="
-        absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-        w-70 h-70 sm:w-95 sm:h-95 lg:w-125 lg:h-125
-        bg-foreground/[0.07] rounded-full blur-[80px] sm:blur-[100px] lg:blur-[120px]
-        -z-10
-      " />
       
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -244,8 +237,7 @@ className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.1 }}
-        className="text-4xl md:text-8xl font-bold tracking-tighter bg-clip-text text-transparent bg-linear-to-br 
-        from-foreground via-foreground/80 to-foreground/40 mb-6 max-w-4xl uppercase"
+        className="display-mega text-foreground mb-6 max-w-4xl uppercase"
       >
         Doniele Antonio
       </motion.h1>
