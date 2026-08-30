@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
+import { SectionHeader } from '../SectionHeader'
 import {
   SiNextdotjs,
   SiReact,
@@ -91,20 +92,10 @@ function MarqueeRow({ items, direction = 'left' }: { items: typeof techRow1; dir
 export default function TechStack() {
   return (
     <section className="py-24 px-4 bg-foreground/2 overflow-hidden">
-      <div className="max-w-7xl mx-auto mb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
-          <h2 className="text-gradient text-3xl md:text-5xl font-bold mb-4">Tech Stack</h2>
-          <p className="text-foreground/50 max-w-xl mx-auto">
-            I leverage the most powerful tools in the industry to build robust applications.
-          </p>
-        </motion.div>
-      </div>
+      <SectionHeader index="02" title="Tech Stack" meta="16 SYSTEMS" />
+      <p className="max-w-7xl mx-auto -mt-4 mb-12 text-[13px] md:text-sm leading-relaxed text-foreground/50">
+        I leverage the most powerful tools in the industry to build robust applications.
+      </p>
 
       <div className="flex flex-col gap-4">
         <motion.div

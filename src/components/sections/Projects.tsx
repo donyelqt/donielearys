@@ -3,6 +3,7 @@
 import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { BentoGrid, BentoGridItem } from '../BentoGrid'
+import { SectionHeader } from '../SectionHeader'
 import {
   Brain,
   Compass,
@@ -94,18 +95,14 @@ export default function Projects() {
 
   return (
     <section id="projects" className="py-16 sm:py-20 px-4">
-      <motion.div
-        variants={prefersReducedMotion ? {} : containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="max-w-7xl mx-auto mb-8 sm:mb-12"
-      >
-        <motion.h2 variants={itemVariants} className="text-gradient text-2xl sm:text-3xl md:text-5xl font-bold mb-4">Featured Projects</motion.h2>
-        <motion.p variants={itemVariants} className="text-foreground/50 max-w-xl">
-          A selection of my best work, ranging from local to global innovation of AI systems & applications. Focused on real-world impact, production-readiness, and cutting-edge research.
-        </motion.p>
-      </motion.div>
+      <SectionHeader
+        index="03"
+        title="Featured Projects"
+        meta="04 DEPLOYED"
+      />
+      <p className="max-w-7xl mx-auto -mt-4 mb-12 text-[13px] md:text-sm leading-relaxed text-foreground/50">
+        A selection of my best work, ranging from local to global innovation of AI systems &amp; applications. Focused on real-world impact, production-readiness, and cutting-edge research.
+      </p>
       <motion.div
         variants={prefersReducedMotion ? {} : containerVariants}
         initial="hidden"
