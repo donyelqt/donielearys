@@ -84,7 +84,7 @@ export default function About() {
           className="text-center mb-12"
         >
           <motion.h2 className="text-gradient text-3xl md:text-5xl font-bold mb-4">About</motion.h2>
-          <motion.p className="text-white/50 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
+          <motion.p className="text-foreground/50 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
             Self-taught full-stack engineer crafting agentic AI systems and robust infrastructure.
             From Baguio to global impact—one problem at a time.
           </motion.p>
@@ -97,7 +97,7 @@ export default function About() {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto relative"
         >
-          <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/10 mr-0 lg:mr-12">
+          <div className="rounded-2xl overflow-hidden shadow-2xl border border-foreground/10 mr-0 lg:mr-12">
             <div className="flex items-center gap-3 px-4 py-3 bg-[#0f0f0f] border-b border-white/5">
               <div className="flex gap-2">
                 <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
@@ -135,7 +135,7 @@ export default function About() {
           </div>
           {/* Portrait: floats over the terminal corner on md+; sits in flow on phones
               so it never covers the scrolling terminal. */}
-          <div className="hidden md:block absolute -top-3 -right-3 w-48 lg:w-[184px] h-48 lg:h-[184px] rounded-full overflow-hidden border-2 border-white/20 shadow-lg z-50">
+          <div className="hidden md:block absolute -top-3 -right-3 w-48 lg:w-[184px] h-48 lg:h-[184px] rounded-full overflow-hidden border-2 border-foreground/20 shadow-lg z-50">
             <Image
               src="/donielecolored.jpg"
               alt="Doniele"
@@ -145,7 +145,7 @@ export default function About() {
             />
           </div>
           <div className="md:hidden flex justify-center mt-6">
-            <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-white/20 shadow-lg">
+            <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-foreground/20 shadow-lg">
               <Image
                 src="/donielecolored.jpg"
                 alt="Doniele"
