@@ -1,8 +1,10 @@
 "use client"
 
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import Image from 'next/image'
 import { motion, useReducedMotion } from 'framer-motion'
+import { cn } from '@/lib/utils'
+import { SectionHeader } from '../SectionHeader'
 
 const terminalLines = [
   { type: 'command', text: 'whoami', delay: 400 },
@@ -33,7 +35,7 @@ const asciiArt = `
 ╚═════╝ ╚══════╝   ╚╝
 `
 
-export default function About() {
+function useTerminalTyping() {
   const [displayedLines, setDisplayedLines] = useState<typeof terminalLines>([])
   const [currentLineIndex, setCurrentLineIndex] = useState(0)
   const [showCursor, setShowCursor] = useState(true)
@@ -45,9 +47,7 @@ export default function About() {
       setShowCursor(prev => !prev)
     }, 500)
     return () => {
-      if (cursorIntervalRef.current !== null) {
-        clearInterval(cursorIntervalRef.current)
-      }
+      if (cursorIntervalRef.current !== null) clearInterval(cursorIntervalRef.current)
     }
   }, [])
 
@@ -60,35 +60,176 @@ export default function About() {
 
   useEffect(() => {
     if (currentLineIndex >= terminalLines.length) return
-
     const currentItem = terminalLines[currentLineIndex]
-    const baseDelay = currentLineIndex === 0 ? currentItem.delay : currentItem.delay - terminalLines[currentLineIndex - 1].delay
-
-    const timer = setTimeout(() => {
-      addLine(currentLineIndex)
-    }, prefersReducedMotion ? 0 : baseDelay)
-
+    const baseDelay =
+      currentLineIndex === 0
+        ? currentItem.delay
+        : currentItem.delay - terminalLines[currentLineIndex - 1].delay
+    const timer = setTimeout(() => addLine(currentLineIndex), prefersReducedMotion ? 0 : baseDelay)
     return () => clearTimeout(timer)
   }, [currentLineIndex, addLine, prefersReducedMotion])
 
-  const renderedLines = useMemo(() => displayedLines, [displayedLines])
+  return { displayedLines, showCursor }
+}
+
+function TerminalBody({
+  displayedLines,
+  showCursor,
+  bodyClassName,
+  textClass,
+  promptClass,
+  asciiClass,
+}: {
+  displayedLines: typeof terminalLines
+  showCursor: boolean
+  bodyClassName: string
+  textClass: string
+  promptClass: string
+  asciiClass: string
+}) {
+  return (
+    <div
+      className={bodyClassName}
+      style={{ contentVisibility: 'auto', contain: 'layout paint style' }}
+    >
+      {displayedLines.map((line, index) => (
+        <div key={index} className="mb-1">
+          {line.type === 'command' ? (
+            <div className="flex items-center gap-2">
+              <span className={promptClass}>❯</span>
+              <span className={textClass}>{line.text}</span>
+            </div>
+          ) : line.isAscii ? (
+            <pre className={`${asciiClass} text-[10px] leading-none`}>{asciiArt}</pre>
+          ) : (
+            <div className={`${textClass} pl-4`}>{line.text}</div>
+          )}
+        </div>
+      ))}
+      <div className="flex items-center">
+        <span className={`${promptClass} mr-2`}>❯</span>
+        <span className={`${textClass} ${showCursor ? 'opacity-100' : 'opacity-0'} transition-opacity duration-100`}>_</span>
+      </div>
+    </div>
+  )
+}
+
+function TerminalWindow({
+  variant,
+  displayedLines,
+  showCursor,
+}: {
+  variant: 'terminal' | 'brutalist'
+  displayedLines: typeof terminalLines
+  showCursor: boolean
+}) {
+  if (variant === 'brutalist') {
+    return (
+      <>
+        <div className="relative overflow-hidden border border-foreground/15 mr-0 lg:mr-12">
+          <div className="flex items-center gap-3 px-4 py-2.5 bg-[#0f0f0f] border-b border-foreground/15">
+            <span className="text-[10px] font-mono text-crimson uppercase tracking-[0.2em]">[ doniele@portfolio ]</span>
+            <div className="flex-1 text-center">
+              <span className="text-[10px] font-mono text-white/40 uppercase tracking-[0.2em]">~ bash — session</span>
+            </div>
+            <span className="barcode h-3 w-10" aria-hidden="true" />
+          </div>
+          <TerminalBody
+            displayedLines={displayedLines}
+            showCursor={showCursor}
+            bodyClassName="terminal-body bg-[#050505] p-4 h-[360px] sm:h-[440px] md:h-[520px] overflow-y-auto font-mono text-sm [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            textClass="text-white/60"
+            promptClass="text-red-500"
+            asciiClass="ascii-art text-red-800"
+          />
+        </div>
+        <div className="absolute -top-3 -right-3 w-28 sm:w-40 md:w-48 lg:w-[184px] h-28 sm:h-40 md:h-48 lg:h-[184px] overflow-hidden border border-foreground/25 z-50">
+          <Image
+            src="/donielecolored.jpg"
+            alt="Doniele"
+            width={264}
+            height={264}
+            className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
+          />
+        </div>
+      </>
+    )
+  }
+
+  return (
+    <>
+      <div className="apple-window relative overflow-hidden rounded-2xl mr-0 lg:mr-12 border border-white/10 bg-zinc-900 shadow-2xl shadow-black/40">
+        <div className="flex items-center gap-2 px-4 py-3 bg-zinc-800 border-b border-white/10">
+          <span className="traffic-light h-3 w-3 rounded-full bg-[#ff5f57] ring-1 ring-white/20" />
+          <span className="traffic-light h-3 w-3 rounded-full bg-[#febc2e] ring-1 ring-white/20" />
+          <span className="traffic-light h-3 w-3 rounded-full bg-[#28c840] ring-1 ring-white/20" />
+          <div className="flex-1 text-center">
+            <span className="text-[11px] font-mono text-white/40">doniele — zsh — 80×24</span>
+          </div>
+        </div>
+        <TerminalBody
+          displayedLines={displayedLines}
+          showCursor={showCursor}
+          bodyClassName="bg-black p-5 h-[360px] sm:h-[440px] md:h-[520px] overflow-y-auto font-mono text-sm [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          textClass="text-white/70"
+          promptClass="text-red-500"
+          asciiClass="ascii-art text-red-800"
+        />
+      </div>
+      <div className="apple-portrait absolute -top-3 -right-3 w-28 sm:w-40 md:w-48 lg:w-[184px] h-28 sm:h-40 md:h-48 lg:h-[184px] overflow-hidden rounded-full border border-white/10 shadow-lg z-50">
+        <Image
+          src="/donielecolored.jpg"
+          alt="Doniele"
+          width={264}
+          height={264}
+          className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
+        />
+      </div>
+    </>
+  )
+}
+
+export default function About() {
+  const [variant, setVariant] = useState<'terminal' | 'brutalist'>('brutalist')
+  const { displayedLines, showCursor } = useTerminalTyping()
 
   return (
     <section id="about" className="py-20 px-4">
       <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <motion.h2 className="text-gradient text-3xl md:text-5xl font-bold mb-4">About</motion.h2>
-          <motion.p className="text-foreground/50 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
-            Self-taught full-stack engineer crafting agentic AI systems and robust infrastructure.
-            From Baguio to global impact—one problem at a time.
-          </motion.p>
-        </motion.div>
+        <SectionHeader index="01" title="About" />
+        <p className="max-w-7xl mx-auto -mt-4 mb-12 text-[13px] md:text-sm leading-relaxed text-foreground/50 max-w-2xl">
+          Self-taught full-stack engineer crafting agentic AI systems and robust infrastructure.
+          From Baguio to global impact—one problem at a time.
+        </p>
+
+        <div className="flex items-center justify-end mb-4">
+          <div className="inline-flex border border-foreground/20">
+            <button
+              type="button"
+              onClick={() => setVariant('terminal')}
+              className={cn(
+                'px-3 py-1.5 text-[10px] font-mono uppercase tracking-[0.2em] transition-colors',
+                variant === 'terminal'
+                  ? 'bg-foreground text-background'
+                  : 'text-foreground/50 hover:text-foreground'
+              )}
+            >
+              Apple
+            </button>
+            <button
+              type="button"
+              onClick={() => setVariant('brutalist')}
+              className={cn(
+                'px-3 py-1.5 text-[10px] font-mono uppercase tracking-[0.2em] border-l border-foreground/20 transition-colors',
+                variant === 'brutalist'
+                  ? 'bg-foreground text-background'
+                  : 'text-foreground/50 hover:text-foreground'
+              )}
+            >
+              Brutal
+            </button>
+          </div>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -97,53 +238,7 @@ export default function About() {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto relative"
         >
-          <div className="rounded-2xl overflow-hidden shadow-2xl border border-foreground/10 mr-0 lg:mr-12">
-            <div className="flex items-center gap-3 px-4 py-3 bg-[#0f0f0f] border-b border-white/5">
-              <div className="flex gap-2">
-                <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
-                <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
-                <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
-              </div>
-              <div className="flex-1 text-center">
-                <span className="text-xs text-white/40 font-mono">doniele@portfolio ~ bash</span>
-              </div>
-              <div className="w-8" />
-            </div>
-            <div
-              className="terminal-body bg-[#050505] p-4 h-[360px] sm:h-[440px] md:h-[520px] overflow-y-auto font-mono text-sm [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-              style={{ contentVisibility: 'auto', contain: 'layout paint style' }}
-            >
-              {renderedLines.map((line, index) => (
-                <div key={index} className="mb-1">
-                  {line.type === 'command' ? (
-                    <div className="flex items-center gap-2">
-                      <span className="text-red-500">❯</span>
-                      <span className="text-white/90">{line.text}</span>
-                    </div>
-                  ) : line.isAscii ? (
-                    <pre className="ascii-art text-red-800 text-[10px] leading-none">{asciiArt}</pre>
-                  ) : (
-                    <div className="text-white/60 pl-4">{line.text}</div>
-                  )}
-                </div>
-              ))}
-              <div className="flex items-center">
-                <span className="text-red-500 mr-2">❯</span>
-                <span className={`text-white/90 ${showCursor ? 'opacity-100' : 'opacity-0'} transition-opacity duration-100`}>_</span>
-              </div>
-            </div>
-          </div>
-          {/* Portrait: floats over the terminal corner on every breakpoint so its
-              position stays identical from desktop down to mobile. */}
-          <div className="absolute -top-3 -right-3 w-28 sm:w-40 md:w-48 lg:w-[184px] h-28 sm:h-40 md:h-48 lg:h-[184px] rounded-full overflow-hidden border-2 border-foreground/20 shadow-lg z-50">
-            <Image
-              src="/donielecolored.jpg"
-              alt="Doniele"
-              width={264}
-              height={264}
-              className="object-cover grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
+          <TerminalWindow variant={variant} displayedLines={displayedLines} showCursor={showCursor} />
         </motion.div>
       </div>
     </section>

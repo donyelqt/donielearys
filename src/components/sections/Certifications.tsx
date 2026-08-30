@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { motion, useReducedMotion } from "framer-motion"
 import { ExternalLink, BadgeCheck, Award, Calendar, Building2 } from "lucide-react"
+import { SectionHeader } from '../SectionHeader'
 
 /* Single source of truth — add future certs here. No lorem, no scramble. */
 const certifications = [
@@ -48,42 +49,11 @@ export default function Certifications() {
 
   return (
     <section id="certifications" className="py-24 md:py-32 px-4 overflow-hidden">
-      {/* Header — mirrors Contact/Experience terminal grammar */}
-      <div className="max-w-7xl mx-auto mb-10 md:mb-14">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.45 }}
-          className="flex items-center gap-2 mb-3"
-        >
-          <span className="text-red-500 text-[13px] font-mono leading-none" aria-hidden="true">❯</span>
-          <span className="text-[10px] sm:text-[11px] font-mono font-bold text-foreground/60 uppercase tracking-[0.25em]">Credentials</span>
-          <span className="flex-1 h-px bg-foreground/10 ml-1" aria-hidden="true" />
-          <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.2em] text-foreground/40">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-400 dark:bg-emerald-400 shadow-[0_0_8px_rgba(244,63,94,0.6)] dark:shadow-[0_0_8px_rgba(52,211,153,0.6)]" aria-hidden="true" />
-            verified
-          </span>
-        </motion.div>
-
-        <motion.h2
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.45, delay: 0.05 }}
-          className="text-4xl md:text-6xl font-bold tracking-tighter leading-[0.9] uppercase text-foreground"
-        >
-          Certifications
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.45, delay: 0.1 }}
-          className="mt-4 text-[13px] md:text-sm leading-relaxed text-foreground/55 max-w-[60ch]"
-        >
+      <SectionHeader index="04" title="Certifications" eyebrow="Credentials" meta="VERIFIED" />
+      <div className="max-w-7xl mx-auto">
+        <p className="-mt-4 mb-12 text-[13px] md:text-sm leading-relaxed text-foreground/55 max-w-[60ch]">
           Vendor-validated proof — not course completions. One credential shipped, more in pipeline. Every badge links to its issuer.
-        </motion.p>
+        </p>
       </div>
 
       {/* Featured credential — editorial, not card-grid */}
@@ -95,15 +65,13 @@ export default function Certifications() {
         className="max-w-7xl mx-auto"
       >
         <div className="relative grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-0 border border-foreground/10 bg-foreground/[0.02] overflow-hidden">
-          {/* SAP blue top rule — committed color, owns the edge */}
-          <div className="absolute top-0 inset-x-0 h-[2px] bg-[#0A4DB5]" aria-hidden="true" />
+           {/* Top rule — red accent owns the edge */}
+           <div className="absolute top-0 inset-x-0 h-[2px] bg-[#0A4DB5]" aria-hidden="true" />
           <div className="absolute inset-0 pointer-events-none opacity-[0.015]" style={{ backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`, backgroundSize: `24px 24px` }} aria-hidden="true" />
 
-          {/* Badge pane */}
-          <div className="relative bg-[#F8F9FA] p-6 sm:p-8 flex flex-col items-center justify-center border-b lg:border-b-0 lg:border-r border-foreground/10">
-            {/* soft isometric echo behind badge */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#E8EFFB] via-transparent to-foreground pointer-events-none" aria-hidden="true" />
-            <div className="relative w-full max-w-[360px] aspect-square rounded-2xl overflow-hidden bg-white shadow-[0_20px_60px_-20px_rgba(10,42,107,0.35),0_1px_0_rgba(0,0,0,0.06)] ring-1 ring-black/5">
+           {/* Badge pane */}
+           <div className="relative bg-[#F8F9FA] p-6 sm:p-8 flex flex-col items-center justify-center border-b lg:border-b-0 lg:border-r border-black/10">
+              <div className="relative w-full max-w-[360px] aspect-square overflow-hidden bg-white border border-black/10">
               <Image
                 src={cert.badge}
                 alt="SAP Generative AI Developer — Certified badge"
@@ -113,18 +81,18 @@ export default function Certifications() {
                 priority
               />
             </div>
-            <div className="relative mt-5 flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[#0A2A6B]/70">
-              <BadgeCheck className="h-3.5 w-3.5 text-[#0A6ED1]" />
-              Issued by SAP Certification
-            </div>
+              <div className="relative mt-5 flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[#0A2A6B]/70">
+                <BadgeCheck className="h-3.5 w-3.5 text-[#0A6ED1]" />
+               Issued by SAP Certification
+             </div>
           </div>
 
           {/* Detail pane — dark, matches site world */}
           <div className="relative p-6 sm:p-8 lg:p-10 flex flex-col">
             {/* Status */}
             <div className="flex flex-wrap items-center gap-2 mb-4">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-mono font-bold uppercase tracking-[0.18em] bg-red-500/10 text-red-400 border border-red-500/20 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/20">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-400 dark:bg-emerald-400 animate-pulse" aria-hidden="true" />
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-mono font-bold uppercase tracking-[0.18em] bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
+                <span className="w-1.5 h-1.5 bg-emerald-400 animate-pulse" aria-hidden="true" />
                 Certified
               </span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.18em] bg-foreground/5 text-foreground/60 border border-foreground/10">
@@ -135,7 +103,7 @@ export default function Certifications() {
             <h3 className="text-[22px] sm:text-[26px] font-bold tracking-tight leading-none text-foreground">
               {cert.title}
             </h3>
-            <p className="mt-1 text-[18px] sm:text-[20px] font-bold tracking-tight leading-none text-[#5BA8FF]">{cert.subtitle}</p>
+             <p className="mt-1 text-[18px] sm:text-[20px] font-bold tracking-tight leading-none text-[#5BA8FF]">{cert.subtitle}</p>
 
             <dl className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3 text-[10px] font-mono uppercase tracking-[0.18em] border-y border-foreground/10 py-4">
               <div>
