@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Small-phone step (used by ASCII logo / project marks). Default scale starts at sm. */
   --breakpoint-xs: 26rem;
@@ -30,6 +32,7 @@
   --color-popover-foreground: hsl(var(--popover-foreground));
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
+  --color-crimson: hsl(var(--crimson));
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
@@ -38,15 +41,35 @@
 
 @layer base {
   :root {
-    /* Dark-only world: every color token below is fully defined under `.dark`,
-       which the <html> element carries permanently. The former light-theme
-       values here were dead code that could never render. */
     --radius: 0rem;
-    --grid-major: rgba(0, 0, 0, 0.04);
-    --grid-minor: rgba(0, 0, 0, 0.08);
-    /* Aligned with the red-500 prompt/highlight family so the site runs one red.
-       Legacy comma syntax so both hsl(var(--crimson)) and hsla(var(--crimson), a) resolve */
-    --crimson: 0, 84%, 60%;
+    /* Light — strict black / white / red editorial system. */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 7%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 7%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
+    --primary: 0 0% 7%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 95%;
+    --secondary-foreground: 0 0% 7%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 40%;
+    --accent: 0 0% 95%;
+    --accent-foreground: 0 0% 7%;
+    --destructive: 0 84% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 0 0% 7%;
+    --grid-major: rgba(0, 0, 0, 0.05);
+    --grid-minor: rgba(0, 0, 0, 0.09);
+    --crimson: 0 84% 55%;
+    /* Light-mode accents */
+    --indicator: hsl(0 84% 55%);
+    --g1: rgb(10 10 10 / 0.6);
+    --g2: rgb(0 0 0 / 0.9);
+    --g3: rgb(225 0 35 / 0.6);
   }
 
   .dark {
@@ -71,7 +94,12 @@
     --ring: 240 4.9% 83.9%;
     --grid-major: rgba(255, 255, 255, 0.03);
     --grid-minor: rgba(255, 255, 255, 0.08);
-    --crimson: 0, 84%, 60%;
+    --crimson: 0 84% 60%;
+    /* Dark-mode accents — white indicator line, black→red cards (consistent with light) */
+    --indicator: hsl(var(--foreground));
+    --g1: rgb(12 12 12 / 0.55);
+    --g2: rgb(0 0 0 / 0.92);
+    --g3: rgb(225 0 35 / 0.55);
   }
 }
 
@@ -79,40 +107,45 @@
   * {
     border-color: var(--color-border);
   }
+  html {
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
   body {
-    background-color: #000000;
-    color: var(--color-foreground);
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
     font-feature-settings: "rlig" 1, "calt" 1;
     overflow-x: hidden;
     scroll-behavior: smooth;
+    transition: background-color 300ms ease, color 300ms ease;
+  }
+  ::selection {
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
   }
 
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
-
   ::-webkit-scrollbar-track {
     background: transparent;
   }
-
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: hsl(var(--border));
     border-radius: 4px;
   }
-
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: hsl(var(--muted-foreground) / 0.4);
   }
 }
 
 @layer utilities {
   .glass {
-    @apply bg-background/60 backdrop-blur-md border border-white/10;
+    @apply bg-background/70 backdrop-blur-md border border-border;
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-linear-to-br from-white via-white/80 to-white/40;
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-foreground via-foreground/80 to-foreground/50;
   }
 
   .text-display {
