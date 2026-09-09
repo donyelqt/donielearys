@@ -1,5 +1,5 @@
 "use client"
-import React, { memo } from 'react'
+import { memo } from 'react'
 import { motion } from 'framer-motion'
 import { SectionHeader } from '../SectionHeader'
 
@@ -7,12 +7,12 @@ interface ExperienceEntry {
   id: string
   title: string
   company: string
+  initials: string
   location: string
   date: string
   periodLabel: string
   isCurrent: boolean
   description: string
-  icon: React.ReactNode
   color: string
   validationBadge?: string
 }
@@ -26,7 +26,7 @@ const experiences: ExperienceEntry[] = [
     periodLabel: "2023",
     isCurrent: false,
     description: "Full-stack freelance software engineering — shipping production code across web and infrastructure projects.",
-    icon: <CodeIcon />,
+    initials: "ST",
     color: "#7A8A99",
   },
   {
@@ -38,7 +38,7 @@ const experiences: ExperienceEntry[] = [
     periodLabel: "2024",
     isCurrent: false,
     description: "Founded a startup and became CTO and lead software engineer, joining our university's startup incubator. Led a 3-person team, spearheading MVP development of an AI fintech app built on Google Gemini APIs and SDKs. Built skills across startup development, Supabase, and full-stack engineering.",
-    icon: <CodeIcon />,
+    initials: "PP",
     color: "#1ABCFE",
   },
   {
@@ -50,7 +50,7 @@ const experiences: ExperienceEntry[] = [
     periodLabel: "2024",
     isCurrent: false,
     description: "Lead Software Engineer for Raksha: War Odyssey, a Web3 board strategy game integrating blockchain for gamification tokens. Used MERN Stack, Socket.io, and TypeScript to architect the game's technical backbone. Spearheaded matchmaking system, hero selection lobby, and core board game mechanics.",
-    icon: <CodeIcon />,
+    initials: "TS",
     color: "#1ABCFE",
   },
   {
@@ -60,9 +60,9 @@ const experiences: ExperienceEntry[] = [
     location: "Baguio City, CAR, Philippines",
     date: "Jan 2025 - Mar 2026",
     periodLabel: "2025",
-    isCurrent: false,
+isCurrent: false,
     description: "Pioneered the AWS Learning Cloud Club at UC Baguio — first-ever Chief Skill-Builder Chairperson. Conducted end-to-end technical workshops covering Amazon SageMaker Labs, Jupyter Notebooks, Python, and ML libraries. Instituted Git/GitHub version control workflows into student-led model training and deployment pipelines.",
-    icon: <BriefcaseIcon />,
+    initials: "AW",
     color: "#F0B232",
   },
   {
@@ -74,7 +74,7 @@ const experiences: ExperienceEntry[] = [
     periodLabel: "2025",
     isCurrent: false,
     description: "Selected as a DataCamp Scholar through Google Developer Groups on Campus at Polytechnic University of the Philippines. Gained access to 500+ courses and 110+ industry-aligned projects in data science, machine learning, and applied AI.",
-    icon: <TerminalIcon />,
+    initials: "DC",
     color: "#47B8E0",
   },
   {
@@ -86,7 +86,7 @@ const experiences: ExperienceEntry[] = [
     periodLabel: "2025",
     isCurrent: false,
     description: "Competed in the National AI Student Challenge 2025 Regional Track organized by AI Singapore and AWS, representing UC and the Philippines — a solo competition using Amazon SageMaker, PartyRock, and Python to surpass a reference LLM across four AI domains: prompt engineering, foundational models, agentic AI, and responsible AI.\n\n🏆 Crowned champion in the Baguio League.\n🇵🇭 Ranked Top 1 nationwide — Top 3 Philippines League.\n🌍 Ranked Top 15–16 in the ASEAN League (peak rank Top 9–11).",
-    icon: <BriefcaseIcon />,
+    initials: "AS",
     color: "#F0B232",
   },
   {
@@ -98,7 +98,7 @@ const experiences: ExperienceEntry[] = [
     periodLabel: "2025",
     isCurrent: false,
     description: "Accepted into the DICT STEP UP Pre-Acceleration Program 2025, a government-backed national startup initiative in the Cordillera Administrative Region. Tarana-ai — an agentic AI travel app generating real-time, personalized itineraries for Baguio City — officially recognized as a promising early-stage tech venture receiving government mentoring and ecosystem support.",
-    icon: <RocketIcon />,
+    initials: "DS",
     color: "#C75EDC",
   },
   {
@@ -110,19 +110,19 @@ const experiences: ExperienceEntry[] = [
     periodLabel: "2025",
     isCurrent: true,
     description: "Led engineering execution across teams of 5-10+ members (core team + interns) for the LGU-backed agentic AI travel platform, owning architecture, infrastructure, security, and scalability for 100% of core platform features. Co-founded with a non-technical partner handling operations and business development. BFF-based DDD monolith reduced cross-domain coupling ~40%. Real-time itinerary engine raised recommendation relevance ~45%. Custom Agentic AI + RAG pipeline (Gemini API, pgvector, PostgreSQL) lifted contextual accuracy ~50%. 99%+ uptime via Vercel, Supabase, NextAuth.js, serving 150+ waitlisted and 130+ beta users. Generated $470+ USD in startup funding. Recognized at Philippine Startup Week 2025. Engaged by DOST-PCIEERD for startup ecosystem insights.",
-    icon: <TerminalIcon />,
+    initials: "TA",
     color: "#E84D4D",
   },
   {
     id: 'uc-research-2025',
     title: "Applied AI Research Engineer",
-    company: "University of the Cordilleras",
+    company: "hinAIng | University of the Cordilleras",
     location: "Baguio City, CAR, Philippines",
     date: "Dec 2025 - Present",
     periodLabel: "2025",
-    isCurrent: true,
+isCurrent: true,
     description: "Lead researcher on AgenticHinaing—a neuro-symbolic multi-agent civic social listening framework. Used it for a technical interview at Silicon Peach by a former senior dev of IBM and was accepted to advance from 80% completion to full autonomous data center deployment at Atlanta Tech Village, built by contributors from IBM, Yahoo, Apple, Georgia Tech, NVIDIA, UCLA, UC Berkeley, and Red Hat Asia. Technically validated by a former IBM senior software engineer using ICLR, NAACL, and EMNLP evaluation frameworks — achieved TRL 7 Technology Readiness Level.",
-    icon: <GlobeIcon />,
+    initials: "UC",
     color: "#4DAED4",
     validationBadge: "Ex-IBM Senior Software Engineer (US-based IBM)",
   },
@@ -135,7 +135,7 @@ const experiences: ExperienceEntry[] = [
     periodLabel: "2026",
     isCurrent: false,
     description: "Led agentic AI infrastructure and security architecture for the mission and vision of avaron to be the world's first autonomous self-healing data center platform. Resolved NVIDIA/Docker CUDA mismatches, achieving 10x–42x inference speed gains. Engineered LangGraph workflows with Pydantic v2 for 99%+ response reliability. Secured ₱600,000+ in funding. Achieved SOC 2, OWASP, and NIST 800-53 compliance. Led code reviews and maintained architectural coherence across a distributed team with contributors from ex-IBM, UCLA, AWS, UC Berkeley, NVIDIA, Georgia Tech, Yahoo, and Red Hat Asia.",
-    icon: <RocketIcon />,
+    initials: "AV",
     color: "#E84D4D",
   },
   {
@@ -147,7 +147,7 @@ const experiences: ExperienceEntry[] = [
     periodLabel: "2026",
     isCurrent: false,
     description: "Fourth-largest tech hub in the United States. Drove technical execution and system hardening for Avaron, architected core agentic infrastructure delivering the reliability required to enable and secure high-value international corporate partnerships.",
-    icon: <RocketIcon />,
+    initials: "AT",
     color: "#E84D4D",
   },
   {
@@ -159,7 +159,7 @@ const experiences: ExperienceEntry[] = [
     periodLabel: "2026",
     isCurrent: true,
     description: "led team of 8 members owning 100% of product direction, full-stack, infrastructure, & AI agent for enterprise banking solutions with 7 microservices & zero trust security principles\n\nled technical architecture debriefs for a 30+ engineering intern cohort, translating monolithic vs. microservices architectures and REST APIs into production engineering practices, giving 60%+ of the cohort early exposure to production-oriented system architecture\n\nrecognized by an Advanced Application Engineering Manager for technical communication and real-world software architecture experience\n\nreceived individualized recognition as the only intern personally encouraged by an Advanced Application Engineering Manager to pursue a full-time software engineering role before graduation and to mentor fellow Cloud Elite interns during debrief",
-    icon: <RocketIcon />,
+    initials: "AC",
     color: "#E84D4D",
   },
 ]
@@ -263,34 +263,34 @@ const EntryCard = memo(({ exp, index }: { exp: ExperienceEntry; index: number })
             />
           )}
 
-          <div className="relative flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4 mb-2.5">
+<div className="relative flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4 mb-2.5">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2.5 mb-1">
                 <span
-                  className="shrink-0 flex items-center justify-center w-7 h-7 rounded-[6px] text-foreground/80"
-                  style={{ backgroundColor: 'hsla(var(--crimson), 0.12)', border: '1px solid hsla(var(--crimson), 0.2)' }}
+                  className="shrink-0 flex items-center justify-center w-7 h-7 rounded-[6px]"
+                  style={{ color: TRAJECTORY_COLOR, border: `0.5px solid ${TRAJECTORY_COLOR}` }}
                 >
-                  <span className="scale-[0.85]">{exp.icon}</span>
+                  <span className="text-[12px]">{exp.initials}</span>
                 </span>
                 <h3 className="text-[13px] md:text-[15px] font-bold leading-tight text-foreground/90 tracking-tight">
                   {exp.title}
                 </h3>
               </div>
-                <p className="text-[11px] md:text-[13px] font-bold tracking-tight pl-[2.2rem]" style={{ color: TRAJECTORY_COLOR }}>
+              <p className="text-[11px] md:text-[13px] font-bold tracking-tight pl-[2.2rem]" style={{ color: TRAJECTORY_COLOR }}>
                 {exp.company}
               </p>
-               {exp.validationBadge && (
-                 <span
-                   className="inline-flex items-center mt-1.5 ml-[2.2rem] text-[10px] font-mono uppercase tracking-[0.15em] px-2 py-0.5"
-                   style={{
-                      color: 'hsl(var(--crimson))',
-                      borderColor: 'hsla(var(--crimson), 0.2)',
-                      backgroundColor: 'hsla(var(--crimson), 0.08)',
-                     borderStyle: 'solid',
-                     borderWidth: '1px',
-                   }}
-                 >
-                     <svg className="w-2.5 h-2.5 mr-1 shrink-0" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--crimson))" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              {exp.validationBadge && (
+                <span
+                  className="inline-flex items-center mt-1.5 ml-[2.2rem] text-[10px] font-mono uppercase tracking-[0.15em] px-2 py-0.5"
+                  style={{
+                    color: 'hsl(var(--crimson))',
+                    borderColor: 'hsla(var(--crimson), 0.2)',
+                    backgroundColor: 'hsla(var(--crimson), 0.08)',
+                    borderStyle: 'solid',
+                    borderWidth: '1px',
+                  }}
+                >
+                  <svg className="w-2.5 h-2.5 mr-1 shrink-0" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--crimson))" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 12l2 2 4-4" />
                     <circle cx="12" cy="12" r="10" />
                   </svg>
@@ -425,56 +425,8 @@ export default function Experience() {
               <PeriodBlock key={period} period={period} entries={entries} startIndex={startIndex} />
             ))}
           </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function RocketIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
-      <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
-      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
-      <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
-    </svg>
-  )
-}
-
-function GlobeIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-      <path d="M2 12h20" />
-    </svg>
-  )
-}
-
-function TerminalIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="4 17 10 11 4 5" />
-      <line x1="12" x2="20" y1="19" y2="19" />
-    </svg>
-  )
-}
-
-function BriefcaseIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
-      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-    </svg>
-  )
-}
-
-function CodeIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="16 18 22 12 16 6" />
-      <polyline points="8 6 2 12 8 18" />
-    </svg>
-  )
+</div>
+    </div>
+  </section>
+)
 }
