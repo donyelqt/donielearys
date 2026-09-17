@@ -272,7 +272,7 @@ export default function Certifications() {
                       Verify Credential <ExternalLink className="h-3.5 w-3.5" />
                     </a>
                     <a
-                      href="#competitions"
+                      href="/#competitions"
                       className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-foreground/15 text-foreground text-[11px] font-bold uppercase tracking-[0.16em] hover:bg-foreground/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50"
                     >
                       View proof context
