@@ -251,6 +251,15 @@ className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x
         From Local to Global
       </motion.p>
 
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.23 }}
+        className="text-sm md:text-base text-foreground/40 max-w-2xl mb-4 leading-relaxed font-mono"
+      >
+        Building across finance, banking, healthcare, tourism, good governance, and AI data centers.
+      </motion.p>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
