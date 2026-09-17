@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { motion, useReducedMotion } from "framer-motion"
 import { SectionHeader } from "@/components/SectionHeader"
 
@@ -19,6 +20,7 @@ import { SectionHeader } from "@/components/SectionHeader"
  */
 export default function NotFound() {
   const prefersReducedMotion = useReducedMotion()
+  const pathname = usePathname()
 
   const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: 12 },
@@ -29,14 +31,14 @@ export default function NotFound() {
   return (
     <section className="px-4 pt-6 pb-24 md:pb-32">
       <div className="max-w-7xl mx-auto">
-        <SectionHeader index="404" title="Route Not Found" meta="STATUS — ERR 404" />
+        <SectionHeader index="404" eyebrow="ERROR" title="Route Not Found" meta="STATUS — ERR 404" />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           {/* Terminal trace block — Preloader/Contact boot-line language */}
           <motion.div {...fadeUp(0.1)}>
             <div
               className="flex items-center gap-2 mb-3"
-              role="img"
+              role="status"
               aria-label="Terminal error trace: requested route not found on this server"
             >
               <span className="text-red-500 text-[13px] font-mono select-none leading-none" aria-hidden="true">❯</span>
@@ -60,7 +62,7 @@ export default function NotFound() {
                 <div className="px-4 py-3 text-[11px] sm:text-xs font-mono uppercase tracking-[0.2em] text-foreground/40 flex items-baseline justify-between gap-3">
                   <span className="text-foreground/30">GET</span>
                   <span className="text-foreground/70 text-right break-all" aria-live="polite">
-                    {typeof window !== "undefined" ? window.location.pathname : "/"}
+                    {pathname}
                   </span>
                 </div>
                 <div className="px-4 py-3 text-[11px] sm:text-xs font-mono uppercase tracking-[0.2em] flex items-baseline justify-between gap-3">

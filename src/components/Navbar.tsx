@@ -9,15 +9,19 @@ import { useTheme } from 'next-themes'
 
 const showCertifications = process.env.NEXT_PUBLIC_CERTIFICATIONS_ENABLED !== 'false'
 
+/* Root-absolute hashes: shared chrome must route home from ANY path
+   (e.g. the 404 page) — a bare '#about' on /missing resolves to
+   /missing#about and re-renders 404, trapping the user. '/#about'
+   navigates home first, then scrolls to the section. */
 const navItems = [
-  { name: 'Home', href: '#' },
-  { name: 'About', href: '#about' },
-  { name: 'Experience', href: '#experience' },
-  { name: 'Projects', href: '#projects' },
-  ...(showCertifications ? [{ name: 'Certifications', href: '#certifications' }] : []),
-  { name: 'Validation', href: '#testimonials' },
-  { name: 'Competitions', href: '#competitions' },
-  { name: 'Contact', href: '#contact' },
+  { name: 'Home', href: '/#' },
+  { name: 'About', href: '/#about' },
+  { name: 'Experience', href: '/#experience' },
+  { name: 'Projects', href: '/#projects' },
+  ...(showCertifications ? [{ name: 'Certifications', href: '/#certifications' }] : []),
+  { name: 'Validation', href: '/#testimonials' },
+  { name: 'Competitions', href: '/#competitions' },
+  { name: 'Contact', href: '/#contact' },
 ]
 
 const springConfig = {
@@ -58,10 +62,12 @@ export default function Navbar() {
       }
 
       const sectionElements = navItems
-        .filter(item => item.href !== '#')
+        .filter(item => item.href !== '/#')
         .map(item => ({
           name: item.name,
-          el: document.getElementById(item.href.replace('#', ''))
+          /* '/#about' → 'about' (root-absolute hashes; see navItems comment).
+             split on '#': '/#' yields '' → filtered out below. */
+          el: document.getElementById(item.href.split('#')[1] ?? '')
         }))
         .filter((item): item is { name: string; el: HTMLElement } => item.el !== null)
 
@@ -180,7 +186,7 @@ export default function Navbar() {
         >
           <div className="flex items-center gap-8">
             <Link
-              href="#"
+              href="/#"
               aria-label="DonieleAI — back to top"
               className="text-xl font-bold tracking-tighter hover:opacity-80 transition-opacity"
             >
