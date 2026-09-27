@@ -2,10 +2,24 @@
 
 import React from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { Quote, BadgeCheck } from 'lucide-react'
+import { Quote, BadgeCheck, KeyRound, ExternalLink } from 'lucide-react'
 import { SectionHeader } from '@/components/SectionHeader'
 
-const testimonials = [
+interface Testimonial {
+  name: string
+  role: string
+  quote: string
+  context: string
+  pending: boolean
+  attribution: string
+  gpg?: {
+    fingerprint: string
+    href: string
+    downloadHref: string
+  }
+}
+
+const testimonials: Testimonial[] = [
   {
     name: 'Richard Jakelski',
     role: 'Former US-Based IBM Senior Software Engineer',
@@ -14,6 +28,11 @@ const testimonials = [
     context: 'CS Thesis Validation · AgenticHinaing Eval Framework · Apr 2026',
     pending: false,
     attribution: 'Email · GPG-signed · Apr 17, 2026',
+    gpg: {
+      fingerprint: 'DA85 8550 E421 0446 A839 B763 8AFD 8764 6FD0 2E7D',
+      href: 'https://keys.openpgp.org/search?q=DA858550E4210446A839B7638AFD87646FD02E7D',
+      downloadHref: '/keys/richard-jakelski.asc',
+    },
   },
   {
     name: 'Accenture Advanced Application Engineering Manager',
@@ -129,6 +148,36 @@ export default function Testimonials() {
                 <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-foreground/20 mt-1">
                   {t.attribution}
                 </p>
+              )}
+              {t.gpg && (
+                <div className="mt-3 pt-3 border-t border-dashed border-foreground/10">
+                  <div className="flex items-center gap-1.5 text-foreground/40">
+                    <KeyRound className="w-3 h-3" aria-hidden="true" />
+                    <span className="text-[10px] font-mono uppercase tracking-[0.2em]">
+                      OpenPGP Public Key
+                    </span>
+                  </div>
+                  <p className="mt-1.5 text-[10px] font-mono tracking-[0.08em] text-foreground/50 break-all">
+                    {t.gpg.fingerprint}
+                  </p>
+                  <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+                    <a
+                      href={t.gpg.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-[0.16em] text-foreground/55 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50"
+                    >
+                      Verify on keys.openpgp.org <ExternalLink className="w-3 h-3" aria-hidden="true" />
+                    </a>
+                    <a
+                      href={t.gpg.downloadHref}
+                      download="richard-jakelski.asc"
+                      className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-[0.16em] text-foreground/55 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/50"
+                    >
+                      Download key <ExternalLink className="w-3 h-3" aria-hidden="true" />
+                    </a>
+                  </div>
+                </div>
               )}
             </div>
           </motion.div>
