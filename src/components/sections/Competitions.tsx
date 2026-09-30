@@ -69,7 +69,7 @@ const competitions: CompetitionEntry[] = [
     title: "Avaron - Atlanta Tech Village",
     issuer: "Atlanta Tech Village (4th Largest US Startup Hub)",
     date: "2026",
-    description: "AI Engineer at Avaron, deployed at Atlanta Tech Village in Buckhead - the 4th largest startup hub in the United States. Building world's first autonomous self-healing data center.",
+    description: "AI Engineer at Avaron, deployed at Atlanta Tech Village in Buckhead - the 4th largest startup hub in the United States. Building avaron's mission and vision world's first autonomous self-healing data center.",
     icon: <Rocket className="h-5 w-5 text-red-400 dark:text-red-400" />,
     badge: "Venture Engineer",
     badgeColor: "bg-red-500/20 text-red-400 border-red-500/30 dark:bg-red-500/20 dark:text-red-400 dark:border-red-500/30",
