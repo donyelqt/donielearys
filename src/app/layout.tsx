@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import ScrollProgress, { BackToTop } from "@/components/ScrollProgress";
 import PreloaderWrapper from "@/components/PreloaderWrapper";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import DotGridLight from "@/components/DotGridLight";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,6 +52,10 @@ export default function RootLayout({
           <ScrollProgress />
           <BackToTop />
           <div className="fixed inset-0 grid-pattern pointer-events-none -z-10" />
+          {/* After .grid-pattern: the grid paints an opaque background and the
+              light has to composite over it, so it must come later in paint
+              order at the same stacking level. */}
+          <DotGridLight />
           <Navbar />
           <PreloaderWrapper>
             <main id="main-content" className="flex-1 pt-24">
