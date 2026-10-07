@@ -30,7 +30,10 @@ const GAP = 32
 const DOT_RADIUS = 1
 const HOVER_RADIUS = 115 // ~3.6 cells, scaled from the reference's 90px at a 25px gap
 const GROW_RADIUS = 7 // dot swells 1px -> 8px at full influence, keeping cell gaps visible
-const PEAK_ALPHA = 0.42 // highest value still clearing WCAG AAA (4.7:1) for body-size white text
+const PEAK_ALPHA = 0.32 // measured ceiling, not a guess: antialiased arcs
+                       // overlap where the trail compresses and stack to about
+                       // 1.35x the per-dot alpha, so this holds the composited
+                       // peak under the AA budget for white display type
 const TRAIL_SAMPLES = 8
 const HEAD_TAU = 0.045 // seconds; how fast the light chases the cursor
 const MAX_SPEED = 9000 // px/s ceiling, stops a re-entering pointer smearing a full-width streak
@@ -249,8 +252,15 @@ export default function DotGridLight() {
 
           for (let i = 0; i < TRAIL_SAMPLES - 1; i++) {
             const along = (i + 0.5) / (TRAIL_SAMPLES - 1)
-            const radius = HOVER_RADIUS * (0.42 + (0.1 - 0.42) * along)
-            const fade = Math.pow(1 - along, 1.65)
+            // Taper tuned for THIS grid, not ported. Measured against the
+            // static dots at --grid-minor (alpha 20/255): the reference's
+            // pow(1-along, 1.65) drove the last three segments to alpha 1-8,
+            // below the background dots, so two thirds of the streak was
+            // invisible on a real swipe despite the physics being correct.
+            // These weights keep every segment above that floor while still
+            // tapering, so the whole comet reads.
+            const radius = HOVER_RADIUS * (0.42 + (0.22 - 0.42) * along)
+            const fade = 0.62 + 0.38 * Math.pow(1 - along, 0.85)
             const atSegment =
               exponentialFalloff(
                 distanceToSegment(
