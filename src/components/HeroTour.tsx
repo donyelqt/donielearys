@@ -328,12 +328,15 @@ export default function HeroTour() {
             <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-crimson">
               Doniele Agent
             </span>
+            {/* Untyped characters are removed from layout rather than made
+                transparent. At opacity-0 they still occupied a full line of
+                space, so mid-sentence the bubble showed "I'm Doniele." followed
+                by blank space, which reads as text cut off rather than text
+                still arriving. `hidden` keeps the bubble filled edge to edge
+                and growing as the line types in. */}
             <span className="flex flex-wrap items-start">
               {stepDef?.text.split("").map((ch, i) => (
-                <span
-                  key={`${step}-${i}`}
-                  className={i < typed ? "opacity-100" : "opacity-0"}
-                >
+                <span key={`${step}-${i}`} className={i < typed ? "" : "hidden"}>
                   {ch === " " ? "\u00a0" : ch}
                 </span>
               ))}
