@@ -27,7 +27,7 @@ const DWELL_MS = 2400 // time a step's text stays fully typed
 const TYPE_MS = 26 // per character
 const TRAVEL_MS = 780 // cursor travel between anchors
 const FIRST_DELAY_MS = 700 // beat after the curtain before the tour starts
-const BUBBLE_W = 260 // px; fixed bubble width, must match the element below
+const BUBBLE_W = 300 // px; must match the max-w below, used to reserve room before choosing a side
 const ARROW_TIP = 6 // px; the arrow glyph's tip sits this far into its 26px box
 
 type Align = "up" | "down" | "left" | "right"
@@ -315,13 +315,15 @@ export default function HeroTour() {
               fill="hsl(var(--crimson))"
             />
           </svg>
-          {/* The characters are individually wrapped spans so they can be
-              revealed one at a time. That makes this row a flex container, and
-              flex-wrap defaults to nowrap: every character stayed on ONE line,
-              overflowing the bubble past its right edge. flex-wrap is what
-              actually contains the text. */}
+          {/* w-max with a 300px ceiling, sized from the measured 7.2px advance
+              width. At 260px a 67-character step wrapped to three lines with a
+              three-character orphan, and an orphan line is what reads as
+              truncated text. 300px fits 38 characters per line, so every step
+              lands on two lines or fewer. Shrink-to-fit means a partially
+              typed sentence hugs its own width instead of sitting in a box
+              with 200px of dead space to its right. */}
           <div
-            className={`tour-tooltip absolute flex w-[260px] flex-col gap-1 bg-foreground px-3 py-2 font-mono text-[12px] leading-[1.5] text-background shadow-[0_10px_28px_-12px_rgba(0,0,0,0.55)] ${
+            className={`tour-tooltip absolute flex w-max max-w-[300px] flex-col gap-1 bg-foreground px-3 py-2 font-mono text-[12px] leading-[1.5] text-background shadow-[0_10px_28px_-12px_rgba(0,0,0,0.55)] ${
               side === "up" ? "bottom-2" : "top-2"
             } ${bubbleSide === "left" ? "right-7" : "left-7"}`}
           >
