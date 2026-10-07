@@ -47,6 +47,8 @@ const projects = [
     ),
     icon: <Server className="h-4 w-4 text-crimson" />,
     className: "sm:col-span-2",
+    href: "https://avaron.ai/",
+    linkLabel: "Visit site",
   },
   {
     title: "Tarana AI Waitlist",
@@ -61,6 +63,8 @@ const projects = [
     ),
     icon: <Users className="h-4 w-4 text-crimson" />,
     className: "sm:col-span-1",
+    href: "https://tarana-ai-waitlist.vercel.app",
+    linkLabel: "Visit site",
   },
   {
     title: "Tarana AI Web & Mobile App",
@@ -75,6 +79,8 @@ const projects = [
     ),
     icon: <Compass className="h-4 w-4 text-crimson" />,
     className: "sm:col-span-1",
+    href: "https://tarana-ai.vercel.app",
+    linkLabel: "Visit site",
   },
 {
     title: "AgenticHinaing",
@@ -89,6 +95,8 @@ const projects = [
     ),
     icon: <Brain className="h-4 w-4 text-crimson" />,
     className: "sm:col-span-2",
+    href: "https://hinaing.vercel.app",
+    linkLabel: "Visit site",
   },
   {
     title: "AgenticHinaing Validation Harness",
@@ -103,6 +111,8 @@ const projects = [
     ),
     icon: <Gauge className="h-4 w-4 text-crimson" />,
     className: "sm:col-span-3",
+    href: "https://github.com/donyelqt/AgenticHinaing-Eval-Framework",
+    linkLabel: "View source",
   },
 ]
 
@@ -137,6 +147,8 @@ export default function Projects() {
               className={project.className}
               status={project.status}
               statusClass={statusText[project.status]}
+              href={project.href}
+              linkLabel={project.linkLabel}
             />
           ))}
         </BentoGrid>
