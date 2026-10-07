@@ -32,6 +32,14 @@ const PEAK_ALPHA = 0.24 // measured ceiling for glyphs. Denser strokes overlap
                        // harder than the arcs they replaced, so this sits below
                        // the disc value and holds the composited peak at ~7:1
                        // under white display type.
+// Adaptive ceiling. PEAK_ALPHA is the floor, applied where the light crosses
+// text; over open grid nothing competes for the pixel, so the glyphs can run
+// far brighter at no legibility cost. Full white measures 1.28:1 behind
+// --foreground, which is why brightness is spent only where it is safe.
+const BRIGHT_ALPHA = 0.9
+const TEXT_PROBE_INTERVAL = 0.12 // seconds between hit-tests; per-frame is
+                                 // needless layout work for a value that changes slowly
+
 const TRAIL_SAMPLES = 8
 const HEAD_TAU = 0.045 // seconds; how fast the light chases the cursor
 const MAX_SPEED = 9000 // px/s ceiling, stops a re-entering pointer smearing a full-width streak
@@ -44,6 +52,26 @@ const EXP_FLOOR = Math.exp(-4)
 /* Per-segment time constants, seconds. Monotonic: the tail always lags further
  * than the segment ahead of it, which is what produces the comet taper. */
 const SEGMENT_TAUS = [0.05, 0.075, 0.1, 0.135, 0.18, 0.24, 0.32]
+
+/**
+ * True when the point sits over something that renders text, so the light has
+ * a reason to stay dim. Walks up from the hit element looking for an element
+ * that actually paints glyphs, since most text here is a bare <span> or
+ * <div> inside a positioned card.
+ */
+function isOverText(x: number, y: number) {
+  const hit = document.elementFromPoint(x, y)
+  if (!hit) return false
+  let el: Element | null = hit
+  for (let depth = 0; el && depth < 6; depth++) {
+    const tag = el.tagName
+    if (tag === "P" || tag === "H1" || tag === "H2" || tag === "H3" || tag === "SPAN" || tag === "A") {
+      return true
+    }
+    el = el.parentElement
+  }
+  return false
+}
 
 /* Density ramp. Influence selects the glyph, so the light reads as the cursor
  * writing onto the grid rather than dots swelling under it. Reuses the site's
@@ -121,6 +149,9 @@ export default function DotGridLight() {
     let intensity = 0
     let rafId = 0
     let lastTime = 0
+    let ceiling = PEAK_ALPHA
+    let overText = false
+    let sinceProbe = 0
 
     function resize() {
       width = window.innerWidth
@@ -297,10 +328,11 @@ export default function DotGridLight() {
           influence *= intensity
           if (influence < 0.004) continue
 
-          // The light sits BEHIND content, so it is bounded by a legibility
-          // budget, not by taste. Glyph strokes cover far less area than a
-          // filled disc, so alpha carries a boost to reach comparable perceived
-          // weight; PEAK_ALPHA still caps the composited peak.
+          // The light sits BEHIND content, so brightness is spent only where it
+          // is safe. Behind text the ceiling drops to PEAK_ALPHA, which measures
+          // ~7:1 against --foreground; over open grid nothing competes for the
+          // pixel, so the ceiling rises to BRIGHT_ALPHA and the glyphs read as
+          // white rather than grey.
           //
           // Neutral white, matching `--grid-minor`. Tinting toward the accent
           // would recolour the grid as the cursor passes and spend an accent
@@ -311,7 +343,7 @@ export default function DotGridLight() {
             ]
           context.fillStyle = `rgba(255, 255, 255, ${Math.min(
             1,
-            influence * PEAK_ALPHA * GLYPH_INK_BOOST
+            influence * ceiling * GLYPH_INK_BOOST
           )})`
           context.fillText(glyph, x, y)
 
@@ -339,10 +371,24 @@ export default function DotGridLight() {
       intensity += (target - intensity) * (1 - Math.exp(-rate * dt))
       if (Math.abs(target - intensity) < 0.001) intensity = target
 
+      // Probe what is under the cursor, then ease the ceiling toward the safe
+      // value for that context. Easing rather than snapping keeps the light
+      // from flickering as the cursor crosses a heading. elementFromPoint forces
+      // layout, so it is throttled to a fixed interval instead of every frame.
+      sinceProbe += dt
+      if (pointerInside && sinceProbe >= TEXT_PROBE_INTERVAL) {
+        sinceProbe = 0
+        overText = isOverText(pointerX, pointerY)
+      }
+      const ceilingTarget = overText ? PEAK_ALPHA : BRIGHT_ALPHA
+      ceiling += (ceilingTarget - ceiling) * (1 - Math.exp(-7 * dt))
+      if (Math.abs(ceilingTarget - ceiling) < 0.001) ceiling = ceilingTarget
+
       const parked = integrate(dt)
 
-      // Parked head + settled intensity costs nothing: no clear, no draw, no paint.
-      if (parked && intensity === target) {
+      // Parked head, settled intensity and settled ceiling costs nothing: no
+      // clear, no draw, no paint.
+      if (parked && intensity === target && ceiling === ceilingTarget) {
         rafId = 0
         lastTime = 0
         return
