@@ -330,18 +330,42 @@ export default function HeroTour() {
             <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-crimson">
               Doniele Agent
             </span>
-            {/* Untyped characters are removed from layout rather than made
-                transparent. At opacity-0 they still occupied a full line of
-                space, so mid-sentence the bubble showed "I'm Doniele." followed
-                by blank space, which reads as text cut off rather than text
-                still arriving. `hidden` keeps the bubble filled edge to edge
-                and growing as the line types in. */}
+            {/* Breaks on WORD boundaries, not characters. Each character was its
+                own flex item, and flexbox has no concept of words, so it filled
+                a line to its limit and split whatever word straddled that
+                point: "them" became "th" / "em", "across" became "acr" / "oss".
+                Each word is now one unbreakable flex item, so wrapping can only
+                happen between words. Characters keep their own spans for the
+                typewriter reveal, and untyped ones are removed from layout
+                rather than left transparent, which had the bubble showing a
+                short sentence followed by blank space. */}
             <span className="flex flex-wrap items-start">
-              {stepDef?.text.split("").map((ch, i) => (
-                <span key={`${step}-${i}`} className={i < typed ? "" : "hidden"}>
-                  {ch === " " ? "\u00a0" : ch}
-                </span>
-              ))}
+              {(() => {
+                const words = stepDef?.text.split(" ") ?? []
+                let cursor = 0
+                return words.map((word, wi) => {
+                  const chars = Array.from(word)
+                  const start = cursor
+                  cursor += chars.length
+                  return (
+                    <span key={`${step}-w${wi}`} className="whitespace-nowrap">
+                      {chars.map((ch, ci) => (
+                        <span
+                          key={ci}
+                          className={start + ci < typed ? "" : "hidden"}
+                        >
+                          {ch}
+                        </span>
+                      ))}
+                      {wi < words.length - 1 && (
+                        <span className={cursor < typed ? "" : "hidden"}>
+                          {"\u00a0"}
+                        </span>
+                      )}
+                    </span>
+                  )
+                })
+              })()}
               {/* Caret sits at the typed edge and blinks while typing. */}
               {typed < (stepDef?.text.length ?? 0) && (
                 <span className="ml-px inline-block h-[15px] w-[1.5px] animate-cursor-blink bg-background" />
