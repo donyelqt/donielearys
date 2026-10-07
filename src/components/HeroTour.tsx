@@ -5,16 +5,14 @@ import { useReducedMotion } from "framer-motion"
 
 /* Scripted cursor tour of the hero.
  *
- * Model is taken from bryllim.com's live implementation, extracted from the
- * DOM rather than guessed: a fixed, pointer-events-none SVG arrow carrying a
- * rounded tooltip, positioned with translate3d; tooltip text is revealed one
- * character at a time by toggling a class per <span>, with a caret bar that
- * tracks the typed width. The tooltip is "talking" only while characters land.
+ * A fixed, pointer-events-none SVG arrow carries a rounded tooltip and moves
+ * between anchor points with translate3d. Tooltip text is revealed one
+ * character at a time by toggling a class per <span>, with a caret at the
+ * typed edge while characters are still landing.
  *
  * Deterministic by construction: a fixed step list, a fixed per-step dwell, and
- * rAF-driven interpolation between anchor points. There is no randomness, no
- * physics, and no dependency on the pointer, so the sequence is identical on
- * every run and safe to verify.
+ * rAF-driven interpolation. No randomness, no physics, and no dependency on
+ * the pointer, so the sequence is identical on every run and safe to verify.
  *
  * Gated on the Preloader curtain having fully closed, dismissed by any real
  * pointer or key input, and suppressed entirely under prefers-reduced-motion.
@@ -30,6 +28,7 @@ const TYPE_MS = 26 // per character
 const TRAVEL_MS = 780 // cursor travel between anchors
 const FIRST_DELAY_MS = 700 // beat after the curtain before the tour starts
 const BUBBLE_W = 260 // px; fixed bubble width, must match the element below
+const ARROW_TIP = 6 // px; the arrow glyph's tip sits this far into its 26px box
 
 type Align = "up" | "down" | "left" | "right"
 
@@ -74,7 +73,7 @@ const STEPS: Step[] = [
   },
 ]
 
-/** Cubic ease used for every hop, matching the reference's smooth glide. */
+/** Cubic ease-out used for every hop, so the glide settles rather than stops. */
 const EASE = (t: number) => 1 - Math.pow(1 - t, 3)
 
 /** Session-scoped "already toured" check. Tolerates private mode, where the
@@ -157,22 +156,24 @@ export default function HeroTour() {
       // by the time this runs. Bailing here would deadlock the sequence.
       if (!arrow) return
 
-      // Park OUTSIDE the target and hang the bubble AWAY from it, on whichever
-      // side has room. Anchoring at the corner and offsetting the bubble
-      // inboard put it back inside the element, which rendered the bubble text
-      // white-on-white over the H1.
       const fromX = Number(arrow.dataset.x ?? rect.left + 12)
       const fromY = Number(arrow.dataset.y ?? rect.top + 12)
-      const roomRight = window.innerWidth - (rect.left + rect.width)
-      const placeRight = roomRight >= BUBBLE_W + 40
-      const anchorX = placeRight ? rect.left + rect.width + 12 : rect.left - 12
-      const toX = Math.min(Math.max(12, anchorX), window.innerWidth - 12)
-      const rawY = stepDef.side === "up" ? rect.bottom + 14 : rect.top - 14
-      const toY = Math.min(Math.max(12, rawY), window.innerHeight - 12)
+      // Bubble sits to the RIGHT of the component by default, matching the
+      // original design, with the tip on the component's right edge so pointer
+      // and bubble travel the same way. Flips left only when the right edge is
+      // too close to the viewport to fit it.
+      const roomRight = window.innerWidth - rect.right
+      const bubbleOnLeft = roomRight < BUBBLE_W + 46
+      // Aim the tip AT the component: on its right or left edge, vertically
+      // centred. The box parks ARROW_TIP back because the glyph tip sits that
+      // far into its own 26px box. The old maths parked the box 14px above the
+      // top edge, so the tip pointed at empty space above the component.
+      const toX = bubbleOnLeft ? rect.left - ARROW_TIP : rect.right - ARROW_TIP
+      const toY = rect.top + rect.height / 2 - ARROW_TIP
       arrow.dataset.x = String(toX)
       arrow.dataset.y = String(toY)
       setSide(stepDef.side)
-      setBubbleSide(placeRight ? "right" : "left")
+      setBubbleSide(bubbleOnLeft ? "left" : "right")
 
       const travelStart = performance.now()
       cancelAnimationFrame(raf.current)
@@ -297,11 +298,10 @@ export default function HeroTour() {
           aria-hidden="true"
           className="fixed top-0 left-0 z-[90] pointer-events-none"
         >
-          {/* The arrow is the bubble's pointer, not a second graphic: its body
-              takes the same colour as the tooltip background and its rim the
-              same colour as the tooltip text, so the two read as one object.
-              Both are the semantic tokens, so the pairing also inverts cleanly
-              with the theme instead of needing a dark-mode branch. */}
+          {/* Crimson: the accent is the site's one signal colour, and a red
+              pointer reads as the agent acting on the page, not as decoration.
+              The rim keeps the page background so the glyph separates from the
+              bubble behind it. */}
           <svg className="block" width="26" height="26" viewBox="0 0 24 24" fill="none">
             <path
               d="M5.5 5.5l3.9 11.7 2.2-5.6 5.6-2.2-11.7-3.9z"
@@ -312,13 +312,14 @@ export default function HeroTour() {
             />
             <path
               d="M5.5 5.5l3.9 11.7 2.2-5.6 5.6-2.2-11.7-3.9z"
-              fill="hsl(var(--foreground))"
+              fill="hsl(var(--crimson))"
             />
           </svg>
-          {/* Compact and wraps: an Apple-style callout is a small precise bubble,
-              not a banner. `whitespace-nowrap` here was forcing the whole
-              sentence onto one 721px line, which is what made it read as a
-              slab. Capped width keeps it to two or three short lines. */}
+          {/* The characters are individually wrapped spans so they can be
+              revealed one at a time. That makes this row a flex container, and
+              flex-wrap defaults to nowrap: every character stayed on ONE line,
+              overflowing the bubble past its right edge. flex-wrap is what
+              actually contains the text. */}
           <div
             className={`tour-tooltip absolute flex w-[260px] flex-col gap-1 bg-foreground px-3 py-2 font-mono text-[12px] leading-[1.5] text-background shadow-[0_10px_28px_-12px_rgba(0,0,0,0.55)] ${
               side === "up" ? "bottom-2" : "top-2"
@@ -327,7 +328,7 @@ export default function HeroTour() {
             <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-crimson">
               Doniele Agent
             </span>
-            <span className="inline-flex items-start">
+            <span className="flex flex-wrap items-start">
               {stepDef?.text.split("").map((ch, i) => (
                 <span
                   key={`${step}-${i}`}
