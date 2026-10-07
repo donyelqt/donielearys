@@ -27,13 +27,11 @@ import { useReducedMotion } from "framer-motion"
  */
 
 const GAP = 32
-const DOT_RADIUS = 1
 const HOVER_RADIUS = 115 // ~3.6 cells, scaled from the reference's 90px at a 25px gap
-const GROW_RADIUS = 7 // dot swells 1px -> 8px at full influence, keeping cell gaps visible
-const PEAK_ALPHA = 0.32 // measured ceiling, not a guess: antialiased arcs
-                       // overlap where the trail compresses and stack to about
-                       // 1.35x the per-dot alpha, so this holds the composited
-                       // peak under the AA budget for white display type
+const PEAK_ALPHA = 0.24 // measured ceiling for glyphs. Denser strokes overlap
+                       // harder than the arcs they replaced, so this sits below
+                       // the disc value and holds the composited peak at ~7:1
+                       // under white display type.
 const TRAIL_SAMPLES = 8
 const HEAD_TAU = 0.045 // seconds; how fast the light chases the cursor
 const MAX_SPEED = 9000 // px/s ceiling, stops a re-entering pointer smearing a full-width streak
@@ -46,6 +44,18 @@ const EXP_FLOOR = Math.exp(-4)
 /* Per-segment time constants, seconds. Monotonic: the tail always lags further
  * than the segment ahead of it, which is what produces the comet taper. */
 const SEGMENT_TAUS = [0.05, 0.075, 0.1, 0.135, 0.18, 0.24, 0.32]
+
+/* Density ramp. Influence selects the glyph, so the light reads as the cursor
+ * writing onto the grid rather than dots swelling under it. Reuses the site's
+ * existing terminal vocabulary (font-mono, the boot ASCII logo) instead of
+ * inventing a new one. */
+// Measured ink coverage at 14px in a 32px cell: a filled dot of radius 4
+// covers ~50px, so the light end of the ramp must start where a glyph is still
+// legible. "." and "·" covered only 2px and vanished against the static grid.
+const ASCII_RAMP = ":+*xX#@" // sparse -> dense, min coverage 4px
+const GLYPH_SIZE = 14 // px, sits inside the 32px cell
+const GLYPH_INK_BOOST = 1.5 // glyph strokes cover far less area than a filled
+                            // disc, so alpha needs a lift to match its weight
 
 
 /** Normalized exponential falloff: 1 at the centre, exactly 0 at `radius`. */
@@ -121,6 +131,14 @@ export default function DotGridLight() {
       surface.style.width = `${width}px`
       surface.style.height = `${height}px`
       context.setTransform(dpr, 0, 0, dpr, 0, 0)
+      // Canvas text state is expensive to parse, so the font and alignment are
+      // configured once per resize rather than per glyph. The family is named
+      // explicitly: `var(--font-geist-mono)` is valid CSS but does NOT resolve
+      // in the canvas font shorthand, which silently fell back to 10px
+      // sans-serif and rendered the ramp at a fraction of its intended size.
+      context.font = `${GLYPH_SIZE}px "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace`
+      context.textAlign = "center"
+      context.textBaseline = "middle"
       // Geometry moved under the light; drop stale pixels before the next draw.
       dirty = null
       context.clearRect(0, 0, width, height)
@@ -279,27 +297,32 @@ export default function DotGridLight() {
           influence *= intensity
           if (influence < 0.004) continue
 
-          const radius = DOT_RADIUS + influence * GROW_RADIUS
           // The light sits BEHIND content, so it is bounded by a legibility
-          // budget, not by taste: an uncapped white dot composites to ~rgb(194)
-          // and drops white display type to ~2:1 against it. PEAK_ALPHA caps the
-          // brightest pixel this layer can emit.
+          // budget, not by taste. Glyph strokes cover far less area than a
+          // filled disc, so alpha carries a boost to reach comparable perceived
+          // weight; PEAK_ALPHA still caps the composited peak.
           //
           // Neutral white, matching `--grid-minor`. Tinting toward the accent
-          // would recolour the dots as the cursor passes, which reads as a
-          // coloured blob travelling over the page rather than light falling on
-          // it, and it would spend an accent already carrying nine semantic
-          // jobs (focus rings, timeline, status, progress).
-          context.fillStyle = `rgba(255, 255, 255, ${influence * PEAK_ALPHA})`
-          context.beginPath()
-          context.arc(x, y, radius, 0, Math.PI * 2)
-          context.fill()
+          // would recolour the grid as the cursor passes and spend an accent
+          // already carrying nine semantic jobs.
+          const glyph =
+            ASCII_RAMP[
+              Math.min(ASCII_RAMP.length - 1, Math.floor(influence * ASCII_RAMP.length))
+            ]
+          context.fillStyle = `rgba(255, 255, 255, ${Math.min(
+            1,
+            influence * PEAK_ALPHA * GLYPH_INK_BOOST
+          )})`
+          context.fillText(glyph, x, y)
 
+          // Glyphs are wider than the previous 8px dot radius, so the dirty
+          // rect is sized to the glyph box or stale marks survive between frames.
+          const half = GLYPH_SIZE * 0.6
           drawn = true
-          boxMinX = Math.min(boxMinX, x - radius)
-          boxMinY = Math.min(boxMinY, y - radius)
-          boxMaxX = Math.max(boxMaxX, x + radius)
-          boxMaxY = Math.max(boxMaxY, y + radius)
+          boxMinX = Math.min(boxMinX, x - half)
+          boxMinY = Math.min(boxMinY, y - half)
+          boxMaxX = Math.max(boxMaxX, x + half)
+          boxMaxY = Math.max(boxMaxY, y + half)
         }
       }
 
