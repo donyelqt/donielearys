@@ -48,7 +48,7 @@ const STEPS: Step[] = [
   },
   {
     target: "[data-tour='name']",
-    text: "Based in the Philippines, working across Baguio and Singapore.",
+    text: "Based in the Philippines, building across the United States and Southeast Asia.",
     side: "down",
   },
   {
