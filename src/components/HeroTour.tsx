@@ -297,10 +297,11 @@ export default function HeroTour() {
           aria-hidden="true"
           className="fixed top-0 left-0 z-[90] pointer-events-none"
         >
-          {/* Crimson, not white: the accent is already the site's one signal
-              colour, and a red cursor reads as an agent acting on the page
-              rather than as decoration. Kept small so it reads as a pointer on
-              the content, not a second graphic competing with the bubble. */}
+          {/* The arrow is the bubble's pointer, not a second graphic: its body
+              takes the same colour as the tooltip background and its rim the
+              same colour as the tooltip text, so the two read as one object.
+              Both are the semantic tokens, so the pairing also inverts cleanly
+              with the theme instead of needing a dark-mode branch. */}
           <svg className="block" width="26" height="26" viewBox="0 0 24 24" fill="none">
             <path
               d="M5.5 5.5l3.9 11.7 2.2-5.6 5.6-2.2-11.7-3.9z"
@@ -311,7 +312,7 @@ export default function HeroTour() {
             />
             <path
               d="M5.5 5.5l3.9 11.7 2.2-5.6 5.6-2.2-11.7-3.9z"
-              fill="hsl(var(--crimson))"
+              fill="hsl(var(--foreground))"
             />
           </svg>
           {/* Compact and wraps: an Apple-style callout is a small precise bubble,
