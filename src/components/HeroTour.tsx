@@ -58,7 +58,7 @@ const STEPS: Step[] = [
   },
   {
     target: "[data-tour='achievements']",
-    text: "Top 20 Global in the AMD hackathon. Open this for the full record.",
+    text: "Reached Top 20 Global in the AMD hackathon. Open this for the full record.",
     side: "down",
   },
   {
