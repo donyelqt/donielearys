@@ -4,6 +4,7 @@ import React, { useRef, useCallback, useEffect, useState } from 'react'
 import { motion, useReducedMotion, useMotionValue, AnimatePresence } from 'framer-motion'
 import { ArrowRight, ChevronDown, Trophy, Users, Globe, Cpu } from 'lucide-react'
 import NetworkBackground from '../NetworkBackground'
+import HeroTour from '../HeroTour'
 
 const GithubIcon = () => (
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
@@ -217,11 +218,13 @@ export default function Hero() {
     <section className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
       <NetworkBackground />
       
+      <HeroTour />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5 }}
 className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x-3 mb-8 group"
+        data-tour="role"
       >
         <span className="text-red-500 text-[13px] sm:text-sm font-mono select-none leading-none">❯</span>
         <span className="text-[10px] sm:text-[11px] font-mono font-bold text-foreground/60 uppercase tracking-[0.15em] sm:tracking-[0.25em]">
@@ -238,6 +241,7 @@ className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x
         animate={{ opacity: 1, y: 0 }}
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.1 }}
         className="display-mega text-foreground mb-6 max-w-4xl uppercase"
+        data-tour="name"
       >
         Doniele Antonio
       </motion.h1>
@@ -247,6 +251,7 @@ className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x
         animate={{ opacity: 1, y: 0 }}
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.2 }}
         className="text-lg md:text-xl text-foreground/60 max-w-2xl mb-4 leading-relaxed font-mono uppercase"
+        data-tour="subtext"
       >
         From Local to Global
       </motion.p>
@@ -265,6 +270,7 @@ className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x
         animate={{ opacity: 1, y: 0 }}
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.25 }}
         className="mb-8"
+        data-tour="achievements"
       >
         <AchievementDropdown />
       </motion.div>
@@ -274,6 +280,7 @@ className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x
         animate={{ opacity: 1, y: 0 }}
         transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.3 }}
         className="flex flex-wrap justify-center gap-4"
+        data-tour="ctas"
       >
         <MagneticButton
           onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
@@ -295,6 +302,7 @@ className="flex items-center justify-center flex-wrap gap-x-2 gap-y-0.5 sm:gap-x
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.5 }}
         className="mt-20 lg:mt-0 lg:absolute lg:bottom-10 flex gap-6 transition-opacity hover:opacity-100"
+        data-tour="social"
       >
         <motion.a
           whileHover={{ scale: 1.15 }}

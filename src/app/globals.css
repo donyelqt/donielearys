@@ -116,7 +116,7 @@
 @layer base {
   /* Absolute rejection of border-radius — every corner is 90deg, mechanically.
      Forced globally so no stray rounded-* utility leaks soft geometry. */
-  *:not(.apple-window):not(.apple-portrait):not(.traffic-light) {
+  *:not(.apple-window):not(.apple-portrait):not(.traffic-light):not(.tour-tooltip) {
     border-radius: 0 !important;
   }
 
@@ -552,5 +552,12 @@
   }
   .apple-portrait {
     border-radius: 9999px !important;
+  }
+  /* Hero tour tooltip. Also excluded from the global square-corner rule above:
+     that selector carries higher specificity and is !important, so a plain
+     rounded-* utility here would silently compute to 0 and the bubble would
+     render as a hard slab. */
+  .tour-tooltip {
+    border-radius: 10px !important;
   }
 }

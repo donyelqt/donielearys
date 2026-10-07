@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
+import { HERO_READY } from "./HeroTour"
 
 /* Boot sequence lines */
 interface BootLine {
@@ -129,6 +130,18 @@ export default function Preloader() {
     const t = window.setTimeout(() => setHidden(true), ms)
     return () => window.clearTimeout(t)
   }, [exit, prefersReducedMotion])
+
+  /* Announce the hero is fully uncovered. The curtain animates for CURTAIN_MS
+     after `hidden` is set, so the tour must not start until the animation has
+     actually finished or the two overlap.
+     The attribute is sticky and the event is one-shot: HeroTour mounts inside
+     Hero, which the Preloader itself gates, so its listener is frequently
+     attached only after this event has already fired. */
+  useEffect(() => {
+    if (!hidden) return
+    document.documentElement.setAttribute(HERO_READY, "")
+    document.dispatchEvent(new CustomEvent(HERO_READY))
+  }, [hidden])
 
   /* Skip: any key or pointer press jumps straight to the curtain exit. */
   useEffect(() => {
