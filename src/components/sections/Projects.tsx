@@ -28,7 +28,7 @@ const itemVariants = {
 const statusText: Record<string, string> = {
   'Active Development': 'text-crimson',
   'Live': 'text-crimson',
-  'Beta Testing': 'text-crimson',
+  'Production': 'text-crimson',
   'Research Production': 'text-crimson',
   'Thesis Validation': 'text-crimson',
 }
@@ -68,7 +68,7 @@ const projects = [
   },
   {
     title: "Tarana AI Web & Mobile App",
-    status: "Beta Testing",
+    status: "Production",
     description: "Enterprise-grade Agentic AI RAG travel platform for Baguio City that generates real-time, personalized itineraries using multi-agent AI, vector embeddings, live traffic/weather data. Supported by LGU Baguio City and deployed with 100+ beta users.",
     header: (
       <div className="relative flex flex-1 w-full h-full min-h-[4rem] sm:min-h-[5rem] rounded-none bg-linear-to-br from-[var(--g1)] via-[var(--g2)] to-[var(--g3)] dark:from-[var(--g1)] dark:via-[var(--g2)] dark:to-[var(--g3)] border border-white/5 overflow-hidden">
