@@ -30,7 +30,7 @@ const statusText: Record<string, string> = {
   'Live': 'text-crimson',
   'Production': 'text-crimson',
   'Research Production': 'text-crimson',
-  'Thesis Validation': 'text-crimson',
+  'Agent Eval Harness': 'text-crimson',
 }
 
 const projects = [
@@ -99,8 +99,8 @@ const projects = [
     linkLabel: "Visit site",
   },
   {
-    title: "AgenticHinaing Validation Harness",
-    status: "Thesis Validation",
+    title: "AgenticHinaing Eval Framework",
+    status: "Agent Eval Harness",
     description: "Third-party validation of AgenticHinaing for my CS thesis. Built by an independent evaluator to assess this specific system, covering 46 adversarial scenarios across 5 families, counterfactual per-node attribution, and a 100-point scorecard grounded in published agent-evaluation research.",
     header: (
       <div className="relative flex flex-1 w-full h-full min-h-[5rem] sm:min-h-[7rem] rounded-none bg-linear-to-br from-[var(--g1)] via-[var(--g2)] to-[var(--g3)] dark:from-[var(--g1)] dark:via-[var(--g2)] dark:to-[var(--g3)] border border-white/5 overflow-hidden">
