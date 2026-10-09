@@ -67,7 +67,7 @@ const projects = [
     linkLabel: "Visit site",
   },
   {
-    title: "Tarana AI Web & Mobile App",
+    title: "Tarana AI Web App & Mobile App",
     status: "Production",
     description: "Enterprise-grade Agentic AI RAG travel platform for Baguio City that generates real-time, personalized itineraries using multi-agent AI, vector embeddings, live traffic/weather data. Supported by LGU Baguio City and deployed with 100+ beta users.",
     header: (
