@@ -99,6 +99,22 @@ const projects = [
     linkLabel: "Visit site",
   },
   {
+    title: "DonieleTheLastAgent — AMD Hackathon ACT II",
+    status: "Live",
+    description: "Top 20 of 63+ qualified T1 entries (of 1,152 AI applications) at the AMD Developer Hackathon: ACT II. Hybrid token-efficient routing agent — local-first inference for 0 tokens, Fireworks fallback for hard categories. 94.7% accuracy on 4,045 tokens.",
+    header: (
+      <div className="relative flex flex-1 w-full h-full min-h-[5rem] sm:min-h-[7rem] rounded-none bg-linear-to-br from-[var(--g1)] via-[var(--g2)] to-[var(--g3)] dark:from-[var(--g1)] dark:via-[var(--g2)] dark:to-[var(--g3)] border border-white/5 overflow-hidden">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-white/20">T20</span>
+        </div>
+      </div>
+    ),
+    icon: <Gauge className="h-4 w-4 text-crimson" />,
+    className: "sm:col-span-3",
+    href: "https://github.com/donyelqt/amd",
+    linkLabel: "View source",
+  },
+  {
     title: "AgenticHinaing Validation Harness",
     status: "Thesis Validation",
     description: "Third-party validation of AgenticHinaing for my CS thesis. Built by an independent evaluator to assess this specific system, covering 46 adversarial scenarios across 5 families, counterfactual per-node attribution, and a 100-point scorecard grounded in published agent-evaluation research.",
@@ -124,7 +140,7 @@ export default function Projects() {
       <SectionHeader
         index="03"
         title="Featured Projects"
-        meta="05 PROJECTS"
+        meta="06 PROJECTS"
       />
       <p className="max-w-7xl mx-auto -mt-4 mb-12 text-[13px] md:text-sm leading-relaxed text-foreground/50">
         A selection of my best work, ranging from local to global innovation of AI systems &amp; applications. Focused on real-world impact, production-readiness, and cutting-edge research.
