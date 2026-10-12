@@ -294,7 +294,6 @@ export default function HeroTour() {
   if (prefersReducedMotion) return null
 
   const stepDef = step >= 0 ? STEPS[step] : null
-  const visibleText = stepDef ? stepDef.text.slice(0, typed) : ""
 
   return (
     <>
@@ -379,11 +378,23 @@ export default function HeroTour() {
               )}
             </span>
           </div>
-          <span className="sr-only" role="status" aria-live="polite">
-            {stepDef ? visibleText : ""}
-          </span>
         </div>
       )}
+
+      {/* Lives beside the cursor container, never inside it. That container is
+          aria-hidden, which strips its whole subtree from the accessibility
+          tree, so the polite region nested there was never exposed to the
+          screen reader and could never fire: the tour ran to completion in
+          silence. Out here it announces the step's full text rather than the
+          typed prefix, because the prefix advances every TYPE_MS and a region
+          mutating dozens of times per second is either debounced into a
+          garbled string or dropped outright. Gated on stepDef as well as active
+          so the lead-in before the first step exists stays silent. */}
+      {active && stepDef ? (
+        <span className="sr-only" role="status" aria-live="polite">
+          {stepDef.text}
+        </span>
+      ) : null}
 
       {/* Sibling of the cursor container, not a child of it: that container is
           pointer-events-none, so anything nested inside it would be unclickable.
