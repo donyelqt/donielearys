@@ -14,8 +14,9 @@ import { useReducedMotion } from "framer-motion"
  * rAF-driven interpolation. No randomness, no physics, and no dependency on
  * the pointer, so the sequence is identical on every run and safe to verify.
  *
- * Gated on the Preloader curtain having fully closed, dismissed by any real
- * pointer or key input, and suppressed entirely under prefers-reduced-motion.
+ * Gated on the Preloader curtain having fully closed, ended only by the skip
+ * button (or its keyboard equivalent), and suppressed entirely under
+ * prefers-reduced-motion.
  */
 
 /** Emitted by Preloader once the curtain has finished animating out. */
@@ -103,7 +104,6 @@ export default function HeroTour() {
   const arrowRef = useRef<HTMLDivElement | null>(null)
   const timers = useRef<number[]>([])
   const raf = useRef(0)
-  const dismissed = useRef(false)
 
   const clearTimers = useCallback(() => {
     timers.current.forEach((t) => window.clearTimeout(t))
@@ -127,7 +127,6 @@ export default function HeroTour() {
   /** Runs the full sequence. Deterministic: fixed steps, fixed dwell. */
   const run = useCallback(() => {
     if (prefersReducedMotion) return
-    dismissed.current = false
     setDone(false)
     setReplayVisible(false)
     // Replay must clear the seen flag, otherwise the mount effect's guard keeps
@@ -230,8 +229,8 @@ export default function HeroTour() {
    * A glide would leave the tour measuring anchor rects mid-animation, since
    * goToStep reads getBoundingClientRect on its first timer tick.
    *
-   * The scroll happens before run(), so `step` is still -1 and the
-   * scroll-bail listener is not armed to tear the tour down again. */
+   * The scroll happens before run(), so the modal lock is not yet applied and
+   * the jump is not fought by the body overflow the tour installs. */
   const replay = useCallback(() => {
     if (window.location.pathname !== "/") {
       window.location.assign("/")
@@ -259,54 +258,63 @@ export default function HeroTour() {
     return () => document.removeEventListener(HERO_READY, onReady)
   }, [run, prefersReducedMotion, alreadySeen])
 
-  /* Any real input dismisses. Never on the replay click itself. */
-  useEffect(() => {
-    if (done || prefersReducedMotion) return
 
-    const dismiss = (event: Event) => {
-      // These listeners are capture-phase on window, so they run BEFORE any
-      // handler on the tour's own buttons and stopPropagation() from a button
-      // can never keep them quiet. The only place the distinction is still
-      // available is the event itself, so events arriving from tour chrome are
-      // recognised by their marker attribute and ignored here instead.
+  /* There is deliberately no scroll or resize bail here any more. Scrolling is
+   * locked outright while the tour runs, so a scroll event is not a signal that
+   * the user wants out; and a resize is not a failure either, since every step
+   * re-measures its own anchor rect before it moves, so a viewport change
+   * mid-step self-corrects on the next step. The only exit is the skip button. */
+
+  /* Make the tour modal: nothing underneath it can be clicked, scrolled, or
+   * activated by keyboard until the skip button ends it.
+   *
+   * Three separate mechanisms, because no single one covers every case. The
+   * overlay stops the pointer, but it is a block the user can still scroll past
+   * by wheel or touch. `overflow: hidden` on the body is the usual scroll lock
+   * and follows the Navbar's mobile panel precedent, but iOS Safari ignores it
+   * for touch, so wheel and touchmove are cancelled explicitly. Keyboard is its
+   * own hole: the overlay intercepts the pointer only, so a link or button
+   * that happens to hold focus still fires on Enter. Hence Escape finishes the
+   * tour, the keyboard equivalent of the skip button, because trapping a
+   * keyboard user with no way out is a WCAG 2.1.2 failure, and Enter/Space are
+   * neutralised for the same reason. Tab is left alone: moving focus is not
+   * activation, and stealing it would fight the screen reader. */
+  useEffect(() => {
+    if (!active || done || prefersReducedMotion) return
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+
+    // `passive: false` or preventDefault() is ignored outright and the browser
+    // logs a violation. removeEventListener matches on capture only, but the
+    // options object is passed again so the two calls read as a pair.
+    const OPTS: AddEventListenerOptions = { passive: false }
+    const stopScroll = (event: Event) => event.preventDefault()
+    window.addEventListener("wheel", stopScroll, OPTS)
+    window.addEventListener("touchmove", stopScroll, OPTS)
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      // Capture-phase, so this runs before any handler on the tour's own
+      // buttons. Anything originating inside tour chrome is left completely
+      // alone, which keeps the skip button operable and stops Enter on it from
+      // being cancelled by the rule below.
       const target = event.target
       if (target instanceof Element && target.closest("[data-tour-ui]")) return
-      if (dismissed.current) return
-      dismissed.current = true
-      finish()
-    }
-    // `true` capture so it fires before component handlers. removeEventListener
-    // only needs the capture flag, not the passive option object.
-    const OPTS: AddEventListenerOptions = { capture: true, passive: true }
-    window.addEventListener("pointerdown", dismiss, true)
-    window.addEventListener("keydown", dismiss, true)
-    window.addEventListener("wheel", dismiss, OPTS)
-    window.addEventListener("touchstart", dismiss, OPTS)
-    return () => {
-      window.removeEventListener("pointerdown", dismiss, true)
-      window.removeEventListener("keydown", dismiss, true)
-      window.removeEventListener("wheel", dismiss, true)
-      window.removeEventListener("touchstart", dismiss, true)
-    }
-  }, [done, finish, prefersReducedMotion])
-
-  /* Scroll or resize invalidates the anchor rects; end the tour rather than
-     point at a stale position. */
-  useEffect(() => {
-    if (step < 0) return
-    const bail = () => {
-      if (!dismissed.current) {
-        dismissed.current = true
+      if (event.key === "Escape") {
         finish()
+        return
       }
+      if (event.key === "Enter" || event.key === " ") event.preventDefault()
     }
-    window.addEventListener("scroll", bail, { passive: true })
-    window.addEventListener("resize", bail)
+    window.addEventListener("keydown", onKeyDown, true)
+
     return () => {
-      window.removeEventListener("scroll", bail)
-      window.removeEventListener("resize", bail)
+      window.removeEventListener("wheel", stopScroll, OPTS)
+      window.removeEventListener("touchmove", stopScroll, OPTS)
+      window.removeEventListener("keydown", onKeyDown, true)
+      document.body.style.overflow = previousOverflow
     }
-  }, [step, finish])
+  }, [active, done, prefersReducedMotion, finish])
 
   useEffect(() => {
     return () => {
@@ -321,6 +329,21 @@ export default function HeroTour() {
 
   return (
     <>
+      {/* The modal boundary. An empty full-viewport block that swallows pointer
+          input so nothing on the page underneath can be clicked or tapped while
+          the tour runs. z-80 puts it deliberately below the cursor and both tour
+          buttons at z-90, so the tour's own chrome stays visible and clickable.
+          Sibling of everything else in the fragment: nested inside the
+          pointer-events-none cursor container it would be dead, and nested in
+          the skip button it would cover the only way out. touch-none stops the
+          browser's own gesture handling, overscroll-contain keeps a wheel or
+          pull at the edge from chaining into the page behind it. */}
+      {active && !done && (
+        <div
+          data-tour-ui
+          className="fixed inset-0 z-[80] touch-none overscroll-contain"
+        />
+      )}
       {active && (
         <div
           ref={arrowRef}
