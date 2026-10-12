@@ -30,6 +30,9 @@ const TRAVEL_MS = 780 // cursor travel between anchors
 const FIRST_DELAY_MS = 700 // beat after the curtain before the tour starts
 const BUBBLE_W = 300 // px; must match the max-w below, used to reserve room before choosing a side
 const ARROW_TIP = 6 // px; the arrow glyph's tip sits this far into its 26px box
+const BUBBLE_MARGIN = 12 // px; smallest gap the tooltip keeps from the viewport edge
+const GAP = 28 // px; the horizontal offset the tooltip used before it became a clamp
+const CURSOR_W = 26 // px; the cursor container's shrink-to-fit width (its only child is a 26x26 svg)
 
 type Align = "up" | "down" | "left" | "right"
 
@@ -99,7 +102,8 @@ export default function HeroTour() {
   const [done, setDone] = useState(false)
   const [replayVisible, setReplayVisible] = useState(false)
   const [side, setSide] = useState<Align>("down")
-  const [bubbleSide, setBubbleSide] = useState<"left" | "right">("right")
+  const [bubbleLeft, setBubbleLeft] = useState(28)
+  const [bubbleMax, setBubbleMax] = useState(BUBBLE_W)
 
   const arrowRef = useRef<HTMLDivElement | null>(null)
   const timers = useRef<number[]>([])
@@ -172,7 +176,34 @@ export default function HeroTour() {
       arrow.dataset.x = String(toX)
       arrow.dataset.y = String(toY)
       setSide(stepDef.side)
-      setBubbleSide(bubbleOnLeft ? "left" : "right")
+      // The tooltip is w-max, so its rendered width GROWS as characters land;
+      // a side chosen from today's length fits nothing by the end of the step.
+      // So bound it by the widest it can ever get, which keeps it on screen
+      // every frame of the typing. body { overflow-x: hidden } is why the
+      // original overflow never showed as a scrollbar: it was simply cropped,
+      // and the tooltip read as silently truncated text instead of misplaced.
+      //
+      // The bound also has to leave room for the cursor's own travel. The
+      // bubble is a child of the cursor and rides the same translate3d, so it
+      // spends TRAVEL_MS crossing from where the last step left off, and a
+      // single offset has to hold it on screen at BOTH ends. On a phone that
+      // is only possible if the bubble is narrower than the viewport by at
+      // least the span between the two positions; without that term the range
+      // below inverts, and preferring one margin then just pushes the bubble
+      // off the other edge.
+      const pathMin = Math.min(fromX, toX)
+      const pathMax = Math.max(fromX, toX)
+      const bubbleMax = Math.min(
+        BUBBLE_W,
+        window.innerWidth - BUBBLE_MARGIN * 2 - (pathMax - pathMin)
+      )
+      const preferred = bubbleOnLeft ? CURSOR_W - GAP - bubbleMax : GAP
+      const minLeft = BUBBLE_MARGIN - pathMin
+      const maxLeft = window.innerWidth - BUBBLE_MARGIN - bubbleMax - pathMax
+      setBubbleMax(bubbleMax)
+      // An inverted range means even a zero-span bubble will not fit. Let the
+      // minimum win so it stays flush to the left margin rather than floating.
+      setBubbleLeft(Math.min(Math.max(preferred, minLeft), Math.max(minLeft, maxLeft)))
 
       const travelStart = performance.now()
       cancelAnimationFrame(raf.current)
@@ -378,7 +409,8 @@ export default function HeroTour() {
           <div
             className={`tour-tooltip absolute flex w-max max-w-[300px] flex-col gap-1 bg-foreground px-3 py-2 font-mono text-[12px] leading-[1.5] text-background shadow-[0_10px_28px_-12px_rgba(0,0,0,0.55)] ${
               side === "up" ? "bottom-2" : "top-2"
-            } ${bubbleSide === "left" ? "right-7" : "left-7"}`}
+            }`}
+            style={{ left: bubbleLeft, maxWidth: bubbleMax }}
           >
             <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-crimson">
               Doniele Agent
