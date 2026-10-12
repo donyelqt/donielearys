@@ -217,6 +217,30 @@ export default function HeroTour() {
     timers.current.push(window.setTimeout(() => goToStep(0), FIRST_DELAY_MS))
   }, [clearTimers, finish, prefersReducedMotion])
 
+  /* Replay from wherever the user happens to be standing.
+   *
+   * The tour anchors to elements inside the hero, so replaying it from the
+   * contact section or the footer points a cursor at a target that is off
+   * screen, with the bubble drifting out of the viewport alongside it. Put
+   * the user back on the hero first, then start.
+   *
+   * `behavior: "instant"`, not "auto". The body's computed scroll-behavior is
+   * `smooth` (globals.css @layer base, plus Tailwind's `scroll-smooth`), and
+   * per CSSOM "auto" defers to that computed value rather than overriding it.
+   * A glide would leave the tour measuring anchor rects mid-animation, since
+   * goToStep reads getBoundingClientRect on its first timer tick.
+   *
+   * The scroll happens before run(), so `step` is still -1 and the
+   * scroll-bail listener is not armed to tear the tour down again. */
+  const replay = useCallback(() => {
+    if (window.location.pathname !== "/") {
+      window.location.assign("/")
+      return
+    }
+    window.scrollTo({ top: 0, behavior: "instant" })
+    run()
+  }, [run])
+
   /* Kick off once the Preloader curtain has closed.
    *
    * A bare one-shot event is not enough: HeroTour mounts inside Hero, which is
@@ -418,7 +442,7 @@ export default function HeroTour() {
       {replayVisible && done && (
         <button
           type="button"
-          onClick={run}
+          onClick={replay}
           data-tour-ui
           className="fixed bottom-5 left-5 z-[90] flex items-center gap-2 border border-foreground/20 bg-background/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/60 backdrop-blur-sm transition-colors hover:border-foreground/40 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
         >
