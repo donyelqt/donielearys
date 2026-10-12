@@ -239,7 +239,14 @@ export default function HeroTour() {
   useEffect(() => {
     if (done || prefersReducedMotion) return
 
-    const dismiss = () => {
+    const dismiss = (event: Event) => {
+      // These listeners are capture-phase on window, so they run BEFORE any
+      // handler on the tour's own buttons and stopPropagation() from a button
+      // can never keep them quiet. The only place the distinction is still
+      // available is the event itself, so events arriving from tour chrome are
+      // recognised by their marker attribute and ignored here instead.
+      const target = event.target
+      if (target instanceof Element && target.closest("[data-tour-ui]")) return
       if (dismissed.current) return
       dismissed.current = true
       finish()
@@ -378,10 +385,30 @@ export default function HeroTour() {
         </div>
       )}
 
+      {/* Sibling of the cursor container, not a child of it: that container is
+          pointer-events-none, so anything nested inside it would be unclickable.
+          active && !done unmounts this at the exact moment the replay button
+          mounts, so the two can never be on screen together. Quieter text and a
+          dimmer glyph than replay: skipping is a way out, not a call to action. */}
+      {active && !done && (
+        <button
+          type="button"
+          data-tour-ui
+          onClick={finish}
+          className="fixed bottom-5 left-5 z-[90] flex items-center gap-2 border border-foreground/20 bg-background/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40 backdrop-blur-sm transition-colors hover:border-foreground/40 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+        >
+          <span className="text-crimson/60" aria-hidden="true">
+            ▸
+          </span>
+          Skip tour
+        </button>
+      )}
+
       {replayVisible && done && (
         <button
           type="button"
           onClick={run}
+          data-tour-ui
           className="fixed bottom-5 left-5 z-[90] flex items-center gap-2 border border-foreground/20 bg-background/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/60 backdrop-blur-sm transition-colors hover:border-foreground/40 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
         >
           <span className="text-crimson" aria-hidden="true">
