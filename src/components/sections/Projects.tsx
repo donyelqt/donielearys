@@ -158,7 +158,7 @@ export default function Projects() {
       <SectionHeader
         index="03"
         title="Featured Projects"
-        meta="06 PROJECTS"
+        meta="07 PROJECTS"
       />
       <p className="max-w-7xl mx-auto -mt-4 mb-12 text-[13px] md:text-sm leading-relaxed text-foreground/50">
         A selection of my best work, ranging from local to global innovation of AI systems &amp; applications. Focused on real-world impact, production-readiness, and cutting-edge research.
