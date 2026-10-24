@@ -32,7 +32,7 @@ const statusText: Record<string, string> = {
   'Production': 'text-crimson',
   'Research Production': 'text-crimson',
   'Agent Eval Harness': 'text-crimson',
-  'Research': 'text-crimson',
+  'Research Prototype': 'text-crimson',
 }
 
 const projects = [
@@ -134,7 +134,7 @@ const projects = [
   },
   {
     title: "Tuklas Agent",
-    status: "Research",
+    status: "Research Prototype",
     description: "Local-first, vectorless RAG agent for private law document discovery — a LangGraph loop over a structural PDF tree with a five-component scorer (BM25, identifier, heading, cross-ref, hierarchy), zero embeddings and zero API calls: documents never leave the machine. Frozen 72-question benchmark vs a dense baseline: vectorless recall@5 0.732 vs 0.707 (test-48); both arms published, comparison left undecided.",
     header: (
       <div className="relative flex flex-1 w-full h-full min-h-[5rem] sm:min-h-[7rem] rounded-none bg-linear-to-br from-[var(--g1)] via-[var(--g2)] to-[var(--g3)] dark:from-[var(--g1)] dark:via-[var(--g2)] dark:to-[var(--g3)] border border-white/5 overflow-hidden">
