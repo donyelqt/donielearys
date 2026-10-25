@@ -25,7 +25,8 @@ type MetricRow = { metric: string; scope: string; tuklas: string; baseline: stri
 const metrics: MetricRow[] = [
   { metric: "RECALL@5", scope: "TEST-48", tuklas: "0.732", baseline: "0.707" },
   { metric: "MRR@10", scope: "TEST-48", tuklas: "0.686", baseline: "0.657" },
-  { metric: "RECALL@5", scope: "DEV-24 · DENSE", tuklas: "0.761", baseline: "0.674" },
+  { metric: "RECALL@5", scope: "DEV-24", tuklas: "0.674", baseline: "0.761" },
+  { metric: "MRR@10", scope: "DEV-24", tuklas: "0.711", baseline: "0.661" },
 ];
 
 const metricsFootnote =
@@ -97,7 +98,7 @@ const evalProse: ProseBlock[] = [
   },
   {
     kind: "p",
-    text: "On the dev-24 slice the dense arm leads, and the repo says so plainly \u2014 the two arms are not like-for-like, so no headline is being claimed there. The cross-reference channel scores exactly 0.00 on this corpus, and that is documented too. A benchmark you cannot reproduce is trivia. These numbers get their own breakdown soon \u2014 the first one is Tuklas\u2019 own eval, the numbers behind this post.",
+    text: "On the dev-24 slice the dense arm leads on recall@5 and Tuklas leads on MRR@10 \u2014 and the repo publishes both, saying plainly that the two arms are not like-for-like, so no headline is being claimed in either direction. The cross-reference channel scores exactly 0.00 on this corpus, and that is documented too. A benchmark you cannot reproduce is trivia. These numbers get their own breakdown soon \u2014 the first one is Tuklas\u2019 own eval, the numbers behind this post.",
   },
 ];
 
@@ -291,7 +292,7 @@ export default function XerjCorpusHubPost() {
             <span>Metric · Corpus slice</span>
             <span className="flex gap-6">
               <span className="w-14 text-right text-crimson">Tuklas</span>
-              <span className="w-14 text-right text-foreground/60">Lexical</span>
+              <span className="w-14 text-right text-foreground/60">Dense</span>
             </span>
           </div>
           {metrics.map((row) => (
