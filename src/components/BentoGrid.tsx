@@ -69,7 +69,7 @@ export const BentoGridItem = memo(({ className, title, description, header, icon
         </div>
         {proofLine && (
           <span
-            className="mt-2.5 self-start inline-flex items-center gap-1.5 px-2 py-[3px] text-[10px] leading-none font-mono uppercase tracking-[0.16em] text-crimson dark:text-red-300/90 border border-[hsla(var(--crimson),0.28)] bg-[hsla(var(--crimson),0.05)]"
+            className="mt-3 self-start inline-flex items-center gap-1.5 px-2 py-[3px] text-[10px] leading-none font-mono uppercase tracking-[0.16em] text-red-700 dark:text-red-300/90 border border-[hsl(var(--crimson)/0.28)] bg-[hsl(var(--crimson)/0.05)]"
           >
             <svg className="h-2.5 w-2.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M9 12l2 2 4-4" />
