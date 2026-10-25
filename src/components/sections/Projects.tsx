@@ -35,7 +35,19 @@ const statusText: Record<string, string> = {
   'Production-Grade Research': 'text-crimson',
 }
 
-const projects = [
+type ProjectEntry = {
+  title: string
+  status: string
+  description: string
+  header: React.ReactNode
+  icon: React.ReactNode
+  className: string
+  href: string
+  linkLabel: string
+  proofLine?: string
+}
+
+const projects: ProjectEntry[] = [
   {
     title: "Avaron",
     status: "Active Development",
@@ -147,6 +159,7 @@ const projects = [
     className: "sm:col-span-3",
     href: "https://github.com/donyelqt/Tuklas-Agent",
     linkLabel: "View source",
+    proofLine: "Selected for XERJ Corpus Hub",
   },
 ]
 
@@ -183,6 +196,7 @@ export default function Projects() {
               statusClass={statusText[project.status]}
               href={project.href}
               linkLabel={project.linkLabel}
+              proofLine={project.proofLine}
             />
           ))}
         </BentoGrid>

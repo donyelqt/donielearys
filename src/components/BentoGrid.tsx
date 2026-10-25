@@ -22,7 +22,7 @@ export const BentoGrid = ({
   );
 };
 
-export const BentoGridItem = memo(({ className, title, description, header, icon, type, status, statusClass, href, linkLabel = "Visit" }: { className?: string; title?: string | React.ReactNode; description?: string | React.ReactNode; header?: React.ReactNode; icon?: React.ReactNode; type?: "experience" | "project"; status?: string; statusClass?: string; href?: string; linkLabel?: string; }) => {
+export const BentoGridItem = memo(({ className, title, description, header, icon, type, status, statusClass, href, linkLabel = "Visit", proofLine }: { className?: string; title?: string | React.ReactNode; description?: string | React.ReactNode; header?: React.ReactNode; icon?: React.ReactNode; type?: "experience" | "project"; status?: string; statusClass?: string; href?: string; linkLabel?: string; proofLine?: string; }) => {
   const isExperience = type === "experience";
   const isProject = type === "project";
 
@@ -67,6 +67,11 @@ export const BentoGridItem = memo(({ className, title, description, header, icon
         )}>
           {description}
         </div>
+        {proofLine && (
+          <p className="mt-2 text-[10px] font-mono uppercase tracking-[0.16em] text-crimson/80">
+            {proofLine}
+          </p>
+        )}
         {href && (
           <span className="mt-4 inline-flex items-center gap-1.5 self-start text-[11px] font-mono uppercase tracking-[0.16em] text-crimson">
             {linkLabel}
