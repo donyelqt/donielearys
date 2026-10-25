@@ -13,13 +13,16 @@ export function SectionHeader({
   eyebrow,
   meta,
   className,
+  as = "h2",
 }: {
   index?: string;
   title: string;
   eyebrow?: string;
   meta?: React.ReactNode;
   className?: string;
+  as?: "h1" | "h2";
 }) {
+  const Heading = as;
   return (
     <div className={cn("max-w-7xl mx-auto mb-10 md:mb-14", className)}>
       <div className="flex items-end justify-between gap-4">
@@ -31,7 +34,7 @@ export function SectionHeader({
             </span>
             <span className="barcode hidden sm:block h-3 w-14 shrink-0" aria-hidden="true" />
           </div>
-          <h2 className="display-xl text-foreground font-bold">{title}</h2>
+          <Heading className="display-xl text-foreground font-bold">{title}</Heading>
         </div>
         {meta ? (
           <div className="tactical-label hidden md:block pb-2 text-right shrink-0">{meta}</div>
