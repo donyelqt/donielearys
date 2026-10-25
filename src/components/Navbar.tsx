@@ -1,9 +1,10 @@
 "use client"
 
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Menu, X, FileText, Sun, Moon } from 'lucide-react'
 import { useTheme } from 'next-themes'
 
@@ -21,6 +22,7 @@ const navItems = [
   ...(showCertifications ? [{ name: 'Certifications', href: '/#certifications' }] : []),
   { name: 'Validation', href: '/#testimonials' },
   { name: 'Competitions', href: '/#competitions' },
+  { name: 'Writing', href: '/blog' },
   { name: 'Contact', href: '/#contact' },
 ]
 
@@ -31,10 +33,21 @@ const springConfig = {
   mass: 0.5,
 }
 
+/* Shared route-match predicate: exact route hit or a nested path under it
+   (e.g. '/blog/xerj-corpus-hub' matches the Writing item). */
+const matchRouteItem = (path: string) =>
+  navItems.find((item) => item.href === path || path.startsWith(`${item.href}/`))
+
 export default function Navbar() {
+  const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [activeSection, setActiveSection] = useState('Home')
+  /* Lazy init from pathname: route pages (e.g. /blog) should already carry
+     the right aria-current and underline in the SSR markup, just like the
+     scroll-spy measure() resolves them on the client immediately after. */
+  const [activeSection, setActiveSection] = useState(() =>
+    pathname === '/' ? 'Home' : (matchRouteItem(pathname)?.name ?? 'Home')
+  )
   const [indicatorPos, setIndicatorPos] = useState({ left: 0, width: 0 })
   const [mounted, setMounted] = useState(false)
   const navRef = useRef<HTMLDivElement>(null)
@@ -54,6 +67,17 @@ export default function Navbar() {
       rafId = 0
       const scrollY = window.scrollY
       setScrolled(scrollY > 20)
+
+      /* Off the home route there are no home sections to observe — match by
+         pathname instead, so the Writing item stays active on /blog pages
+         and Home never gets a stale underline. Unmatched routes (e.g. the
+         404 page) intentionally fall back to Home, mirroring the state
+         initializer. */
+      if (pathname !== '/') {
+        const routeMatch = matchRouteItem(pathname)
+        setActiveSection(routeMatch?.name ?? 'Home')
+        return
+      }
 
       const heroEl = document.querySelector('section')
       if (heroEl && scrollY < heroEl.offsetTop + heroEl.offsetHeight - 100) {
@@ -91,7 +115,7 @@ export default function Navbar() {
       window.removeEventListener('scroll', onScroll)
       if (rafId) cancelAnimationFrame(rafId)
     }
-  }, [])
+  }, [pathname])
 
   useEffect(() => {
     const updateIndicator = () => {
@@ -201,7 +225,7 @@ export default function Navbar() {
                     href={item.href}
                     aria-current={isActive ? 'location' : undefined}
                     className={cn(
-                      "nav-link px-5 py-2.5 text-[10px] font-mono uppercase tracking-widest transition-colors duration-200 relative z-10",
+                      "nav-link px-4 py-2.5 text-[10px] font-mono uppercase tracking-widest transition-colors duration-200 relative z-10",
                       isActive ? "text-foreground" : "text-foreground/60 hover:text-foreground/80"
                     )}
                   >

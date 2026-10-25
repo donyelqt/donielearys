@@ -1,4 +1,4 @@
-import React from 'react'
+import Link from 'next/link'
 
 export default function Footer() {
   return (
@@ -8,8 +8,9 @@ export default function Footer() {
           <div className="text-xl font-bold tracking-tighter">DONIELE</div>
           <p className="text-foreground/30 text-sm">© 2026 Doniele Arys Antonio</p>
         </div>
-        
+
         <div className="flex gap-8 text-sm text-foreground/40 font-medium">
+          <Link href="/blog" className="hover:text-foreground transition-colors">Writing</Link>
           <a href="https://github.com/donyelqt" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">GitHub</a>
           <a href="https://linkedin.com/in/donielearysantonio" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">LinkedIn</a>
         </div>
