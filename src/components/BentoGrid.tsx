@@ -22,7 +22,7 @@ export const BentoGrid = ({
   );
 };
 
-export const BentoGridItem = memo(({ className, title, description, header, icon, type, status, statusClass, href, linkLabel = "Visit", proofLine }: { className?: string; title?: string | React.ReactNode; description?: string | React.ReactNode; header?: React.ReactNode; icon?: React.ReactNode; type?: "experience" | "project"; status?: string; statusClass?: string; href?: string; linkLabel?: string; proofLine?: string; }) => {
+export const BentoGridItem = memo(({ className, title, description, header, icon, type, status, statusClass, href, linkLabel = "Visit", proofLine, additionalLinks }: { className?: string; title?: string | React.ReactNode; description?: string | React.ReactNode; header?: React.ReactNode; icon?: React.ReactNode; type?: "experience" | "project"; status?: string; statusClass?: string; href?: string; linkLabel?: string; proofLine?: string; additionalLinks?: { href: string; label: string }[]; }) => {
   const isExperience = type === "experience";
   const isProject = type === "project";
 
@@ -83,6 +83,22 @@ export const BentoGridItem = memo(({ className, title, description, header, icon
             {linkLabel}
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover/bento:translate-x-0.5 group-hover/bento:-translate-y-0.5" aria-hidden="true" />
           </span>
+        )}
+        {additionalLinks && additionalLinks.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
+            {additionalLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-[11px] font-mono uppercase tracking-[0.16em] text-crimson"
+              >
+                {link.label}
+                <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
+              </a>
+            ))}
+          </div>
         )}
       </div>
 
