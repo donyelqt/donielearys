@@ -78,26 +78,30 @@ export const BentoGridItem = memo(({ className, title, description, header, icon
             {proofLine}
           </span>
         )}
-        {href && (
-          <span className="mt-4 inline-flex items-center gap-1.5 self-start text-[11px] font-mono uppercase tracking-[0.16em] text-crimson">
-            {linkLabel}
-            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover/bento:translate-x-0.5 group-hover/bento:-translate-y-0.5" aria-hidden="true" />
-          </span>
-        )}
-        {additionalLinks && additionalLinks.length > 0 && (
-          <div className="relative z-20 mt-2 flex flex-wrap gap-x-3 gap-y-1">
-            {additionalLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-[11px] font-mono uppercase tracking-[0.16em] text-crimson"
-              >
-                {link.label}
-                <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
-              </a>
-            ))}
+        {(href || (additionalLinks && additionalLinks.length > 0)) && (
+          <div className="mt-4 flex items-center justify-between">
+            {href && (
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-[0.16em] text-crimson">
+                {linkLabel}
+                <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover/bento:translate-x-0.5 group-hover/bento:-translate-y-0.5" aria-hidden="true" />
+              </span>
+            )}
+            {additionalLinks && additionalLinks.length > 0 && (
+              <div className="relative z-20 inline-flex flex-wrap gap-x-3 gap-y-1 justify-end">
+                {additionalLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[11px] font-mono uppercase tracking-[0.16em] text-crimson"
+                  >
+                    {link.label}
+                    <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
