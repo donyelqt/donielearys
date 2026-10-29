@@ -45,6 +45,7 @@ type ProjectEntry = {
   href: string
   linkLabel: string
   proofLine?: string
+  additionalLinks?: { href: string; label: string }[]
 }
 
 const projects: ProjectEntry[] = [
@@ -160,6 +161,10 @@ const projects: ProjectEntry[] = [
     href: "https://github.com/donyelqt/Tuklas-Agent",
     linkLabel: "View source",
     proofLine: "Selected for XERJ Corpus Hub",
+    additionalLinks: [
+      { href: "https://hub.xerj.org/contributors/donyelqt", label: "Contributors" },
+      { href: "https://hub.xerj.org/corpus/donyelqt--tuklas-agent", label: "Corpus Hub" },
+    ],
   },
 ]
 
@@ -197,6 +202,7 @@ export default function Projects() {
               href={project.href}
               linkLabel={project.linkLabel}
               proofLine={project.proofLine}
+              additionalLinks={project.additionalLinks}
             />
           ))}
         </BentoGrid>
