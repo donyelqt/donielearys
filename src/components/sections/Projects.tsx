@@ -163,7 +163,7 @@ const projects: ProjectEntry[] = [
     proofLine: "Selected for XERJ Corpus Hub",
     additionalLinks: [
       { href: "https://hub.xerj.org/contributors/donyelqt", label: "Contributors" },
-      { href: "https://hub.xerj.org/corpus/donyelqt--tuklas-agent", label: "Corpus Hub" },
+      { href: "https://hub.xerj.org/corpus/donyelqt--tuklas-agent", label: "Corpus Profile" },
     ],
   },
 ]
