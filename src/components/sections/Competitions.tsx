@@ -28,6 +28,7 @@ interface CompetitionEntry {
   badgeColor: string
   achievement: string
   highlight?: boolean
+  highlightColor?: "crimson" | "purple"
   noGold?: boolean
 }
 
@@ -42,6 +43,19 @@ const competitions: CompetitionEntry[] = [
     badgeColor: "bg-white text-[hsl(0_68%_44%)] border border-[hsl(0_68%_44%)]/30 font-bold dark:bg-white dark:text-black dark:border-white/50 dark:font-bold",
     achievement: "94% Accuracy | 4K Tokens",
     highlight: true,
+    highlightColor: "crimson",
+  },
+  {
+    title: "XERJ Corpus Hub — AI Agents Contributor",
+    issuer: "XERJ Corpus Hub · Oct 2026",
+    date: "Oct 2026",
+    description: "Tuklas-Agent repository scouted and indexed into the XERJ Corpus Hub as an open reference memory implementation for AI coding agents, alongside industry-standard repositories from Google, Nvidia, Microsoft, OpenClaw, Hugging Face, ECC and Llama.cpp, etc.",
+    icon: <Shield className="h-5 w-5 text-white dark:text-violet-300" />,
+    badge: "Indexed",
+    badgeColor: "bg-white text-[hsl(265_50%_45%)] border border-[hsl(265_50%_45%)]/30 font-bold dark:bg-violet-600 dark:text-foreground dark:border-violet-500/70 dark:font-bold",
+    achievement: "Corpus Hub Selection",
+    highlight: true,
+    highlightColor: "purple",
   },
   {
     title: "AI Singapore - National AI Student Challenge",
@@ -162,12 +176,14 @@ export default function Competitions() {
             style={{ transform: "translateZ(0)" }}
             className={`card-hover-lift relative p-6 border rounded-sm transition-[border-color,box-shadow] duration-300 ${
                 comp.highlight
-                  ? "bg-[hsl(0_68%_44%)] border-white/30 hover:border-white/50 text-white shadow-[0_0_30px_-8px_rgba(190,30,45,0.35)] hover:shadow-[0_0_40px_-8px_rgba(190,30,45,0.45)] dark:bg-red-900/30 dark:border-red-600/50 dark:hover:border-red-500/70 dark:text-foreground dark:shadow-[0_0_30px_-8px_rgba(220,38,38,0.15)] dark:hover:shadow-[0_0_40px_-8px_rgba(220,38,38,0.25)]"
+                  ? comp.highlightColor === "purple"
+                    ? "bg-violet-600/90 border-white/30 hover:border-white/50 text-white shadow-[0_0_30px_-8px_rgba(138,43,226,0.35)] hover:shadow-[0_0_40px_-8px_rgba(138,43,226,0.45)] dark:bg-violet-900/40 dark:border-violet-600/50 dark:hover:border-violet-500/70 dark:text-foreground dark:shadow-[0_0_30px_-8px_rgba(138,43,226,0.15)] dark:hover:shadow-[0_0_40px_-8px_rgba(138,43,226,0.25)]"
+                    : "bg-[hsl(0_68%_44%)] border-white/30 hover:border-white/50 text-white shadow-[0_0_30px_-8px_rgba(190,30,45,0.35)] hover:shadow-[0_0_40px_-8px_rgba(190,30,45,0.45)] dark:bg-red-900/30 dark:border-red-600/50 dark:hover:border-red-500/70 dark:text-foreground dark:shadow-[0_0_30px_-8px_rgba(220,38,38,0.15)] dark:hover:shadow-[0_0_40px_-8px_rgba(220,38,38,0.25)]"
                   : "bg-foreground/5 border-foreground/10 hover:border-foreground/20 dark:bg-white/5 dark:border-white/10"
               }`}
           >
             {comp.highlight && (
-                 <div className="absolute -top-2 left-4 px-2 py-0.5 text-[8px] font-mono uppercase bg-white text-[hsl(0_68%_44%)] tracking-wider z-20 dark:bg-red-600 dark:text-foreground">
+                 <div className={`absolute -top-2 left-4 px-2 py-0.5 text-[8px] font-mono uppercase tracking-wider z-20 ${comp.highlightColor === "purple" ? "bg-white text-[hsl(265_50%_45%)] dark:bg-violet-600 dark:text-foreground" : "bg-white text-[hsl(0_68%_44%)] tracking-wider dark:bg-red-600 dark:text-foreground"}`}>
                  Featured
                </div>
             )}
@@ -178,7 +194,7 @@ export default function Competitions() {
             </div>
 
             <div className="flex items-start gap-4">
-                <div className={`shrink-0 p-2 border ${comp.highlight ? "bg-white/15 border-white/30 dark:bg-red-950/60 dark:border-red-600/40" : "bg-foreground/5 border-foreground/10 dark:bg-white/5 dark:border-white/10"}`}>
+                <div className={`shrink-0 p-2 border ${comp.highlight ? (comp.highlightColor === "purple" ? "bg-white/15 border-white/30 dark:bg-violet-950/60 dark:border-violet-600/40" : "bg-white/15 border-white/30 dark:bg-red-950/60 dark:border-red-600/40") : "bg-foreground/5 border-foreground/10 dark:bg-white/5 dark:border-white/10"}`}>
                 {comp.icon}
               </div>
               <div className="flex-1 min-w-0">
@@ -188,9 +204,9 @@ export default function Competitions() {
               </div>
             </div>
 
-              <div className={`mt-4 pt-4 border-t flex flex-wrap justify-between items-center gap-2 ${comp.highlight ? "border-white/25 dark:border-red-600/30" : "border-foreground/5"}`}>
+              <div className={`mt-4 pt-4 border-t flex flex-wrap justify-between items-center gap-2 ${comp.highlight ? (comp.highlightColor === "purple" ? "border-white/25 dark:border-violet-600/30" : "border-white/25 dark:border-red-600/30") : "border-foreground/5"}`}>
                 <span className={`text-[10px] font-mono ${comp.highlight ? "text-white/60 dark:text-foreground/30" : "text-foreground/30"}`}>{comp.date}</span>
-                <span className={`text-[10px] font-mono ${comp.highlight ? "text-white/90 dark:text-red-400/80" : comp.noGold ? "text-red-400/60 dark:text-red-400/60" : "text-red-400/60 dark:text-red-400/60"}`}>{comp.achievement}</span>
+                <span className={`text-[10px] font-mono ${comp.highlight ? (comp.highlightColor === "purple" ? "text-white/90 dark:text-violet-400/80" : "text-white/90 dark:text-red-400/80") : comp.noGold ? "text-red-400/60 dark:text-red-400/60" : "text-red-400/60 dark:text-red-400/60"}`}>{comp.achievement}</span>
             </div>
           </motion.article>
         ))}
