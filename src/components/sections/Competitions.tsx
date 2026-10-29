@@ -49,7 +49,7 @@ const competitions: CompetitionEntry[] = [
     title: "XERJ Corpus Hub — AI Agents Contributor",
     issuer: "XERJ Corpus Hub · Oct 2026",
     date: "Oct 2026",
-    description: "Tuklas-Agent repository scouted and indexed into the XERJ Corpus Hub as an open reference memory implementation for AI coding agents, alongside industry-standard repositories from Google, Nvidia, Microsoft, OpenClaw, Hugging Face, ECC and Llama.cpp, etc.",
+    description: "Tuklas-Agent repository scouted, reviewed and indexed into the XERJ Corpus Hub as an open reference memory implementation for AI coding agents, alongside                          industry-standard repositories from Google, Nvidia, Microsoft, OpenClaw, Hugging Face, ECC and Llama.cpp, etc.",
     icon: <Shield className="h-5 w-5 text-white dark:text-violet-300" />,
     badge: "Indexed",
     badgeColor: "bg-white text-[hsl(265_50%_45%)] border border-[hsl(265_50%_45%)]/30 font-bold dark:bg-violet-600 dark:text-foreground dark:border-violet-500/70 dark:font-bold",
