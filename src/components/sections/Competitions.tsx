@@ -150,7 +150,7 @@ const competitions: CompetitionEntry[] = [
 export default function Competitions() {
   const prefersReducedMotion = useReducedMotion()
   const [expandedCard, setExpandedCard] = useState<number | null>(null)
-  const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const modalRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     if (expandedCard === null) return
@@ -163,7 +163,7 @@ export default function Competitions() {
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
 
-    closeButtonRef.current?.focus()
+    modalRef.current?.focus()
 
     return () => {
       document.removeEventListener('keydown', onKeyDown)
@@ -262,19 +262,14 @@ export default function Competitions() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ type: "spring", duration: 0.5, bounce: 0.2 }}
+              onClick={() => setExpandedCard(null)}
             >
               <motion.article
+                ref={modalRef as React.RefObject<HTMLElement>}
                 className={`relative p-8 border rounded-sm shadow-[0_0_40px_-8px_rgba(0,0,0,0.5)] max-w-3xl w-full ${getCardClasses(competitions[expandedCard])}`}
                 onClick={(e) => e.stopPropagation()}
+                tabIndex={-1}
               >
-                <button
-                  ref={closeButtonRef}
-                  className="absolute top-4 right-4 text-foreground/50 hover:text-foreground transition-colors"
-                  onClick={() => setExpandedCard(null)}
-                  aria-label="Close"
-                >
-                  ✕
-                </button>
                 {renderCardContent(competitions[expandedCard], false)}
               </motion.article>
             </motion.div>
