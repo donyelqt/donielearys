@@ -85,7 +85,7 @@ export const BentoGridItem = memo(({ className, title, description, header, icon
           </span>
         )}
         {additionalLinks && additionalLinks.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
+          <div className="relative z-20 mt-2 flex flex-wrap gap-x-3 gap-y-1">
             {additionalLinks.map((link) => (
               <a
                 key={link.href}
