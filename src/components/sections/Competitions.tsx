@@ -1,7 +1,7 @@
 "use client"
 
-import React from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import React, { useState, useRef, useEffect } from 'react'
+import { motion, useReducedMotion, AnimatePresence } from 'framer-motion'
 import { Award, BadgeCheck, Medal, Rocket, Shield, Star, Trophy, Zap } from 'lucide-react'
 import { SectionHeader } from "@/components/SectionHeader"
 
@@ -149,6 +149,66 @@ const competitions: CompetitionEntry[] = [
 
 export default function Competitions() {
   const prefersReducedMotion = useReducedMotion()
+  const [expandedCard, setExpandedCard] = useState<number | null>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (expandedCard === null) return
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setExpandedCard(null)
+    }
+    document.addEventListener('keydown', onKeyDown)
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    closeButtonRef.current?.focus()
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      document.body.style.overflow = previousOverflow
+    }
+  }, [expandedCard])
+
+  const getCardClasses = (comp: CompetitionEntry) => {
+    if (!comp.highlight) {
+      return "bg-foreground/5 border-foreground/10 hover:border-foreground/20 dark:bg-white/5 dark:border-white/10"
+    }
+    if (comp.highlightColor === "purple") {
+      return "bg-violet-600/90 border-white/30 hover:border-white/50 text-white shadow-[0_0_30px_-8px_rgba(138,43,226,0.35)] hover:shadow-[0_0_40px_-8px_rgba(138,43,226,0.45)] dark:bg-violet-900/40 dark:border-violet-600/50 dark:hover:border-violet-500/70 dark:text-foreground dark:shadow-[0_0_30px_-8px_rgba(138,43,226,0.15)] dark:hover:shadow-[0_0_40px_-8px_rgba(138,43,226,0.25)]"
+    }
+    return "bg-[hsl(0_68%_44%)] border-white/30 hover:border-white/50 text-white shadow-[0_0_30px_-8px_rgba(190,30,45,0.35)] hover:shadow-[0_0_40px_-8px_rgba(190,30,45,0.45)] dark:bg-red-900/30 dark:border-red-600/50 dark:hover:border-red-500/70 dark:text-foreground dark:shadow-[0_0_30px_-8px_rgba(220,38,38,0.15)] dark:hover:shadow-[0_0_40px_-8px_rgba(220,38,38,0.25)]"
+  }
+
+  const renderCardContent = (comp: CompetitionEntry, compact: boolean) => (
+    <>
+      {comp.highlight && (
+        <div className={`absolute -top-2 left-4 px-2 py-0.5 text-[8px] font-mono uppercase tracking-wider z-20 ${comp.highlightColor === "purple" ? "bg-white text-[hsl(265_50%_45%)] dark:bg-violet-600 dark:text-foreground" : "bg-white text-[hsl(0_68%_44%)] dark:bg-red-600 dark:text-foreground"}`}>
+          Featured
+        </div>
+      )}
+      <div className="absolute top-4 right-4 z-10">
+        <span className={`px-2 py-1 text-[8px] font-mono uppercase border rounded-sm ${comp.badgeColor}`}>
+          {comp.badge}
+        </span>
+      </div>
+      <div className="flex items-start gap-4">
+        <div className={`shrink-0 p-2 border ${comp.highlight ? (comp.highlightColor === "purple" ? "bg-white/15 border-white/30 dark:bg-violet-950/60 dark:border-violet-600/40" : "bg-white/15 border-white/30 dark:bg-red-950/60 dark:border-red-600/40") : "bg-foreground/5 border-foreground/10 dark:bg-white/5 dark:border-white/10"}`}>
+          {comp.icon}
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3 className={`text-base font-bold tracking-tight mb-1 pr-20 md:pr-16 break-words ${comp.highlight ? "text-white dark:text-foreground" : "text-foreground"}`}>{comp.title}</h3>
+          <p className={`text-[10px] font-mono uppercase tracking-widest mb-3 break-words ${comp.highlight ? "text-white/70 dark:text-foreground/40" : "text-foreground/40"}`}>{comp.issuer}</p>
+          <p className={`text-xs leading-relaxed break-words ${comp.highlight ? "text-white/80 dark:text-foreground/60" : "text-foreground/60"} ${compact ? "line-clamp-3" : ""}`}>{comp.description}</p>
+        </div>
+      </div>
+      <div className={`mt-4 pt-4 border-t flex flex-wrap justify-between items-center gap-2 ${comp.highlight ? (comp.highlightColor === "purple" ? "border-white/25 dark:border-violet-600/30" : "border-white/25 dark:border-red-600/30") : "border-foreground/5"}`}>
+        <span className={`text-[10px] font-mono ${comp.highlight ? "text-white/60 dark:text-foreground/30" : "text-foreground/30"}`}>{comp.date}</span>
+        <span className={`text-[10px] font-mono ${comp.highlight ? (comp.highlightColor === "purple" ? "text-white/90 dark:text-violet-400/80" : "text-white/90 dark:text-red-400/80") : comp.noGold ? "text-red-400/60 dark:text-red-400/60" : "text-red-400/60 dark:text-red-400/60"}`}>{comp.achievement}</span>
+      </div>
+    </>
+  )
 
   return (
     <section id="competitions" className="py-20 px-4 overflow-x-hidden">
@@ -174,43 +234,53 @@ export default function Competitions() {
             viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
             transition={{ delay: prefersReducedMotion ? 0 : i * 0.05, duration: 0.4, ease: "easeOut" }}
             style={{ transform: "translateZ(0)" }}
-            className={`card-hover-lift relative p-6 border rounded-sm transition-[border-color,box-shadow] duration-300 ${
-                comp.highlight
-                  ? comp.highlightColor === "purple"
-                    ? "bg-violet-600/90 border-white/30 hover:border-white/50 text-white shadow-[0_0_30px_-8px_rgba(138,43,226,0.35)] hover:shadow-[0_0_40px_-8px_rgba(138,43,226,0.45)] dark:bg-violet-900/40 dark:border-violet-600/50 dark:hover:border-violet-500/70 dark:text-foreground dark:shadow-[0_0_30px_-8px_rgba(138,43,226,0.15)] dark:hover:shadow-[0_0_40px_-8px_rgba(138,43,226,0.25)]"
-                    : "bg-[hsl(0_68%_44%)] border-white/30 hover:border-white/50 text-white shadow-[0_0_30px_-8px_rgba(190,30,45,0.35)] hover:shadow-[0_0_40px_-8px_rgba(190,30,45,0.45)] dark:bg-red-900/30 dark:border-red-600/50 dark:hover:border-red-500/70 dark:text-foreground dark:shadow-[0_0_30px_-8px_rgba(220,38,38,0.15)] dark:hover:shadow-[0_0_40px_-8px_rgba(220,38,38,0.25)]"
-                  : "bg-foreground/5 border-foreground/10 hover:border-foreground/20 dark:bg-white/5 dark:border-white/10"
-              }`}
+            className={`card-hover-lift relative p-6 border rounded-sm transition-[border-color,box-shadow] duration-300 cursor-pointer ${getCardClasses(comp)}`}
+            onClick={() => setExpandedCard(i)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setExpandedCard(i) }}
+            aria-label={`View ${comp.title} details`}
           >
-            {comp.highlight && (
-                 <div className={`absolute -top-2 left-4 px-2 py-0.5 text-[8px] font-mono uppercase tracking-wider z-20 ${comp.highlightColor === "purple" ? "bg-white text-[hsl(265_50%_45%)] dark:bg-violet-600 dark:text-foreground" : "bg-white text-[hsl(0_68%_44%)] tracking-wider dark:bg-red-600 dark:text-foreground"}`}>
-                 Featured
-               </div>
-            )}
-            <div className="absolute top-4 right-4 z-10">
-              <span className={`px-2 py-1 text-[8px] font-mono uppercase border rounded-sm ${comp.badgeColor}`}>
-                {comp.badge}
-              </span>
-            </div>
-
-            <div className="flex items-start gap-4">
-                <div className={`shrink-0 p-2 border ${comp.highlight ? (comp.highlightColor === "purple" ? "bg-white/15 border-white/30 dark:bg-violet-950/60 dark:border-violet-600/40" : "bg-white/15 border-white/30 dark:bg-red-950/60 dark:border-red-600/40") : "bg-foreground/5 border-foreground/10 dark:bg-white/5 dark:border-white/10"}`}>
-                {comp.icon}
-              </div>
-              <div className="flex-1 min-w-0">
-                  <h3 className={`text-base font-bold tracking-tight mb-1 pr-20 md:pr-16 break-words ${comp.highlight ? "text-white dark:text-foreground" : "text-foreground"}`}>{comp.title}</h3>
-                  <p className={`text-[10px] font-mono uppercase tracking-widest mb-3 break-words ${comp.highlight ? "text-white/70 dark:text-foreground/40" : "text-foreground/40"}`}>{comp.issuer}</p>
-                  <p className={`text-xs leading-relaxed line-clamp-3 break-words ${comp.highlight ? "text-white/80 dark:text-foreground/60" : "text-foreground/60"}`}>{comp.description}</p>
-              </div>
-            </div>
-
-              <div className={`mt-4 pt-4 border-t flex flex-wrap justify-between items-center gap-2 ${comp.highlight ? (comp.highlightColor === "purple" ? "border-white/25 dark:border-violet-600/30" : "border-white/25 dark:border-red-600/30") : "border-foreground/5"}`}>
-                <span className={`text-[10px] font-mono ${comp.highlight ? "text-white/60 dark:text-foreground/30" : "text-foreground/30"}`}>{comp.date}</span>
-                <span className={`text-[10px] font-mono ${comp.highlight ? (comp.highlightColor === "purple" ? "text-white/90 dark:text-violet-400/80" : "text-white/90 dark:text-red-400/80") : comp.noGold ? "text-red-400/60 dark:text-red-400/60" : "text-red-400/60 dark:text-red-400/60"}`}>{comp.achievement}</span>
-            </div>
+            {renderCardContent(comp, true)}
           </motion.article>
         ))}
       </div>
+      <AnimatePresence>
+        {expandedCard !== null && (
+          <>
+            <motion.div
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setExpandedCard(null)}
+            />
+            <motion.div
+              className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ type: "spring", duration: 0.5, bounce: 0.2 }}
+            >
+              <motion.article
+                className={`relative p-8 border rounded-sm shadow-[0_0_40px_-8px_rgba(0,0,0,0.5)] max-w-3xl w-full ${getCardClasses(competitions[expandedCard])}`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  ref={closeButtonRef}
+                  className="absolute top-4 right-4 text-foreground/50 hover:text-foreground transition-colors"
+                  onClick={() => setExpandedCard(null)}
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
+                {renderCardContent(competitions[expandedCard], false)}
+              </motion.article>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
