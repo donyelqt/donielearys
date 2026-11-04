@@ -21,6 +21,15 @@ interface Testimonial {
 
 const testimonials: Testimonial[] = [
   {
+    name: 'GenAI Engineering Review Team',
+    role: 'Thinking Machines Data Science · Senior Engineer Feedback',
+    quote:
+      'Demonstrated strong application development skills, particularly in clean code structure, hybrid retrieval approach, query decomposition, and session persistence. Excellent implementation of error handling, tracing, and automated testing.',
+    context: 'Technical Take-Home Assessment · Technical Architecture Evaluation · Oct 2026',
+    pending: false,
+    attribution: 'Written · Email Evaluation Feedback',
+  },
+  {
     name: 'Richard Jakelski',
     role: 'Former US-Based IBM Senior Software Engineer',
     quote:
@@ -102,13 +111,7 @@ export default function Testimonials() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
-            className={`relative p-6 border border-foreground/10 bg-foreground/[0.02] hover:bg-foreground/[0.04] hover:border-foreground/20 transition-all duration-300 ${
-              i < 3
-                ? 'lg:col-span-2'
-                : i === 3
-                  ? 'lg:col-span-2 lg:col-start-2'
-                  : 'lg:col-span-2 lg:col-start-4'
-            }`}
+            className={`relative p-6 border border-foreground/10 bg-foreground/[0.02] hover:bg-foreground/[0.04] hover:border-foreground/20 transition-all duration-300 lg:col-span-2`}
           >
             {t.pending && (
               <div className="absolute -top-2 left-4 px-2 py-0.5 text-[8px] font-mono uppercase bg-foreground/10 text-foreground/50 tracking-wider z-20">
