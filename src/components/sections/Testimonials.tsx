@@ -89,7 +89,7 @@ export default function Testimonials() {
 
   return (
     <section id="testimonials" className="py-20 px-4">
-      <SectionHeader index="05" title="Validation" eyebrow="Validation" meta="ENDORSED" />
+      <SectionHeader index="05" title="Validation" eyebrow="Validation" meta="FEEDBACK" />
       <div className="max-w-7xl mx-auto">
         <motion.p
           variants={prefersReducedMotion ? {} : itemVariants}
