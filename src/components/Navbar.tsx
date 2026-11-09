@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X, FileText, Sun, Moon } from 'lucide-react'
 import { useTheme } from 'next-themes'
+import { SoundToggle } from '@/components/ClickSound'
 
 const showCertifications = process.env.NEXT_PUBLIC_CERTIFICATIONS_ENABLED !== 'false'
 
@@ -267,6 +268,12 @@ export default function Navbar() {
               )}
             </button>
 
+            {/* The header has no room for a fourth 44px control on phones.
+                The mobile menu carries the same toggle below sm. */}
+            <div className="hidden sm:block">
+              <SoundToggle />
+            </div>
+
             {/* Compact resume access below sm — the labeled CTA needs the wider header */}
             <Link
               href="/resume.pdf"
@@ -338,6 +345,12 @@ export default function Navbar() {
                       </Link>
                     )
                   })}
+                  <div className="mt-4 flex items-center justify-between border-t border-foreground/10 pt-4">
+                    <span className="text-xs font-mono uppercase tracking-widest text-foreground/60">
+                      Interface sounds
+                    </span>
+                    <SoundToggle />
+                  </div>
                   <Link
                     href="/resume.pdf"
                     onClick={handleLinkClick}
