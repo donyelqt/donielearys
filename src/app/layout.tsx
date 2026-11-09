@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import ScrollProgress, { BackToTop } from "@/components/ScrollProgress";
 import PreloaderWrapper from "@/components/PreloaderWrapper";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { ClickSoundProvider } from "@/components/ClickSound";
 import DotGridLight from "@/components/DotGridLight";
 
 const geistSans = Geist({
@@ -49,19 +50,21 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col selection:bg-foreground selection:text-background scroll-smooth crop-marks">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <ScrollProgress />
-          <BackToTop />
-          <div className="fixed inset-0 grid-pattern pointer-events-none -z-10" />
-          {/* After .grid-pattern: the grid paints an opaque background and the
-              light has to composite over it, so it must come later in paint
-              order at the same stacking level. */}
-          <DotGridLight />
-          <Navbar />
-          <PreloaderWrapper>
-            <main id="main-content" className="flex-1 pt-24">
-              {children}
-            </main>
-          </PreloaderWrapper>
+          <ClickSoundProvider>
+            <ScrollProgress />
+            <BackToTop />
+            <div className="fixed inset-0 grid-pattern pointer-events-none -z-10" />
+            {/* After .grid-pattern: the grid paints an opaque background and the
+                light has to composite over it, so it must come later in paint
+                order at the same stacking level. */}
+            <DotGridLight />
+            <Navbar />
+            <PreloaderWrapper>
+              <main id="main-content" className="flex-1 pt-24">
+                {children}
+              </main>
+            </PreloaderWrapper>
+          </ClickSoundProvider>
         </ThemeProvider>
       </body>
     </html>
