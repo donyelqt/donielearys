@@ -138,16 +138,34 @@ export function ClickSoundProvider({ children }: { children: ReactNode }) {
       playGlassCue("click")
     }
 
+    /* Hover is mouse-only. Touch and pen have no settled hover state, and
+       firing on tap would double every press with a tick. Moving inside one
+       control (icon to label to edge) must stay silent; only a new control
+       earns a cue. */
+    const onPointerOver = (event: PointerEvent) => {
+      if (!enabledRef.current || event.pointerType !== "mouse") return
+      if (event.buttons !== 0) return
+      const target = event.target
+      if (!(target instanceof Element)) return
+      const control = getSoundTarget(target)
+      if (!control) return
+      const from = event.relatedTarget
+      if (from instanceof Node && control.contains(from)) return
+      playGlassCue("hover")
+    }
+
     const onVisibilityChange = () => {
       if (document.hidden) suspendGlassAudio()
     }
 
     document.addEventListener("pointerdown", onPointerDown, true)
     document.addEventListener("keydown", onKeyDown, true)
+    document.addEventListener("pointerover", onPointerOver, true)
     document.addEventListener("visibilitychange", onVisibilityChange)
     return () => {
       document.removeEventListener("pointerdown", onPointerDown, true)
       document.removeEventListener("keydown", onKeyDown, true)
+      document.removeEventListener("pointerover", onPointerOver, true)
       document.removeEventListener("visibilitychange", onVisibilityChange)
     }
   }, [])
