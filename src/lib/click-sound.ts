@@ -1,4 +1,4 @@
-export type GlassCue = "click" | "on" | "off"
+export type GlassCue = "click" | "hover" | "on" | "off"
 
 type PartialSpec = {
   ratio: number
@@ -30,6 +30,18 @@ const CUES: Record<GlassCue, CueSpec> = {
     ],
     noise: { frequency: 5400, q: 2.6, gain: 0.045 },
   },
+  /* Pointer hover: the same glass strike, higher and much quieter. A hover can
+     fire dozens of times while the cursor crosses a nav, so it has to read as
+     a tick, not an event. */
+  hover: {
+    base: 2489,
+    partials: [
+      { ratio: 1, gain: 0.045, decay: 0.08 },
+      { ratio: 2.18, gain: 0.02, decay: 0.05 },
+      { ratio: 3.9, gain: 0.01, decay: 0.035 },
+    ],
+    noise: { frequency: 6800, q: 2.2, gain: 0.022 },
+  },
   on: {
     base: 2093,
     partials: [
@@ -51,6 +63,7 @@ const CUES: Record<GlassCue, CueSpec> = {
 }
 
 const MIN_CUE_GAP_SECONDS = 0.04
+const MIN_HOVER_GAP_SECONDS = 0.09
 
 type AudioGraph = {
   context: AudioContext
@@ -67,6 +80,7 @@ const globalStore = globalThis as typeof globalThis & {
 let audio = globalStore.__donieleGlassAudio ?? null
 let audioUnavailable = false
 let lastCueAt = Number.NEGATIVE_INFINITY
+let lastHoverAt = Number.NEGATIVE_INFINITY
 
 function getAudioGraph(): AudioGraph | null {
   if (typeof window === "undefined" || audioUnavailable) return null
@@ -119,7 +133,9 @@ function scheduleCue(graph: AudioGraph, cue: GlassCue): void {
   const { context, master, noise: noiseBuffer } = graph
   const now = context.currentTime
   if (now - lastCueAt < MIN_CUE_GAP_SECONDS) return
+  if (cue === "hover" && now - lastHoverAt < MIN_HOVER_GAP_SECONDS) return
   lastCueAt = now
+  if (cue === "hover") lastHoverAt = now
 
   const spec = CUES[cue]
   const cueGain = context.createGain()
@@ -177,6 +193,15 @@ function scheduleCue(graph: AudioGraph, cue: GlassCue): void {
 }
 
 export function playGlassCue(cue: GlassCue): void {
+  /* Hover must never create or resume the context. It is not a user gesture,
+     so a context born here would start suspended and log a warning. Once the
+     sound toggle has produced the on cue, the running context is reused. */
+  if (cue === "hover") {
+    if (!audio || audio.context.state !== "running") return
+    scheduleCue(audio, cue)
+    return
+  }
+
   const graph = getAudioGraph()
   if (!graph) return
 
