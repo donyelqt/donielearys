@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from 'react'
+import { flushSync } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
@@ -185,6 +186,37 @@ export default function Navbar() {
     }
   }, [mobileMenuOpen])
 
+  const toggleTheme = () => {
+    const root = document.documentElement
+    const next = root.classList.contains('dark') ? 'light' : 'dark'
+
+    const apply = () => {
+      root.classList.remove('light', 'dark')
+      root.classList.add(next)
+      root.style.colorScheme = next
+      setTheme(next)
+    }
+
+    /* The snapshot cross-fade keeps every layer in sync, including the fixed
+       grid and the cursor canvas. Unsupported browsers and reduced-motion
+       users get the instant swap. */
+    if (
+      typeof document.startViewTransition !== 'function' ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      apply()
+      return
+    }
+
+    try {
+      const transition = document.startViewTransition(() => flushSync(apply))
+      transition.ready.catch(() => {})
+      transition.finished.catch(() => {})
+    } catch {
+      apply()
+    }
+  }
+
   const handleLinkClick = () => {
     setMobileMenuOpen(false)
   }
@@ -255,7 +287,7 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <button
               type="button"
-              onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+              onClick={toggleTheme}
               aria-label="Toggle color theme"
               className="flex items-center justify-center w-11 h-11 border border-foreground/20 text-foreground hover:bg-foreground/5 transition-colors focus-hard"
             >
