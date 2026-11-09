@@ -217,7 +217,7 @@ export default function Navbar() {
             >
               DonieleAI
             </Link>
-            <div className="hidden lg:flex gap-1 relative" ref={navRef}>
+            <div className="hidden xl:flex gap-1 relative" ref={navRef}>
               {navItems.map((item) => {
                 const isActive = activeSection === item.name
                 return (
@@ -284,7 +284,7 @@ export default function Navbar() {
             </Link>
             <Link
               href="/resume.pdf"
-              className="hidden sm:block px-6 py-2.5 text-[10px] font-bold bg-foreground text-background rounded-none hover:bg-foreground/90 transition-colors uppercase tracking-widest"
+              className="hidden sm:flex items-center justify-center shrink-0 whitespace-nowrap h-11 px-6 text-[10px] font-bold bg-foreground text-background rounded-none hover:bg-foreground/90 transition-colors uppercase tracking-widest"
             >
               Access Resume
             </Link>
@@ -292,7 +292,7 @@ export default function Navbar() {
             <button
               ref={toggleRef}
               type="button"
-              className="lg:hidden p-2.5 -m-1 text-foreground focus-hard"
+              className="xl:hidden p-2.5 -m-1 text-foreground focus-hard"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
@@ -315,7 +315,7 @@ export default function Navbar() {
                 exit={{ opacity: 0, scaleY: 0 }}
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
                 style={{ transformOrigin: "top" }}
-                 className="absolute top-full left-0 right-0 bg-background border-b border-foreground/10 lg:hidden overflow-hidden"
+                 className="absolute top-full left-0 right-0 bg-background border-b border-foreground/10 xl:hidden overflow-hidden"
               >
                 <div className="flex flex-col p-6 gap-1">
                   {navItems.map((item) => {
