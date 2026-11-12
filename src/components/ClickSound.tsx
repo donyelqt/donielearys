@@ -19,11 +19,14 @@ const listeners = new Set<() => void>()
 let soundEnabled = false
 let soundPreferenceLoaded = false
 
+/* Sound is on for everyone until someone turns it off, so only an explicit
+   "off" disables it. No stored key, a cleared key, or a blocked localStorage
+   all read as on. */
 function readSoundPreference() {
   try {
-    return window.localStorage.getItem(SOUND_KEY) === "on"
+    return window.localStorage.getItem(SOUND_KEY) !== "off"
   } catch {
-    return false
+    return true
   }
 }
 
@@ -37,14 +40,14 @@ function getSoundSnapshot() {
 }
 
 function getSoundServerSnapshot() {
-  return false
+  return true
 }
 
 function subscribeToSound(listener: () => void) {
   listeners.add(listener)
   const onStorage = (event: StorageEvent) => {
     if (event.key !== SOUND_KEY) return
-    soundEnabled = event.newValue === "on"
+    soundEnabled = event.newValue !== "off"
     soundPreferenceLoaded = true
     listener()
   }
