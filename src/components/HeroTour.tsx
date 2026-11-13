@@ -17,6 +17,10 @@ import { useReducedMotion } from "framer-motion"
  * Gated on the Preloader curtain having fully closed, ended only by the skip
  * button (or its keyboard equivalent), and suppressed entirely under
  * prefers-reduced-motion.
+ *
+ * Below Tailwind md, a fixed Doniele Agent card replaces the cursor. The full
+ * step is shown at once, the exit and step dots live inside the card, and
+ * crossing the breakpoint mid-run ends the tour.
  */
 
 /** Emitted by Preloader once the curtain has finished animating out. */
@@ -33,6 +37,8 @@ const ARROW_TIP = 6 // px; the arrow glyph's tip sits this far into its 26px box
 const BUBBLE_MARGIN = 12 // px; smallest gap the tooltip keeps from the viewport edge
 const GAP = 28 // px; the horizontal offset the tooltip used before it became a clamp
 const CURSOR_W = 26 // px; the cursor container's shrink-to-fit width (its only child is a 26x26 svg)
+const COMPACT_QUERY = "(max-width: 767px)" // below Tailwind md: the scripted cursor cannot fit beside hero copy
+
 
 type Align = "up" | "down" | "left" | "right"
 
@@ -104,10 +110,12 @@ export default function HeroTour() {
   const [side, setSide] = useState<Align>("down")
   const [bubbleLeft, setBubbleLeft] = useState(28)
   const [bubbleMax, setBubbleMax] = useState(BUBBLE_W)
+  const [isCompact, setIsCompact] = useState(false)
 
   const arrowRef = useRef<HTMLDivElement | null>(null)
   const timers = useRef<number[]>([])
   const raf = useRef(0)
+  const compactRef = useRef(false)
 
   const clearTimers = useCallback(() => {
     timers.current.forEach((t) => window.clearTimeout(t))
@@ -127,6 +135,21 @@ export default function HeroTour() {
       /* private mode: tour simply replays next load */
     }
   }, [clearTimers])
+  /* One source of truth for the breakpoint. Crossing it mid-run ends the tour
+     instead of leaving the desktop arrow and compact card in inconsistent states. */
+  useEffect(() => {
+    const query = window.matchMedia(COMPACT_QUERY)
+    const update = () => {
+      const next = query.matches
+      const changed = compactRef.current !== next
+      compactRef.current = next
+      setIsCompact(next)
+      if (changed && active) finish()
+    }
+    update()
+    query.addEventListener("change", update)
+    return () => query.removeEventListener("change", update)
+  }, [active, finish])
 
   /** Runs the full sequence. Deterministic: fixed steps, fixed dwell. */
   const run = useCallback(() => {
@@ -152,6 +175,19 @@ export default function HeroTour() {
         else finish()
         return
       }
+      if (compactRef.current) {
+        setStep(i)
+        setTyped(stepDef.text.length)
+        timers.current.push(
+          window.setTimeout(() => {
+            index = i + 1
+            if (index < STEPS.length) goToStep(index)
+            else finish()
+          }, DWELL_MS)
+        )
+        return
+      }
+
 
       const rect = el.getBoundingClientRect()
       const arrow = arrowRef.current
@@ -375,7 +411,7 @@ export default function HeroTour() {
           className="fixed inset-0 z-[80] touch-none overscroll-contain"
         />
       )}
-      {active && (
+      {active && !isCompact && (
         <div
           ref={arrowRef}
           id="heroTourCursor"
@@ -459,6 +495,46 @@ export default function HeroTour() {
           </div>
         </div>
       )}
+      {/* Compact screens cannot host a 26px cursor beside a 300px bubble without
+          covering the copy being explained. The sequence still advances, but the
+          chrome becomes a full-width card with the exit inside it. */}
+      {active && isCompact && stepDef && (
+        <div
+          data-tour-ui
+          role="region"
+          aria-label="Doniele Agent tour"
+          className="tour-tooltip fixed z-[90] left-3 right-3 bottom-[calc(0.875rem+env(safe-area-inset-bottom))] max-w-sm ml-auto border border-foreground/15 bg-foreground text-background shadow-[0_10px_28px_-12px_rgba(0,0,0,0.55)] px-4 py-3 text-left"
+        >
+          <div className="flex items-center justify-between gap-3 border-b border-background/15 pb-2">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-crimson">
+              Doniele Agent
+            </span>
+            <span className="font-mono text-[10px] tabular-nums text-background/60">
+              {step + 1} / {STEPS.length}
+            </span>
+          </div>
+          <p className="pt-2 font-mono text-[12px] leading-5 text-background">
+            {stepDef.text}
+          </p>
+          <div className="flex items-center justify-between gap-3 pt-3">
+            <div className="flex items-center gap-1.5" aria-hidden="true">
+              {STEPS.map((_, dotIndex) => (
+                <span
+                  key={dotIndex}
+                  className={`h-1.5 w-1.5 ${dotIndex === step ? "bg-crimson" : "bg-background/25"}`}
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={finish}
+              className="font-mono text-[10px] uppercase tracking-[0.2em] text-background/70 hover:text-background focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background"
+            >
+              Skip tour
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Lives beside the cursor container, never inside it. That container is
           aria-hidden, which strips its whole subtree from the accessibility
@@ -480,7 +556,7 @@ export default function HeroTour() {
           active && !done unmounts this at the exact moment the replay button
           mounts, so the two can never be on screen together. Quieter text and a
           dimmer glyph than replay: skipping is a way out, not a call to action. */}
-      {active && !done && (
+      {active && !done && !isCompact && (
         <button
           type="button"
           data-tour-ui
