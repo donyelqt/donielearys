@@ -7,6 +7,7 @@ import PreloaderWrapper from "@/components/PreloaderWrapper";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ClickSoundProvider } from "@/components/ClickSound";
 import DotGridLight from "@/components/DotGridLight";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,6 +50,34 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col selection:bg-foreground selection:text-background scroll-smooth crop-marks">
+        {/* Next 16.2.6: hydration caches the URL fragment into the route cache, and
+            every client hash navigation appends onto it (/#a#b#c). Strip the fragment
+            before hydration reads location.href; restore the target section on load. */}
+        <Script id="normalize-hash-fragment" strategy="beforeInteractive">
+          {`(function () {
+  try {
+    var h = window.location.hash;
+    if (!h) return;
+    var id = h.slice(1).split("#").pop() || "";
+    window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    if (!id) return;
+    // Sections mount only after client-side hydration (PreloaderWrapper gates them),
+    // so poll until the fragment target exists instead of a one-shot lookup.
+    var deadline = Date.now() + 8000;
+    var tick = function () {
+      var el = document.getElementById(id) || document.getElementsByName(id)[0];
+      if (el) {
+        el.scrollIntoView({ behavior: "instant", block: "start" });
+        try { window.history.replaceState(null, "", "/#" + encodeURIComponent(id)); } catch (e) {}
+        return;
+      }
+      if (Date.now() < deadline) window.requestAnimationFrame(tick);
+    };
+    if (document.readyState === "complete") window.requestAnimationFrame(tick);
+    else window.addEventListener("load", function () { window.requestAnimationFrame(tick); });
+  } catch (e) {}
+})()`}
+        </Script>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <ClickSoundProvider>
             <ScrollProgress />
