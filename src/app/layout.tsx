@@ -65,12 +65,14 @@ export default function RootLayout({
     // so poll until the fragment target exists instead of a one-shot lookup.
     var deadline = Date.now() + 8000;
     var tick = function () {
-      var el = document.getElementById(id) || document.getElementsByName(id)[0];
-      if (el) {
-        el.scrollIntoView({ behavior: "instant", block: "start" });
-        try { window.history.replaceState(null, "", "/#" + encodeURIComponent(id)); } catch (e) {}
-        return;
-      }
+      try {
+        var el = document.getElementById(id) || document.getElementsByName(id)[0];
+        if (el) {
+          el.scrollIntoView({ behavior: "instant", block: "start" });
+          try { window.history.replaceState(null, "", window.location.pathname + window.location.search + "#" + encodeURIComponent(id)); } catch (e) {}
+          return;
+        }
+      } catch (e) { return; }
       if (Date.now() < deadline) window.requestAnimationFrame(tick);
     };
     if (document.readyState === "complete") window.requestAnimationFrame(tick);
