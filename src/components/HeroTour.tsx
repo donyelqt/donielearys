@@ -18,9 +18,9 @@ import { useReducedMotion } from "framer-motion"
  * button (or its keyboard equivalent), and suppressed entirely under
  * prefers-reduced-motion.
  *
- * Below Tailwind md, a fixed Doniele Agent card replaces the cursor. The full
- * step is shown at once, the exit and step dots live inside the card, and
- * crossing the breakpoint mid-run ends the tour.
+ * Below Tailwind md, the desktop cursor-and-tooltip sequence runs at phone scale:
+ * full-size precise cursor, 220px bubble ceiling, tighter timings, and the same
+ * side-aware clamp. Crossing the breakpoint mid-run ends the tour.
  */
 
 /** Emitted by Preloader once the curtain has finished animating out. */
@@ -37,7 +37,15 @@ const ARROW_TIP = 6 // px; the arrow glyph's tip sits this far into its 26px box
 const BUBBLE_MARGIN = 12 // px; smallest gap the tooltip keeps from the viewport edge
 const GAP = 28 // px; the horizontal offset the tooltip used before it became a clamp
 const CURSOR_W = 26 // px; the cursor container's shrink-to-fit width (its only child is a 26x26 svg)
-const COMPACT_QUERY = "(max-width: 767px)" // below Tailwind md: the scripted cursor cannot fit beside hero copy
+const COMPACT_QUERY = "(max-width: 767px)" // below Tailwind md, scale the desktop tour instead of replacing it
+const COMPACT_CURSOR_W = 26 // px; keep the desktop pointer at full size so it stays precise and visible
+const COMPACT_ARROW_TIP = 6 // px; tip sits the same distance into its box as desktop
+const COMPACT_BUBBLE_W = 220 // px; fits alongside a centered hero at 320px
+const COMPACT_MARGIN = 8 // px; phone edge padding
+const COMPACT_GAP = 28 // px; keep the desktop bubble 2px clear of the 26px pointer
+const COMPACT_TRAVEL_MS = 560
+const COMPACT_TYPE_MS = 14
+const COMPACT_DWELL_MS = 1900
 
 
 type Align = "up" | "down" | "left" | "right"
@@ -68,17 +76,17 @@ const STEPS: Step[] = [
   },
   {
     target: "[data-tour='achievements']",
-    text: "Reached Top 20 Global in the AMD hackathon. Open this for the full record.",
+    text: "Reached Top 20 Global in the AMD hackathon. The achievements panel opens the full record.",
     side: "down",
   },
   {
     target: "[data-tour='ctas']",
-    text: "Projects and contact, one click away.",
+    text: "The View Projects and Contact Me buttons sit under the headline.",
     side: "up",
   },
   {
     target: "[data-tour='social']",
-    text: "GitHub and LinkedIn. That is the whole tour.",
+    text: "GitHub and LinkedIn are the icons at the bottom of the hero.",
     side: "up",
   },
 ]
@@ -110,7 +118,7 @@ export default function HeroTour() {
   const [side, setSide] = useState<Align>("down")
   const [bubbleLeft, setBubbleLeft] = useState(28)
   const [bubbleMax, setBubbleMax] = useState(BUBBLE_W)
-  const [isCompact, setIsCompact] = useState(false)
+  const [armed, setArmed] = useState(false)
 
   const arrowRef = useRef<HTMLDivElement | null>(null)
   const timers = useRef<number[]>([])
@@ -129,21 +137,21 @@ export default function HeroTour() {
     setDone(true)
     setReplayVisible(true)
     setAlreadySeen(true)
+    setArmed(false)
     try {
       window.sessionStorage.setItem(SEEN_KEY, "1")
     } catch {
       /* private mode: tour simply replays next load */
     }
   }, [clearTimers])
-  /* One source of truth for the breakpoint. Crossing it mid-run ends the tour
-     instead of leaving the desktop arrow and compact card in inconsistent states. */
+  /* Crossing the breakpoint mid-run ends the tour instead of leaving the
+     scheduled timings and CSS-sized chrome pointing at different viewports. */
   useEffect(() => {
     const query = window.matchMedia(COMPACT_QUERY)
     const update = () => {
       const next = query.matches
       const changed = compactRef.current !== next
       compactRef.current = next
-      setIsCompact(next)
       if (changed && active) finish()
     }
     update()
@@ -159,6 +167,7 @@ export default function HeroTour() {
     // Replay must clear the seen flag, otherwise the mount effect's guard keeps
     // short-circuiting and the sequence never restarts.
     setAlreadySeen(false)
+    setArmed(false)
     // Mount the arrow before any timer can fire, otherwise goToStep finds a
     // null ref and the sequence stalls silently.
     setActive(true)
@@ -175,19 +184,15 @@ export default function HeroTour() {
         else finish()
         return
       }
-      if (compactRef.current) {
-        setStep(i)
-        setTyped(stepDef.text.length)
-        timers.current.push(
-          window.setTimeout(() => {
-            index = i + 1
-            if (index < STEPS.length) goToStep(index)
-            else finish()
-          }, DWELL_MS)
-        )
-        return
-      }
-
+      const compact = compactRef.current
+      const cursorW = compact ? COMPACT_CURSOR_W : CURSOR_W
+      const arrowTip = compact ? COMPACT_ARROW_TIP : ARROW_TIP
+      const bubbleW = compact ? COMPACT_BUBBLE_W : BUBBLE_W
+      const margin = compact ? COMPACT_MARGIN : BUBBLE_MARGIN
+      const gap = compact ? COMPACT_GAP : GAP
+      const travelMs = compact ? COMPACT_TRAVEL_MS : TRAVEL_MS
+      const typeMs = compact ? COMPACT_TYPE_MS : TYPE_MS
+      const dwellMs = compact ? COMPACT_DWELL_MS : DWELL_MS
 
       const rect = el.getBoundingClientRect()
       const arrow = arrowRef.current
@@ -195,33 +200,46 @@ export default function HeroTour() {
       // by the time this runs. Bailing here would deadlock the sequence.
       if (!arrow) return
 
-      const fromX = Number(arrow.dataset.x ?? rect.left + 12)
-      const fromY = Number(arrow.dataset.y ?? rect.top + 12)
-      // Bubble sits to the RIGHT of the component by default, matching the
-      // original design, with the tip on the component's right edge so pointer
-      // and bubble travel the same way. Flips left only when the right edge is
-      // too close to the viewport to fit it.
+      // Desktop prefers the arrow at the right edge with the bubble to its right.
+      // Phones rarely have that span, so pick the arrow/bubble pair that fits
+      // without covering the pointer: arrow right + bubble left, falling back to
+      // arrow left + bubble right.
       const roomRight = window.innerWidth - rect.right
-      const bubbleOnLeft = roomRight < BUBBLE_W + 46
-      // Aim the tip AT the component: on its right or left edge, vertically
-      // centred. The box parks ARROW_TIP back because the glyph tip sits that
-      // far into its own 26px box. The old maths parked the box 14px above the
-      // top edge, so the tip pointed at empty space above the component.
-      const toX = bubbleOnLeft ? rect.left - ARROW_TIP : rect.right - ARROW_TIP
-      const toY = rect.top + rect.height / 2 - ARROW_TIP
+      let bubbleOnLeft = roomRight < bubbleW + 46
+      let toX = bubbleOnLeft ? rect.left - arrowTip : rect.right - arrowTip
+      if (compact) {
+        const rightSideFits = window.innerWidth - margin - (rect.right - arrowTip + gap) >= bubbleW
+        const rightArrowWithLeftBubbleFits = rect.right - arrowTip - 2 - bubbleW >= margin
+        const leftArrowWithRightBubbleFits = window.innerWidth - margin - (rect.left - arrowTip + gap) >= bubbleW
+        if (rightSideFits) {
+          bubbleOnLeft = false
+          toX = rect.right - arrowTip
+        } else if (rightArrowWithLeftBubbleFits) {
+          bubbleOnLeft = true
+          toX = rect.right - arrowTip
+        } else if (leftArrowWithRightBubbleFits) {
+          bubbleOnLeft = false
+          toX = rect.left - arrowTip
+        }
+      }
+      // Aim the tip AT the component, vertically centred. The box parks the tip
+      // offset back because the glyph tip sits that far into its own box.
+      const toY = rect.top + rect.height / 2 - arrowTip
+      const fromX = Number(arrow.dataset.x ?? toX)
+      const fromY = Number(arrow.dataset.y ?? toY)
       arrow.dataset.x = String(toX)
+      setArmed(true)
       arrow.dataset.y = String(toY)
       setSide(stepDef.side)
       // The tooltip is w-max, so its rendered width GROWS as characters land;
       // a side chosen from today's length fits nothing by the end of the step.
       // So bound it by the widest it can ever get, which keeps it on screen
-      // every frame of the typing. body { overflow-x: hidden } is why the
-      // original overflow never showed as a scrollbar: it was simply cropped,
-      // and the tooltip read as silently truncated text instead of misplaced.
+      // every frame of the typing. body { overflow-x: hidden } prevents the
+      // overflow from becoming a scrollbar; the clamp keeps the text visible.
       //
       // The bound also has to leave room for the cursor's own travel. The
       // bubble is a child of the cursor and rides the same translate3d, so it
-      // spends TRAVEL_MS crossing from where the last step left off, and a
+      // spends travelMs crossing from where the last step left off, and a
       // single offset has to hold it on screen at BOTH ends. On a phone that
       // is only possible if the bubble is narrower than the viewport by at
       // least the span between the two positions; without that term the range
@@ -230,12 +248,12 @@ export default function HeroTour() {
       const pathMin = Math.min(fromX, toX)
       const pathMax = Math.max(fromX, toX)
       const bubbleMax = Math.min(
-        BUBBLE_W,
-        window.innerWidth - BUBBLE_MARGIN * 2 - (pathMax - pathMin)
+        bubbleW,
+        window.innerWidth - margin * 2 - (pathMax - pathMin)
       )
-      const preferred = bubbleOnLeft ? CURSOR_W - GAP - bubbleMax : GAP
-      const minLeft = BUBBLE_MARGIN - pathMin
-      const maxLeft = window.innerWidth - BUBBLE_MARGIN - bubbleMax - pathMax
+      const preferred = bubbleOnLeft ? cursorW - gap - bubbleMax : gap
+      const minLeft = margin - pathMin
+      const maxLeft = window.innerWidth - margin - bubbleMax - pathMax
       setBubbleMax(bubbleMax)
       // An inverted range means even a zero-span bubble will not fit. Let the
       // minimum win so it stays flush to the left margin rather than floating.
@@ -244,7 +262,7 @@ export default function HeroTour() {
       const travelStart = performance.now()
       cancelAnimationFrame(raf.current)
       const travel = (now: number) => {
-        const t = Math.min(1, (now - travelStart) / TRAVEL_MS)
+        const t = Math.min(1, (now - travelStart) / travelMs)
         const e = EASE(t)
         arrow.style.transform = `translate3d(${fromX + (toX - fromX) * e}px, ${
           fromY + (toY - fromY) * e
@@ -258,16 +276,16 @@ export default function HeroTour() {
         window.setTimeout(() => {
           setStep(i)
           setTyped(0)
-        }, TRAVEL_MS)
+        }, travelMs)
       )
 
       for (let c = 1; c <= stepDef.text.length; c++) {
         timers.current.push(
-          window.setTimeout(() => setTyped(c), TRAVEL_MS + c * TYPE_MS)
+          window.setTimeout(() => setTyped(c), travelMs + c * typeMs)
         )
       }
 
-      const typedMs = TRAVEL_MS + stepDef.text.length * TYPE_MS
+      const typedMs = travelMs + stepDef.text.length * typeMs
       timers.current.push(
         window.setTimeout(
           () => {
@@ -275,7 +293,7 @@ export default function HeroTour() {
             if (index < STEPS.length) goToStep(index)
             else finish()
           },
-          typedMs + DWELL_MS
+          typedMs + dwellMs
         )
       )
     }
@@ -411,18 +429,18 @@ export default function HeroTour() {
           className="fixed inset-0 z-[80] touch-none overscroll-contain"
         />
       )}
-      {active && !isCompact && (
+      {active && (
         <div
           ref={arrowRef}
           id="heroTourCursor"
           aria-hidden="true"
-          className="fixed top-0 left-0 z-[90] pointer-events-none"
+          className={`fixed top-0 left-0 z-[90] pointer-events-none transition-opacity duration-150 ${armed ? "opacity-100" : "opacity-0"}`}
         >
           {/* Crimson: the accent is the site's one signal colour, and a red
               pointer reads as the agent acting on the page, not as decoration.
               The rim keeps the page background so the glyph separates from the
               bubble behind it. */}
-          <svg className="block" width="26" height="26" viewBox="0 0 24 24" fill="none">
+          <svg className="block h-[26px] w-[26px]" viewBox="0 0 24 24" fill="none">
             <path
               d="M5.5 5.5l3.9 11.7 2.2-5.6 5.6-2.2-11.7-3.9z"
               fill="none"
@@ -435,20 +453,16 @@ export default function HeroTour() {
               fill="hsl(var(--crimson))"
             />
           </svg>
-          {/* w-max with a 300px ceiling, sized from the measured 7.2px advance
-              width. At 260px a 67-character step wrapped to three lines with a
-              three-character orphan, and an orphan line is what reads as
-              truncated text. 300px fits 38 characters per line, so every step
-              lands on two lines or fewer. Shrink-to-fit means a partially
-              typed sentence hugs its own width instead of sitting in a box
-              with 200px of dead space to its right. */}
+          {/* w-max with a 220px phone ceiling (300px at md and up), sized from
+              the measured typewriter advances so every step wraps before the
+              box clips or drifts. */}
           <div
-            className={`tour-tooltip absolute flex w-max max-w-[300px] flex-col gap-1 bg-foreground px-3 py-2 font-mono text-[12px] leading-[1.5] text-background shadow-[0_10px_28px_-12px_rgba(0,0,0,0.55)] ${
+            className={`tour-tooltip absolute flex w-max max-w-[220px] md:max-w-[300px] flex-col gap-1 bg-foreground px-2 py-1.5 md:px-3 md:py-2 font-mono text-[11px] md:text-[12px] leading-[1.45] md:leading-[1.5] text-background shadow-[0_10px_28px_-12px_rgba(0,0,0,0.55)] ${
               side === "up" ? "bottom-2" : "top-2"
             }`}
             style={{ left: bubbleLeft, maxWidth: bubbleMax }}
           >
-            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-crimson">
+            <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.16em] text-crimson">
               Doniele Agent
             </span>
             {/* Breaks on WORD boundaries, not characters. Each character was its
@@ -489,49 +503,9 @@ export default function HeroTour() {
               })()}
               {/* Caret sits at the typed edge and blinks while typing. */}
               {typed < (stepDef?.text.length ?? 0) && (
-                <span className="ml-px inline-block h-[15px] w-[1.5px] animate-cursor-blink bg-background" />
+                <span className="ml-px inline-block h-[13px] w-[1px] md:h-[15px] md:w-[1.5px] animate-cursor-blink bg-background" />
               )}
             </span>
-          </div>
-        </div>
-      )}
-      {/* Compact screens cannot host a 26px cursor beside a 300px bubble without
-          covering the copy being explained. The sequence still advances, but the
-          chrome becomes a full-width card with the exit inside it. */}
-      {active && isCompact && stepDef && (
-        <div
-          data-tour-ui
-          role="region"
-          aria-label="Doniele Agent tour"
-          className="tour-tooltip fixed z-[90] left-3 right-3 bottom-[calc(0.875rem+env(safe-area-inset-bottom))] max-w-sm ml-auto border border-foreground/15 bg-foreground text-background shadow-[0_10px_28px_-12px_rgba(0,0,0,0.55)] px-4 py-3 text-left"
-        >
-          <div className="flex items-center justify-between gap-3 border-b border-background/15 pb-2">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-crimson">
-              Doniele Agent
-            </span>
-            <span className="font-mono text-[10px] tabular-nums text-background/60">
-              {step + 1} / {STEPS.length}
-            </span>
-          </div>
-          <p className="pt-2 font-mono text-[12px] leading-5 text-background">
-            {stepDef.text}
-          </p>
-          <div className="flex items-center justify-between gap-3 pt-3">
-            <div className="flex items-center gap-1.5" aria-hidden="true">
-              {STEPS.map((_, dotIndex) => (
-                <span
-                  key={dotIndex}
-                  className={`h-1.5 w-1.5 ${dotIndex === step ? "bg-crimson" : "bg-background/25"}`}
-                />
-              ))}
-            </div>
-            <button
-              type="button"
-              onClick={finish}
-              className="font-mono text-[10px] uppercase tracking-[0.2em] text-background/70 hover:text-background focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-background"
-            >
-              Skip tour
-            </button>
           </div>
         </div>
       )}
@@ -556,12 +530,12 @@ export default function HeroTour() {
           active && !done unmounts this at the exact moment the replay button
           mounts, so the two can never be on screen together. Quieter text and a
           dimmer glyph than replay: skipping is a way out, not a call to action. */}
-      {active && !done && !isCompact && (
+      {active && !done && (
         <button
           type="button"
           data-tour-ui
           onClick={finish}
-          className="fixed bottom-5 left-5 z-[90] flex items-center gap-2 border border-foreground/20 bg-background/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40 backdrop-blur-sm transition-colors hover:border-foreground/40 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+          className="fixed right-4 top-16 z-[90] flex items-center gap-2 border border-foreground/20 bg-background/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40 backdrop-blur-sm transition-colors hover:border-foreground/40 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground md:bottom-[calc(1.25rem+env(safe-area-inset-bottom))] md:left-5 md:right-auto md:top-auto"
         >
           <span className="text-crimson/60" aria-hidden="true">
             ▸
@@ -575,7 +549,7 @@ export default function HeroTour() {
           type="button"
           onClick={replay}
           data-tour-ui
-          className="fixed bottom-5 left-5 z-[90] flex items-center gap-2 border border-foreground/20 bg-background/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/60 backdrop-blur-sm transition-colors hover:border-foreground/40 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+          className="fixed right-4 top-16 z-[90] flex items-center gap-2 border border-foreground/20 bg-background/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/60 backdrop-blur-sm transition-colors hover:border-foreground/40 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground md:bottom-[calc(1.25rem+env(safe-area-inset-bottom))] md:left-5 md:right-auto md:top-auto"
         >
           <span className="text-crimson" aria-hidden="true">
             ▸
