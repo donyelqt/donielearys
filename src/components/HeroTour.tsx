@@ -132,6 +132,7 @@ export default function HeroTour() {
 
   const finish = useCallback(() => {
     clearTimers()
+    cancelAnimationFrame(raf.current)
     setActive(false)
     setStep(-1)
     setDone(true)
@@ -144,6 +145,17 @@ export default function HeroTour() {
       /* private mode: tour simply replays next load */
     }
   }, [clearTimers])
+  /* Ending because the viewport crossed a breakpoint is not a user choice;
+     hide the tour and leave replay available without marking it seen. */
+  const dismiss = useCallback(() => {
+    clearTimers()
+    cancelAnimationFrame(raf.current)
+    setActive(false)
+    setStep(-1)
+    setDone(false)
+    setReplayVisible(true)
+    setArmed(false)
+  }, [clearTimers])
   /* Crossing the breakpoint mid-run ends the tour instead of leaving the
      scheduled timings and CSS-sized chrome pointing at different viewports. */
   useEffect(() => {
@@ -152,12 +164,12 @@ export default function HeroTour() {
       const next = query.matches
       const changed = compactRef.current !== next
       compactRef.current = next
-      if (changed && active) finish()
+      if (changed && active) dismiss()
     }
     update()
     query.addEventListener("change", update)
     return () => query.removeEventListener("change", update)
-  }, [active, finish])
+  }, [active, dismiss])
 
   /** Runs the full sequence. Deterministic: fixed steps, fixed dwell. */
   const run = useCallback(() => {
@@ -209,7 +221,7 @@ export default function HeroTour() {
       let toX = bubbleOnLeft ? rect.left - arrowTip : rect.right - arrowTip
       if (compact) {
         const rightSideFits = window.innerWidth - margin - (rect.right - arrowTip + gap) >= bubbleW
-        const rightArrowWithLeftBubbleFits = rect.right - arrowTip - 2 - bubbleW >= margin
+        const rightArrowWithLeftBubbleFits = rect.right - arrowTip - (gap - cursorW) - bubbleW >= margin
         const leftArrowWithRightBubbleFits = window.innerWidth - margin - (rect.left - arrowTip + gap) >= bubbleW
         if (rightSideFits) {
           bubbleOnLeft = false
@@ -220,13 +232,24 @@ export default function HeroTour() {
         } else if (leftArrowWithRightBubbleFits) {
           bubbleOnLeft = false
           toX = rect.left - arrowTip
+        } else {
+          // Never pair the arrow and bubble on the same side when no fit exists.
+          bubbleOnLeft = true
+          toX = rect.right - arrowTip
         }
       }
       // Aim the tip AT the component, vertically centred. The box parks the tip
       // offset back because the glyph tip sits that far into its own box.
       const toY = rect.top + rect.height / 2 - arrowTip
-      const fromX = Number(arrow.dataset.x ?? toX)
-      const fromY = Number(arrow.dataset.y ?? toY)
+      let fromX = Number(arrow.dataset.x ?? toX)
+      let fromY = Number(arrow.dataset.y ?? toY)
+      // A long cross-hero hop cannot carry a 220px bubble between 320px anchors.
+      // Teleport instead of yielding a cramped or clipped tooltip.
+      if (compact && Math.abs(toX - fromX) > window.innerWidth - margin * 2 - 120) {
+        fromX = toX
+        fromY = toY
+      }
+      arrow.style.transform = `translate3d(${fromX}px, ${fromY}px, 0)`
       arrow.dataset.x = String(toX)
       setArmed(true)
       arrow.dataset.y = String(toY)
@@ -247,9 +270,12 @@ export default function HeroTour() {
       // off the other edge.
       const pathMin = Math.min(fromX, toX)
       const pathMax = Math.max(fromX, toX)
-      const bubbleMax = Math.min(
-        bubbleW,
-        window.innerWidth - margin * 2 - (pathMax - pathMin)
+      const bubbleMax = Math.max(
+        0,
+        Math.min(
+          bubbleW,
+          window.innerWidth - margin * 2 - (pathMax - pathMin)
+        )
       )
       const preferred = bubbleOnLeft ? cursorW - gap - bubbleMax : gap
       const minLeft = margin - pathMin
@@ -379,16 +405,17 @@ export default function HeroTour() {
     window.addEventListener("touchmove", stopScroll, OPTS)
 
     const onKeyDown = (event: KeyboardEvent) => {
-      // Capture-phase, so this runs before any handler on the tour's own
-      // buttons. Anything originating inside tour chrome is left completely
-      // alone, which keeps the skip button operable and stops Enter on it from
-      // being cancelled by the rule below.
-      const target = event.target
-      if (target instanceof Element && target.closest("[data-tour-ui]")) return
+      // Capture-phase, so this runs before any handler on the tour's own buttons.
+      // Escape is global by contract: it exits even while focus is in the skip chrome.
       if (event.key === "Escape") {
+        event.preventDefault()
         finish()
         return
       }
+      // Anything originating inside tour chrome is left completely alone, which
+      // keeps the skip button operable and stops Enter on it from being cancelled.
+      const target = event.target
+      if (target instanceof Element && target.closest("[data-tour-ui]")) return
       if (event.key === "Enter" || event.key === " ") event.preventDefault()
     }
     window.addEventListener("keydown", onKeyDown, true)
@@ -535,7 +562,7 @@ export default function HeroTour() {
           type="button"
           data-tour-ui
           onClick={finish}
-          className="fixed right-4 top-16 z-[90] flex items-center gap-2 border border-foreground/20 bg-background/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40 backdrop-blur-sm transition-colors hover:border-foreground/40 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground md:bottom-[calc(1.25rem+env(safe-area-inset-bottom))] md:left-5 md:right-auto md:top-auto"
+          className="fixed right-4 top-16 z-[90] flex min-h-11 items-center gap-2 border border-foreground/20 bg-background/70 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/70 backdrop-blur-sm transition-colors hover:border-foreground/40 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground md:bottom-[calc(1.25rem+env(safe-area-inset-bottom))] md:left-5 md:right-auto md:top-auto md:min-h-0 md:px-3 md:py-1.5"
         >
           <span className="text-crimson/60" aria-hidden="true">
             ▸
@@ -549,7 +576,7 @@ export default function HeroTour() {
           type="button"
           onClick={replay}
           data-tour-ui
-          className="fixed right-4 top-16 z-[90] flex items-center gap-2 border border-foreground/20 bg-background/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/60 backdrop-blur-sm transition-colors hover:border-foreground/40 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground md:bottom-[calc(1.25rem+env(safe-area-inset-bottom))] md:left-5 md:right-auto md:top-auto"
+          className="fixed right-4 top-16 z-[90] flex min-h-11 items-center gap-2 border border-foreground/20 bg-background/70 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/80 backdrop-blur-sm transition-colors hover:border-foreground/40 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground md:bottom-[calc(1.25rem+env(safe-area-inset-bottom))] md:left-5 md:right-auto md:top-auto md:min-h-0 md:px-3 md:py-1.5"
         >
           <span className="text-crimson" aria-hidden="true">
             ▸
